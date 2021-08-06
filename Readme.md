@@ -308,7 +308,7 @@ make down
 Quick start
 
 ```bash
-git clone [git@github.com](mailto:git@github.com):TsaiTsaiChieh/node-ts-docker-init.git
+git clone git@github.com:TsaiTsaiChieh/node-ts-docker-init.git
 ```
 
 ## Reference
