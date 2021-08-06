@@ -1,0 +1,20 @@
+version: "3"
+services:
+  node-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    command: yarn start
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.prod
+    ports: 
+      - ${APP_PORT}:${APP_PORT}
+    networks:
+      - application
+networks:
+  application:
