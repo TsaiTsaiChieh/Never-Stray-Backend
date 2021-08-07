@@ -16,5 +16,23 @@ services:
       - ${APP_PORT}:${APP_PORT}
     networks:
       - application
+  db:
+    image: mysql:8.0
+    restart: always
+    env_file:
+      - .env
+    environment: 
+      MYSQL_USER: admin
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE:
+      TZ: Asia/Taipei
+    ports: 
+      - 3306:3306
+    volumes: 
+      - .:/ns-app
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
+    networks:
+      - application
 networks:
   application:
