@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
 var express_1 = __importDefault(require("express"));
+dotenv_1.default.config();
 var app = express_1.default();
-var APP_PORT = process.env.APP_PORT;
+var APP_PORT = parseInt(process.env.APP_PORT, 10);
 app.get('/', function (req, res) {
     res.send('Hello World!');
 });
