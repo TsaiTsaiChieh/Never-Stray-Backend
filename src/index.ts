@@ -10,11 +10,6 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!')
 })
 
-// 印出 env 的檔案 for bug
-app.get('/env', (req: Request, res: Response) => {
-  res.json(process.env)
-})
-
 app.listen(APP_PORT, (): void => {
   console.log(`App listening at http://localhost:${APP_PORT}`)
 })
