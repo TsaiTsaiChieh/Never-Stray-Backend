@@ -24,9 +24,15 @@
       "error",
       {
         "capIsNewExceptions": [
-          "Router"
+          "Router",
+          "Entity",
+          "PrimaryGeneratedColumn",
+          "Column",
+          "CreateDateColumn",
+          "UpdateDateColumn"
         ]
       }
-    ]
+    ],
+    "@typescript-eslint/no-unused-vars": "error"
   }
 }
