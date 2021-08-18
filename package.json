@@ -8,7 +8,7 @@
     "build": "tsc -p .",
     "dev": "nodemon src/index.ts",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
-    "typeorm:generate": "typeorm migration:generate -n migrationName -p"
+    "generate": "typeorm migration:generate -n MigrationName -p"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
