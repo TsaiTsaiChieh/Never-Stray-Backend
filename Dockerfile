@@ -8,6 +8,8 @@ COPY package*.json ./
 RUN yarn install
 # Bundle app source
 COPY . .
+# Run script pre-step
+RUN chmod +x /app/entrypoint.sh
 
 ### Production
 FROM base AS production
