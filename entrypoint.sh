@@ -1,6 +1,6 @@
 #!/bin/sh
-echo "Wait for Never-Stay API to start"
-sleep 5;
+echo "Wait for all services to start"
+sleep 10;
 echo "Run migration ..."
 yarn typeorm migration:run
 echo "=== END ==="
