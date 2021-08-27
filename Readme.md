@@ -35,4 +35,4 @@ APP_PORT=3000
 3. Run `yarn generate` command to generate TS migration file in src/migration folder
 4. (Check the TS entity file and add some eslint-disable)
 5. Run `yarn build` command again to build JS migration file in build/migration folder
-6. Run `typeorm migration:run` to run migration
+6. Run `yarn typeorm migration:run` to run migration
