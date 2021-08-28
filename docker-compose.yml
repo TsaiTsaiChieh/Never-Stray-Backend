@@ -5,7 +5,12 @@ services:
       context: .
       dockerfile: Dockerfile
       target: base
-    command: yarn dev
+    command:
+      - /bin/sh
+      - -c
+      - |
+        sh /app/entrypoint.sh
+        yarn dev
     volumes:
       - .:/app
     environment:
