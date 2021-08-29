@@ -2,10 +2,10 @@
 import {MigrationInterface, QueryRunner} from 'typeorm'
 
 export class CreateAreaTable1629272574171 implements MigrationInterface {
-    name = 'CreateAreaTable1629272574171'
+  name = 'CreateAreaTable1629272574171'
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             CREATE TABLE \`ns-app\`.\`areas\` (
                 \`id\` int NOT NULL AUTO_INCREMENT,
                 \`area\` enum ('E', 'W', 'S', 'N', 'M') NOT NULL,
@@ -36,11 +36,11 @@ export class CreateAreaTable1629272574171 implements MigrationInterface {
                 PRIMARY KEY (\`id\`)
             ) ENGINE = InnoDB
         `)
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.query(`
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             DROP TABLE \`ns-app\`.\`areas\`
         `)
-    }
+  }
 }
