@@ -32,6 +32,10 @@
           "UpdateDateColumn"
         ]
       }
+    ],
+    "indent": [
+      "off",
+      2
     ]
   }
 }
