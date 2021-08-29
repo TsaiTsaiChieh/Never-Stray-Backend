@@ -3,3 +3,4 @@ node_modules
 .env.prod
 ormconfig.env
 .vscode
+yarn-error.log
