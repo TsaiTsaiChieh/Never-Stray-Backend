@@ -33,6 +33,7 @@
         ]
       }
     ],
+    "@typescript-eslint/no-unused-vars": "error",
     "indent": [
       "off",
       2
