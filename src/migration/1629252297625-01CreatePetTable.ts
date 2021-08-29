@@ -3,10 +3,10 @@
 import {MigrationInterface, QueryRunner} from 'typeorm'
 
 export class CreateUserTable1629252297625 implements MigrationInterface {
-    name = 'CreateUserTable1629252297625'
+  name = 'CreateUserTable1629252297625'
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             CREATE TABLE \`ns-app\`.\`pets\` (
                 \`id\` int NOT NULL AUTO_INCREMENT,
                 \`ref\` enum ('gov', 'map', 'own') NOT NULL,
@@ -28,11 +28,11 @@ export class CreateUserTable1629252297625 implements MigrationInterface {
                 PRIMARY KEY (\`id\`)
             ) ENGINE = InnoDB
         `)
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.query(`
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             DROP TABLE \`ns-app\`.\`pets\`
         `)
-    }
+  }
 }
