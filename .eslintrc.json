@@ -29,7 +29,11 @@
           "PrimaryGeneratedColumn",
           "Column",
           "CreateDateColumn",
-          "UpdateDateColumn"
+          "UpdateDateColumn",
+          "Controller",
+          "Get",
+          "Req",
+          "Res"
         ]
       }
     ],
