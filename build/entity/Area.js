@@ -60,8 +60,13 @@ var Area = /** @class */ (function () {
         typeorm_1.Column({ type: 'enum', enum: City, nullable: false }),
         __metadata("design:type", Number)
     ], Area.prototype, "city", void 0);
+    __decorate([
+        typeorm_1.Column({ length: 4 }),
+        __metadata("design:type", String)
+    ], Area.prototype, "name", void 0);
     Area = __decorate([
-        typeorm_1.Entity({ name: 'areas' })
+        typeorm_1.Entity({ name: 'areas' }),
+        typeorm_1.Index('REGION_CITY_INDEX', ['region', 'city'], { unique: true })
     ], Area);
     return Area;
 }());
