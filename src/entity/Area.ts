@@ -1,6 +1,5 @@
 /* eslint-disable require-jsdoc */
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm'
-
+import {Column, Entity, Index, PrimaryGeneratedColumn} from 'typeorm'
 
 export enum Region {
   EAST = 'E',
@@ -36,13 +35,17 @@ export enum City {
 }
 
 @Entity({name: 'areas'})
+@Index('REGION_CITY_INDEX', ['region', 'city'], {unique: true})
 export class Area {
   @PrimaryGeneratedColumn()
   id: number
 
   @Column({type: 'enum', enum: Region, nullable: false})
-  area: Region
+  region: Region
 
   @Column({type: 'enum', enum: City, nullable: false})
   city: City
+
+  @Column({length: 4})
+  name: string
 }
