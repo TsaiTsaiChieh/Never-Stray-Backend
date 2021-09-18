@@ -39,21 +39,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var dotenv_1 = __importDefault(require("dotenv"));
-var initializer_1 = require("./initializer");
-dotenv_1.default.config();
-var APP_PORT = parseInt(process.env.APP_PORT, 10);
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var app;
+exports.initializerApp = void 0;
+var express_1 = __importDefault(require("express"));
+var routing_controllers_1 = require("routing-controllers");
+var database_1 = require("./config/database");
+var initializerApp = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var app, db, application;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, initializer_1.initializerApp()];
+            case 0:
+                app = express_1.default();
+                return [4 /*yield*/, database_1.connection()];
             case 1:
-                app = (_a.sent()).app;
-                app.listen(process.env.APP_PORT, function () {
-                    console.log("App listening at http://localhost:" + APP_PORT);
+                db = _a.sent();
+                routing_controllers_1.useExpressServer(app, {
+                    controllers: [__dirname + "/controllers/*.ts"],
                 });
-                return [2 /*return*/];
+                application = {
+                    app: app,
+                    db: db,
+                };
+                return [2 /*return*/, application];
         }
     });
-}); })();
+}); };
+exports.initializerApp = initializerApp;
