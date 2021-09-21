@@ -26,6 +26,7 @@
         "capIsNewExceptions": [
           "Router",
           "Entity",
+          "Index",
           "PrimaryGeneratedColumn",
           "Column",
           "CreateDateColumn",
@@ -41,6 +42,10 @@
     "indent": [
       "off",
       2
+    ],
+    "eol-last": [
+      "error",
+      "always"
     ]
   }
 }
