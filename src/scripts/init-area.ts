@@ -1,5 +1,7 @@
+import chalk from 'chalk'
 import dotenv from 'dotenv'
 import _ from 'lodash'
+import {Connection} from 'typeorm'
 
 import {Area, City, Region} from '../entity/Area'
 import {initializerApp} from '../initializer'
@@ -14,14 +16,15 @@ dotenv.config();
     name: string,
   }[],
 ) => {
-  const {db} = await initializerApp()
+  let db: any | Connection
   try {
+    db = (await initializerApp()).db
     const data: {
       region: Region,
       city: City,
       name: string,
     }[] = []
-    _.forEach(areas, async (val) => {
+    _.forEach(areas, (val) => {
       //  type assertion
       data.push({
         region: <Region>val.region,
@@ -34,8 +37,10 @@ dotenv.config();
       .into(Area)
       .values(data).execute()
   } catch (error) {
-    console.log(error)
+    console.log(chalk.red(error))
   } finally {
-    await db.close()
+    if (db instanceof Connection) {
+      await db.close()
+    }
   }
 })(areas)
