@@ -35,25 +35,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var dotenv_1 = __importDefault(require("dotenv"));
-var initializer_1 = require("./initializer");
-dotenv_1.default.config();
-var APP_PORT = parseInt(process.env.APP_PORT, 10);
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var app;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, initializer_1.initializerApp()];
-            case 1:
-                app = (_a.sent()).app;
-                app.listen(process.env.APP_PORT, function () {
-                    console.log("App listening at http://localhost:" + APP_PORT);
-                });
-                return [2 /*return*/];
-        }
-    });
-}); })();
+exports.CreateUserTable1629252297625 = void 0;
+var CreateUserTable1629252297625 = /** @class */ (function () {
+    function CreateUserTable1629252297625() {
+        this.name = 'CreateUserTable1629252297625';
+    }
+    CreateUserTable1629252297625.prototype.up = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("\n            CREATE TABLE `ns-app`.`pets` (\n                `id` int NOT NULL AUTO_INCREMENT,\n                `ref` enum ('gov', 'map', 'own') NOT NULL,\n                `area_id` tinyint NOT NULL,\n                `kind` tinytext NOT NULL,\n                `sex` enum ('F', 'M', 'U') NOT NULL DEFAULT 'U',\n                `color` tinytext NOT NULL,\n                `age` enum ('Adult', 'Child', 'Unknown') NOT NULL DEFAULT 'Unknown',\n                `ligation` enum ('True', 'False', 'Unknown') NOT NULL DEFAULT 'Unknown',\n                `rabies` enum ('True', 'False', 'Unknown') NOT NULL DEFAULT 'Unknown',\n                `title` tinytext NOT NULL,\n                `status` enum ('Unknown', 'Open', 'Adopted', 'Other', 'Dead') NOT NULL DEFAULT 'Unknown',\n                `remark` tinytext NULL,\n                `address` tinytext NULL,\n                `phone` tinytext NULL,\n                `image` json NULL,\n                `created_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),\n                `updated_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),\n                PRIMARY KEY (`id`)\n            ) ENGINE = InnoDB\n        ")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CreateUserTable1629252297625.prototype.down = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("\n            DROP TABLE `ns-app`.`pets`\n        ")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return CreateUserTable1629252297625;
+}());
+exports.CreateUserTable1629252297625 = CreateUserTable1629252297625;

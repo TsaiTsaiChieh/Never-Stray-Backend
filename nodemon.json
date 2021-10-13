@@ -1,7 +1,9 @@
 {
   "verbose": true,
   "ignore": [
-    ".git"
+    ".git",
+    "src/scripts/",
+    "src/JSON/"
   ],
   "watch": [
     "src/**/*.ts"

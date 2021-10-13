@@ -19,6 +19,33 @@
     "semi": [
       2,
       "never"
+    ],
+    "new-cap": [
+      "error",
+      {
+        "capIsNewExceptions": [
+          "Router",
+          "Entity",
+          "Index",
+          "PrimaryGeneratedColumn",
+          "Column",
+          "CreateDateColumn",
+          "UpdateDateColumn",
+          "Controller",
+          "Get",
+          "Req",
+          "Res"
+        ]
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": "error",
+    "indent": [
+      "off",
+      2
+    ],
+    "eol-last": [
+      "error",
+      "always"
     ]
   }
 }

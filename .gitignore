@@ -1,1 +1,6 @@
 node_modules
+.env
+.env.prod
+ormconfig.env
+.vscode
+yarn-error.log

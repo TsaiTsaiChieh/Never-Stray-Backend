@@ -1,20 +1,15 @@
 import dotenv from 'dotenv'
+
+import {initializerApp} from './initializer'
+
 dotenv.config()
-import express from 'express'
 
-const app = express()
+const APP_PORT: Number = parseInt(<string>process.env.APP_PORT, 10);
 
-const {APP_PORT} = process.env
+(async () => {
+  const {app} = await initializerApp()
+  app.listen(process.env.APP_PORT, (): void => {
+    console.log(`App listening at http://localhost:${APP_PORT}`)
+  })
+})()
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-// 印出 env 的檔案 for bug
-app.get('/env', (req, res) => {
-  res.json(process.env)
-})
-
-app.listen(APP_PORT, () => {
-  console.log(`App listening at http://localhost:${APP_PORT}`)
-})

@@ -35,25 +35,42 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var dotenv_1 = __importDefault(require("dotenv"));
-var initializer_1 = require("./initializer");
-dotenv_1.default.config();
-var APP_PORT = parseInt(process.env.APP_PORT, 10);
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var app;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, initializer_1.initializerApp()];
-            case 1:
-                app = (_a.sent()).app;
-                app.listen(process.env.APP_PORT, function () {
-                    console.log("App listening at http://localhost:" + APP_PORT);
-                });
-                return [2 /*return*/];
-        }
-    });
-}); })();
+exports.AlterAreaTable1631959643787 = void 0;
+var AlterAreaTable1631959643787 = /** @class */ (function () {
+    function AlterAreaTable1631959643787() {
+        this.name = 'AlterAreaTable1631959643787';
+    }
+    AlterAreaTable1631959643787.prototype.up = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("\n            ALTER TABLE `ns-app`.`areas`\n            ADD `name` varchar(4) NOT NULL\n        ")];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("\n            CREATE UNIQUE INDEX `REGION_CITY_INDEX` \n            ON `ns-app`.`areas` (`region`, `city`)\n        ")];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AlterAreaTable1631959643787.prototype.down = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("\n            DROP INDEX `REGION_CITY_INDEX` ON `ns-app`.`areas`\n        ")];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("\n            ALTER TABLE `ns-app`.`areas` DROP COLUMN `name`\n        ")];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return AlterAreaTable1631959643787;
+}());
+exports.AlterAreaTable1631959643787 = AlterAreaTable1631959643787;
