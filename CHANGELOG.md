@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 #### Added:
+-  db schema and some base settings ***by TsaiTsaiChieh*** [#1](https://github.com/TsaiTsaiChieh/Never-Stray/pull/1)
 
 #### Changed:
 
