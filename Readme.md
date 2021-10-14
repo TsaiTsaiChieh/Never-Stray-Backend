@@ -23,6 +23,9 @@ TYPEORM_MIGRATIONS=build/migration/\*.js
 TYPEORM_ENTITIES_DIR=src/entity  
 TYPEORM_MIGRATIONS_DIR=src/migration
 
+JOB_PORT=4000
+NATIONAL_ANIMAL_SHELTER=https://data.coa.gov.tw/Service/OpenData/TransService.aspx?UnitId=QcbUEzN6E6DL
+
 ### .env.prod
 
 NODE_ENV=production  
