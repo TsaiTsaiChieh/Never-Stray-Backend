@@ -39,21 +39,51 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var chalk_1 = __importDefault(require("chalk"));
 var dotenv_1 = __importDefault(require("dotenv"));
-var initializer_1 = require("./initializer");
+var lodash_1 = __importDefault(require("lodash"));
+var typeorm_1 = require("typeorm");
+var Area_1 = require("../entity/Area");
+var initializer_1 = require("../initializer");
+var areas_json_1 = __importDefault(require("../JSON/areas.json"));
 dotenv_1.default.config();
-var APP_PORT = parseInt(process.env.APP_PORT);
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var app;
+(function (areas) { return __awaiter(void 0, void 0, void 0, function () {
+    var db, data_1, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, initializer_1.initializerApp()];
+            case 0:
+                _a.trys.push([0, 3, 4, 7]);
+                return [4 /*yield*/, initializer_1.initializerApp()];
             case 1:
-                app = (_a.sent()).app;
-                app.listen(process.env.APP_PORT, function () {
-                    console.log("App listening at http://localhost:" + APP_PORT);
+                db = (_a.sent()).db;
+                data_1 = [];
+                lodash_1.default.forEach(areas, function (val) {
+                    //  type assertion
+                    data_1.push({
+                        region: val.region,
+                        city: val.city,
+                        name: val.name,
+                    });
                 });
-                return [2 /*return*/];
+                return [4 /*yield*/, db.createQueryBuilder()
+                        .insert()
+                        .into(Area_1.Area)
+                        .values(data_1).execute()];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 7];
+            case 3:
+                error_1 = _a.sent();
+                console.log(chalk_1.default.red(error_1));
+                return [3 /*break*/, 7];
+            case 4:
+                if (!(db instanceof typeorm_1.Connection)) return [3 /*break*/, 6];
+                return [4 /*yield*/, db.close()];
+            case 5:
+                _a.sent();
+                _a.label = 6;
+            case 6: return [7 /*endfinally*/];
+            case 7: return [2 /*return*/];
         }
     });
-}); })();
+}); })(areas_json_1.default);

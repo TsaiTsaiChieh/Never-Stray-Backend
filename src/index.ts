@@ -4,7 +4,7 @@ import {initializerApp} from './initializer'
 
 dotenv.config()
 
-const APP_PORT: Number = parseInt(<string>process.env.APP_PORT, 10);
+const APP_PORT: number = parseInt(process.env.APP_PORT!);
 
 (async () => {
   const {app} = await initializerApp()
