@@ -12,7 +12,7 @@ const JOB_PORT: number = parseInt(process.env.JOB_PORT!);
   app.listen(JOB_PORT, (): void => {
     console.log(`Crawler listening at http://localhost:${JOB_PORT}`)
     scheduleJob('* * * * * *', function() {
-      getShelterData(db)
+      // getShelterData(db)
     })
   })
 })()
