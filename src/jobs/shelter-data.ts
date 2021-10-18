@@ -1,14 +1,30 @@
 /* eslint-disable camelcase */
 /* eslint-disable require-jsdoc */
-import dotenv from 'dotenv'
 import axios, {AxiosResponse} from 'axios'
-import {Connection} from 'typeorm'
+import dotenv from 'dotenv'
 import _ from 'lodash'
+import safeAwait from 'safe-await'
+import {Connection} from 'typeorm'
+
 import {Area} from '../entity/Area'
+
 dotenv.config()
+
 type ShelterData = {
   animal_id: number
   animal_subid: string
+  animal_area_pkid: number
+  animal_kind: string
+  animal_sex: string
+  animal_colour: string,
+  animal_age: string
+  animal_sterilization: string
+  animal_bacterin: string
+  animal_title: string
+  animal_status: string
+  animal_remark: string
+  album_file: string
+  shelter_tel: string
 }
 
 export class Shelter {
@@ -25,14 +41,16 @@ export class Shelter {
   // get data
 
   public async getData() {
-    const allData: any[] = []
+    const allData: ShelterData[] = []
     for (let page = 0; ; page++) {
-      const response: AxiosResponse<ShelterData[]> = await axios.get(
+      const [error, response]: [any, AxiosResponse<ShelterData[]>] =
+      await safeAwait(axios.get(
         `${this.url}
         &$top=${this.batch}
         &$skip=${this.batch * page}
         &animal_status=OPEN`,
-      )
+      ))
+      if (error) console.log(error)
 
       const data: ShelterData[] = response.data
       if (!data.length) break

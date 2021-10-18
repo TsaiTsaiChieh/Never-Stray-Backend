@@ -26,11 +26,12 @@ dotenv.config();
     }[] = []
     _.forEach(areas, (val) => {
       //  type assertion
-      data.push({
-        region: <Region>val.region,
-        city: <City>val.city,
-        name: val.name,
-      })
+      // data.push({
+      //   region: <Region>val.region,
+      //   city: <City>val.city,
+      //   name: val.name,
+      // })
+      data.push(val)
     })
     await db.createQueryBuilder()
       .insert()
