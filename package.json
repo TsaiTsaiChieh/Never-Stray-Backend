@@ -36,6 +36,7 @@
     "node-schedule": "^2.0.0",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.9.0",
+    "safe-await": "^1.0.1",
     "typeorm": "^0.2.36"
   }
 }
