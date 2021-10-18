@@ -1,12 +1,14 @@
 /* eslint-disable camelcase */
 /* eslint-disable require-jsdoc */
 import axios, {AxiosResponse} from 'axios'
+import chalk from 'chalk'
 import dotenv from 'dotenv'
 import _ from 'lodash'
 import safeAwait from 'safe-await'
 import {Connection} from 'typeorm'
 
 import {Area} from '../entity/Area'
+import {AppError} from '../utils/app-error'
 
 dotenv.config()
 
@@ -44,14 +46,13 @@ export class Shelter {
     const allData: ShelterData[] = []
     for (let page = 0; ; page++) {
       const [error, response]: [any, AxiosResponse<ShelterData[]>] =
-      await safeAwait(axios.get(
-        `${this.url}
+        await safeAwait(axios.get(
+          `${this.url}
         &$top=${this.batch}
         &$skip=${this.batch * page}
         &animal_status=OPEN`,
-      ))
-      if (error) console.log(error)
-
+        ))
+      if (error) throw new AppError(chalk.red(error))
       const data: ShelterData[] = response.data
       if (!data.length) break
       _.forEach(data, (val) => allData.push(val),
