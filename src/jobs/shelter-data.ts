@@ -42,7 +42,7 @@ export class Shelter {
   // }
   // get data
 
-  public async getData() {
+  public async getData(): Promise<ShelterData[]> {
     const allData: ShelterData[] = []
     for (let page = 0; ; page++) {
       const [error, response]: [any, AxiosResponse<ShelterData[]>] =
@@ -60,6 +60,7 @@ export class Shelter {
     }
     return allData
   }
+
   // save to db
   // const findArea = await this.db.getRepository(Area).findOne()
   // console.log(findArea)
