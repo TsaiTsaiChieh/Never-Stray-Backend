@@ -3,11 +3,11 @@
 import axios, {AxiosResponse} from 'axios'
 import chalk from 'chalk'
 import dotenv from 'dotenv'
+import {Pet, Ref} from '../entity/Pet'
 import _ from 'lodash'
 import safeAwait from 'safe-await'
 import {Connection} from 'typeorm'
 
-import {Area} from '../entity/Area'
 import {AppError} from '../utils/app-error'
 
 dotenv.config()
@@ -16,35 +16,49 @@ type ShelterData = {
   animal_id: number
   animal_subid: string
   animal_area_pkid: number
+  animal_shelter_pkid: number
+  animal_place: string
   animal_kind: string
   animal_sex: string
-  animal_colour: string,
+  animal_bodytype: string
+  animal_colour: string
   animal_age: string
   animal_sterilization: string
   animal_bacterin: string
+  animal_foundplace: string
   animal_title: string
   animal_status: string
   animal_remark: string
+  animal_caption: string
+  animal_opendate: string
+  animal_closeddate: string
+  animal_update: string
+  animal_createtime: string
+  shelter_name: string
   album_file: string
+  album_update: string
+  cDate: string
+  shelter_address: string
   shelter_tel: string
 }
-
+// type PetData
 export class Shelter {
   public url: string = process.env.NATIONAL_ANIMAL_SHELTER!
-  // private db: Connection
-  private batch: number = 100
-
-  constructor() {
-
+  private db: Connection
+  private batch: number = 1
+  /**
+   * @param  {Connection} db
+   */
+  constructor(db: Connection) {
+    this.db = db
   }
-  // constructor(db: Connection) {
-  //   this.db = db
-  // }
-  // get data
-
+  /** get data
+   * @return {Promise<ShelterData[]>} all pet data
+   */
   public async getData(): Promise<ShelterData[]> {
     const allData: ShelterData[] = []
-    for (let page = 0; ; page++) {
+    // for (let page = 0; page < 1; page++) {
+    for (let page = 0; page < 1; page++) {
       const [error, response]: [any, AxiosResponse<ShelterData[]>] =
         await safeAwait(axios.get(
           `${this.url}
@@ -60,7 +74,22 @@ export class Shelter {
     }
     return allData
   }
-
+  public async saveData(data: ShelterData[]) {
+    const PetData: any[] = []
+    _.forEach(data, (val) => PetData.push({
+      ref: <Ref>'gov',
+      area_id: val.animal_area_pkid,
+      kind: val.animal_kind,
+      sex: val.animal_sex,
+    }),
+    )
+    console.log(PetData)
+    // await this.db.createQueryBuilder().
+    //   insert().
+    //   into(Pet).
+    //   values().
+    //   execute()
+  }
   // save to db
   // const findArea = await this.db.getRepository(Area).findOne()
   // console.log(findArea)
@@ -73,16 +102,14 @@ export class Shelter {
 //   console.log(url)
 // }
 
-// export default getShelterData
-// export async function getShelterData(db: Connection) {
-//   const shelter = new Shelter(db = db)
-//   await shelter.getData()
-// }
-
-export async function getShelterData() {
-  const shelter = new Shelter()
-  const data = await shelter.getData()
-  console.log(data.length)
+export async function getShelterData(db: Connection) {
+  const shelter = new Shelter(db)
+  const data: ShelterData[] = await shelter.getData()
+  await shelter.saveData(data)
 }
 
-getShelterData()
+// export async function getShelterData() {
+//   const shelter = new Shelter()
+//   const data = await shelter.getData()
+//   console.log(data.length)
+// }
