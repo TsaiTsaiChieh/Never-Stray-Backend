@@ -1,6 +1,5 @@
-
 import httpStatus from 'http-status'
-import {HttpStatus} from 'http-status'
+
 /**
  * Custom error
  * @extends Error
