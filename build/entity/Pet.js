@@ -27,15 +27,15 @@ var Sex;
 })(Sex = exports.Sex || (exports.Sex = {}));
 var Age;
 (function (Age) {
-    Age["ADULT"] = "Adult";
-    Age["CHILD"] = "Child";
-    Age["UNKNOWN"] = "Unknown";
+    Age["ADULT"] = "A";
+    Age["CHILD"] = "C";
+    Age["UNKNOWN"] = "U";
 })(Age = exports.Age || (exports.Age = {}));
 var Ternary;
 (function (Ternary) {
-    Ternary["TRUE"] = "True";
-    Ternary["FALSE"] = "False";
-    Ternary["UNKNOWN"] = "Unknown";
+    Ternary["TRUE"] = "T";
+    Ternary["FALSE"] = "F";
+    Ternary["UNKNOWN"] = "U";
 })(Ternary = exports.Ternary || (exports.Ternary = {}));
 var Status;
 (function (Status) {
