@@ -16,15 +16,15 @@ export enum Sex {
 }
 
 export enum Age {
-  ADULT = 'Adult',
-  CHILD = 'Child',
-  UNKNOWN = 'Unknown'
+  ADULT = 'A',
+  CHILD = 'C',
+  UNKNOWN = 'U'
 }
 
 export enum Ternary {
-  TRUE = 'True',
-  FALSE = 'False',
-  UNKNOWN = 'Unknown'
+  TRUE = 'T',
+  FALSE = 'F',
+  UNKNOWN = 'U'
 }
 
 export enum Status {
