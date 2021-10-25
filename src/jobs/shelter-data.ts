@@ -3,12 +3,13 @@
 import axios, {AxiosResponse} from 'axios'
 import chalk from 'chalk'
 import dotenv from 'dotenv'
-import {Pet, Ref} from '../entity/Pet'
 import _ from 'lodash'
 import safeAwait from 'safe-await'
 import {Connection} from 'typeorm'
 
+import {Ref} from '../entity/Pet'
 import {AppError} from '../utils/app-error'
+import {ageConvert, sexConvert, ternaryConvert} from '../utils/value-convert'
 
 dotenv.config()
 
@@ -63,9 +64,10 @@ export class Shelter {
         await safeAwait(axios.get(
           `${this.url}
         &$top=${this.batch}
-        &$skip=${this.batch * page}
+        &$skip=68
         &animal_status=OPEN`,
         ))
+      // &$skip=${this.batch * page}
       if (error) throw new AppError(chalk.red(error))
       const data: ShelterData[] = response.data
       if (!data.length) break
@@ -80,7 +82,10 @@ export class Shelter {
       ref: <Ref>'gov',
       area_id: val.animal_area_pkid,
       kind: val.animal_kind,
-      sex: val.animal_sex,
+      sex: sexConvert(val.animal_sex),
+      color: val.animal_colour,
+      age: ageConvert(val.animal_age),
+      ligation: ternaryConvert(val.animal_sterilization),
     }),
     )
     console.log(PetData)
