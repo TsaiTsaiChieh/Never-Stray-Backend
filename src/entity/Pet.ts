@@ -40,6 +40,15 @@ export class Pet {
   @PrimaryGeneratedColumn()
   id: number
 
+  @Column({type: 'bigint', nullable: false})
+  sub_id: number
+
+  @Column({
+    type: 'varchar', length: 16,
+    nullable: true, comment: '政府收容編號',
+  })
+  accept_num: string
+
   @Column({type: 'enum', enum: Ref, nullable: false})
   ref: Ref
 
@@ -58,10 +67,16 @@ export class Pet {
   @Column({type: 'enum', enum: Age, default: Age.UNKNOWN})
   age: Age
 
-  @Column({type: 'enum', enum: Ternary, default: Ternary.UNKNOWN})
+  @Column({
+    type: 'enum', enum: Ternary,
+    default: Ternary.UNKNOWN, comment: '是否絕育',
+  })
   ligation: Ternary
 
-  @Column({type: 'enum', enum: Ternary, default: Ternary.UNKNOWN})
+  @Column({
+    type: 'enum', enum: Ternary,
+    default: Ternary.UNKNOWN, comment: '是否施打狂犬病疫苗',
+  })
   rabies: Ternary
 
   @Column({type: 'tinytext'})
@@ -80,7 +95,7 @@ export class Pet {
   phone: string
 
   @Column({type: 'json', nullable: true})
-  image: string
+  image: string[]
 
   @CreateDateColumn()
   created_at: Date
