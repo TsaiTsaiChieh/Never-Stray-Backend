@@ -1,7 +1,12 @@
 /* eslint-disable camelcase */
 /* eslint-disable require-jsdoc */
 import {
-  Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm'
 
 export enum Ref {
@@ -36,6 +41,7 @@ export enum Status {
 }
 
 @Entity({name: 'pets'})
+@Index(['sub_id', 'accept_num'], {unique: true})
 export class Pet {
   @PrimaryGeneratedColumn()
   id: number
