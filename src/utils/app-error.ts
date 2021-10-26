@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import httpStatus from 'http-status'
 
 /**
@@ -22,5 +23,6 @@ export class AppError extends Error {
     this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error'
     this.isOperational = true
     Error.captureStackTrace(this, this.constructor)
+    console.error(chalk.red(message))
   }
 }
