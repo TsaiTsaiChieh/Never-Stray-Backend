@@ -1,17 +1,19 @@
 /* eslint-disable camelcase */
 /* eslint-disable require-jsdoc */
 import axios, {AxiosResponse} from 'axios'
-import chalk from 'chalk'
-import dotenv from 'dotenv'
 import _ from 'lodash'
 import safeAwait from 'safe-await'
-import {Connection} from 'typeorm'
+import {Connection, InsertResult} from 'typeorm'
 
-import {Ref} from '../entity/Pet'
+import {Pet, Ref} from '../entity/Pet'
 import {AppError} from '../utils/app-error'
-import {ageConvert, sexConvert, ternaryConvert} from '../utils/value-convert'
+import {
+  ageConvert,
+  petStatusConvert,
+  sexConvert,
+  ternaryConvert,
+} from '../utils/value-convert'
 
-dotenv.config()
 
 type ShelterData = {
   animal_id: number
@@ -68,7 +70,7 @@ export class Shelter {
         &animal_status=OPEN`,
         ))
       // &$skip=${this.batch * page}
-      if (error) throw new AppError(chalk.red(error))
+      if (error) throw new AppError(error)
       const data: ShelterData[] = response.data
       if (!data.length) break
       _.forEach(data, (val) => allData.push(val),
@@ -77,44 +79,49 @@ export class Shelter {
     return allData
   }
   public async saveData(data: ShelterData[]) {
-    const PetData: any[] = []
-    _.forEach(data, (val) => PetData.push({
-      ref: <Ref>'gov',
-      area_id: val.animal_area_pkid,
-      kind: val.animal_kind,
-      sex: sexConvert(val.animal_sex),
-      color: val.animal_colour,
-      age: ageConvert(val.animal_age),
-      ligation: ternaryConvert(val.animal_sterilization),
-    }),
+    const petData: Partial<Pet>[] = []
+    _.forEach(data, (val) => {
+      // Because shelters need the values of
+      // animal_id and animal_subid to be linked
+      if (val.animal_id && val.animal_subid) {
+        petData.push({
+          ref: <Ref>'gov',
+          sub_id: val.animal_id,
+          accept_num: val.animal_subid,
+          area_id: val.animal_area_pkid,
+          kind: val.animal_kind,
+          sex: sexConvert(val.animal_sex),
+          color: val.animal_colour,
+          age: ageConvert(val.animal_age),
+          ligation: ternaryConvert(val.animal_sterilization),
+          rabies: ternaryConvert(val.animal_bacterin),
+          title: val.animal_place,
+          status: petStatusConvert(val.animal_status),
+          remark: val.animal_remark,
+          address: val.shelter_address,
+          phone: val.shelter_tel,
+          image: [val.album_file],
+          created_at: new Date(val.animal_createtime),
+        })
+      }
+    },
     )
-    console.log(PetData)
-    // await this.db.createQueryBuilder().
-    //   insert().
-    //   into(Pet).
-    //   values().
-    //   execute()
+    const [error, result]: [any, InsertResult] =
+      await safeAwait(
+        this.db.createQueryBuilder()
+          .insert()
+          .into(Pet)
+          .values(petData)
+          .execute())
+
+    if (error) throw new AppError(error)
+    console.log(result.raw)
   }
-  // save to db
-  // const findArea = await this.db.getRepository(Area).findOne()
-  // console.log(findArea)
 }
-// async function getShelterData(db: Connection) {
-//   // const findArea = await db.getRepository(Area).findOne()
-//   // console.log(findArea)
-//   const url: string = process.env.NATIONAL_ANIMAL_SHELTER!
-//   // const data = await axios.get(`${url}`)
-//   console.log(url)
-// }
+
 
 export async function getShelterData(db: Connection) {
   const shelter = new Shelter(db)
   const data: ShelterData[] = await shelter.getData()
   await shelter.saveData(data)
 }
-
-// export async function getShelterData() {
-//   const shelter = new Shelter()
-//   const data = await shelter.getData()
-//   console.log(data.length)
-// }
