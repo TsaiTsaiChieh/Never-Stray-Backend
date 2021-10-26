@@ -2,7 +2,7 @@
 import {MigrationInterface, QueryRunner} from 'typeorm'
 
 export class AddPetColumn1635234036591 implements MigrationInterface {
-  name = 'MigrationName1635234036591'
+  name = 'AddPetColumn1635234036591'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`

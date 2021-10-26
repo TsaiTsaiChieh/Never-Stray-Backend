@@ -2,7 +2,7 @@
 import {MigrationInterface, QueryRunner} from 'typeorm'
 
 export class AlterPetEnumColumn1635164623493 implements MigrationInterface {
-  name = 'MigrationName1635164623493'
+  name = 'AlterPetEnumColumn1635164623493'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
