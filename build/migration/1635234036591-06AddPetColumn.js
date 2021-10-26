@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddPetColumn1635234036591 = void 0;
 var AddPetColumn1635234036591 = /** @class */ (function () {
     function AddPetColumn1635234036591() {
-        this.name = 'MigrationName1635234036591';
+        this.name = 'AddPetColumn1635234036591';
     }
     AddPetColumn1635234036591.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {

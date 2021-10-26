@@ -36,47 +36,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AlterPetEnumColumn1635164623493 = void 0;
-var AlterPetEnumColumn1635164623493 = /** @class */ (function () {
-    function AlterPetEnumColumn1635164623493() {
-        this.name = 'AlterPetEnumColumn1635164623493';
+exports.AddPetIndex1635240228964 = void 0;
+var AddPetIndex1635240228964 = /** @class */ (function () {
+    function AddPetIndex1635240228964() {
+        this.name = 'AddPetIndex1635240228964';
     }
-    AlterPetEnumColumn1635164623493.prototype.up = function (queryRunner) {
+    AddPetIndex1635240228964.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("\n            ALTER TABLE `ns-app`.`pets` \n            CHANGE `age` `age` \n            enum ('A', 'C', 'U') NOT NULL DEFAULT 'U'\n        ")];
+                    case 0: return [4 /*yield*/, queryRunner.query("\n            CREATE UNIQUE INDEX `IDX_e87fb3dcb389be107725e1f1bf` \n            ON `ns-app`.`pets` (`sub_id`, `accept_num`)\n        ")];
                     case 1:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("\n            ALTER TABLE `ns-app`.`pets` \n            CHANGE `ligation` `ligation` \n            enum ('T', 'F', 'U') NOT NULL DEFAULT 'U'\n        ")];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("\n            ALTER TABLE `ns-app`.`pets` \n            CHANGE `rabies` `rabies` \n            enum ('T', 'F', 'U') NOT NULL DEFAULT 'U'\n        ")];
-                    case 3:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    AlterPetEnumColumn1635164623493.prototype.down = function (queryRunner) {
+    AddPetIndex1635240228964.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("\n            ALTER TABLE `ns-app`.`pets` \n            CHANGE `rabies` `rabies` \n            enum ('True', 'False', 'Unknown') NOT NULL DEFAULT 'Unknown'\n        ")];
+                    case 0: return [4 /*yield*/, queryRunner.query("\n            DROP INDEX `IDX_e87fb3dcb389be107725e1f1bf` \n            ON `ns-app`.`pets`\n        ")];
                     case 1:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("\n            ALTER TABLE `ns-app`.`pets` \n            CHANGE `ligation` `ligation` \n            enum ('True', 'False', 'Unknown') NOT NULL DEFAULT 'Unknown'\n        ")];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("\n            ALTER TABLE `ns-app`.`pets` \n            CHANGE `age` `age` \n            enum ('Adult', 'Child', 'Unknown') NOT NULL DEFAULT 'Unknown'\n        ")];
-                    case 3:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return AlterPetEnumColumn1635164623493;
+    return AddPetIndex1635240228964;
 }());
-exports.AlterPetEnumColumn1635164623493 = AlterPetEnumColumn1635164623493;
+exports.AddPetIndex1635240228964 = AddPetIndex1635240228964;
