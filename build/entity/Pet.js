@@ -134,7 +134,8 @@ var Pet = /** @class */ (function () {
         __metadata("design:type", Date)
     ], Pet.prototype, "updated_at", void 0);
     Pet = __decorate([
-        typeorm_1.Entity({ name: 'pets' })
+        typeorm_1.Entity({ name: 'pets' }),
+        typeorm_1.Index(['sub_id', 'accept_num'], { unique: true })
     ], Pet);
     return Pet;
 }());
