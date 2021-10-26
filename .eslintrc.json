@@ -34,7 +34,8 @@
           "Controller",
           "Get",
           "Req",
-          "Res"
+          "Res",
+          "Unique"
         ]
       }
     ],
