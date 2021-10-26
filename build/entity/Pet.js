@@ -53,6 +53,17 @@ var Pet = /** @class */ (function () {
         __metadata("design:type", Number)
     ], Pet.prototype, "id", void 0);
     __decorate([
+        typeorm_1.Column({ type: 'bigint', nullable: false }),
+        __metadata("design:type", Number)
+    ], Pet.prototype, "sub_id", void 0);
+    __decorate([
+        typeorm_1.Column({
+            type: 'varchar', length: 16,
+            nullable: true, comment: '政府收容編號',
+        }),
+        __metadata("design:type", String)
+    ], Pet.prototype, "accept_num", void 0);
+    __decorate([
         typeorm_1.Column({ type: 'enum', enum: Ref, nullable: false }),
         __metadata("design:type", String)
     ], Pet.prototype, "ref", void 0);
@@ -77,11 +88,17 @@ var Pet = /** @class */ (function () {
         __metadata("design:type", String)
     ], Pet.prototype, "age", void 0);
     __decorate([
-        typeorm_1.Column({ type: 'enum', enum: Ternary, default: Ternary.UNKNOWN }),
+        typeorm_1.Column({
+            type: 'enum', enum: Ternary,
+            default: Ternary.UNKNOWN, comment: '是否絕育',
+        }),
         __metadata("design:type", String)
     ], Pet.prototype, "ligation", void 0);
     __decorate([
-        typeorm_1.Column({ type: 'enum', enum: Ternary, default: Ternary.UNKNOWN }),
+        typeorm_1.Column({
+            type: 'enum', enum: Ternary,
+            default: Ternary.UNKNOWN, comment: '是否施打狂犬病疫苗',
+        }),
         __metadata("design:type", String)
     ], Pet.prototype, "rabies", void 0);
     __decorate([
@@ -106,7 +123,7 @@ var Pet = /** @class */ (function () {
     ], Pet.prototype, "phone", void 0);
     __decorate([
         typeorm_1.Column({ type: 'json', nullable: true }),
-        __metadata("design:type", String)
+        __metadata("design:type", Array)
     ], Pet.prototype, "image", void 0);
     __decorate([
         typeorm_1.CreateDateColumn(),

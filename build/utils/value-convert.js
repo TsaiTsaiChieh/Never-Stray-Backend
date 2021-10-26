@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ternaryConvert = exports.ageConvert = exports.sexConvert = void 0;
+exports.petStatusConvert = exports.ternaryConvert = exports.ageConvert = exports.sexConvert = void 0;
 var Pet_1 = require("../entity/Pet");
 /** Sex string converter
- * @param  {string} sexValue sex string
+ * @param  {string} sex sex string
  * @return {Sex} sex enum value
  */
-function sexConvert(sexValue) {
-    switch (sexValue) {
+function sexConvert(sex) {
+    switch (sex) {
         case Pet_1.Sex.MALE:
         case '公':
         case '男':
@@ -22,11 +22,11 @@ function sexConvert(sexValue) {
 }
 exports.sexConvert = sexConvert;
 /** Age string converter
- * @param  {string} ageValue age string to lower case
+ * @param  {string} age age string to lower case
  * @return {Age} age enum value
  */
-function ageConvert(ageValue) {
-    switch (ageValue.toLowerCase()) {
+function ageConvert(age) {
+    switch (age.toLowerCase()) {
         case 'adult':
             return Pet_1.Age.ADULT;
         case 'child':
@@ -51,3 +51,22 @@ function ternaryConvert(value) {
     }
 }
 exports.ternaryConvert = ternaryConvert;
+/** Pet status converter
+ * @param  {string} status status string
+ * @return {Status} status enum value
+ */
+function petStatusConvert(status) {
+    switch (status.toLowerCase()) {
+        case Pet_1.Status.ADOPTED.toLowerCase():
+            return Pet_1.Status.ADOPTED;
+        case Pet_1.Status.OPEN.toLowerCase():
+            return Pet_1.Status.OPEN;
+        case Pet_1.Status.DEAD.toLowerCase():
+            return Pet_1.Status.DEAD;
+        case Pet_1.Status.OTHER.toLowerCase():
+            return Pet_1.Status.OTHER;
+        default:
+            return Pet_1.Status.UNKNOWN;
+    }
+}
+exports.petStatusConvert = petStatusConvert;
