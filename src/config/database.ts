@@ -1,6 +1,6 @@
-import {createConnection} from 'typeorm'
+import {Connection, createConnection} from 'typeorm'
 
-export const connection = async () => {
+export const connection = async (): Promise<Connection> => {
   return createConnection({
     type: 'mysql',
     host: process.env.TYPEORM_HOST,
