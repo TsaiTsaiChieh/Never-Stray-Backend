@@ -73,7 +73,13 @@ export class Shelter {
       if (error) throw new AppError(error)
       const data: ShelterData[] = response.data
       if (!data.length) break
-      _.forEach(data, (val) => allData.push(val),
+      _.forEach(data, (val) => {
+        // Because shelters need the values of
+        // animal_id and animal_subid to be linked
+        if (val.animal_id && val.animal_subid) {
+          allData.push(val)
+        }
+      },
       )
     }
     return allData
@@ -81,29 +87,25 @@ export class Shelter {
   public async saveData(data: ShelterData[]) {
     const petData: Partial<Pet>[] = []
     _.forEach(data, (val) => {
-      // Because shelters need the values of
-      // animal_id and animal_subid to be linked
-      if (val.animal_id && val.animal_subid) {
-        petData.push({
-          ref: <Ref>'gov',
-          sub_id: val.animal_id,
-          accept_num: val.animal_subid,
-          area_id: val.animal_area_pkid,
-          kind: val.animal_kind,
-          sex: sexConvert(val.animal_sex),
-          color: val.animal_colour,
-          age: ageConvert(val.animal_age),
-          ligation: ternaryConvert(val.animal_sterilization),
-          rabies: ternaryConvert(val.animal_bacterin),
-          title: val.animal_place,
-          status: petStatusConvert(val.animal_status),
-          remark: val.animal_remark,
-          address: val.shelter_address,
-          phone: val.shelter_tel,
-          image: [val.album_file],
-          created_at: new Date(val.animal_createtime),
-        })
-      }
+      petData.push({
+        ref: <Ref>'gov',
+        sub_id: val.animal_id,
+        accept_num: val.animal_subid,
+        area_id: val.animal_area_pkid,
+        kind: val.animal_kind,
+        sex: sexConvert(val.animal_sex),
+        color: val.animal_colour,
+        age: ageConvert(val.animal_age),
+        ligation: ternaryConvert(val.animal_sterilization),
+        rabies: ternaryConvert(val.animal_bacterin),
+        title: val.animal_place,
+        status: petStatusConvert(val.animal_status),
+        remark: val.animal_remark,
+        address: val.shelter_address,
+        phone: val.shelter_tel,
+        image: [val.album_file],
+        created_at: new Date(val.animal_createtime),
+      })
     },
     )
     const [error, result]: [any, InsertResult] =
