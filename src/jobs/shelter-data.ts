@@ -3,7 +3,7 @@
 import axios, {AxiosResponse} from 'axios'
 import _ from 'lodash'
 import safeAwait from 'safe-await'
-import {Connection, InsertResult} from 'typeorm'
+import {Connection, InsertResult, Repository, UpdateResult} from 'typeorm'
 
 import {Pet, Ref} from '../entity/Pet'
 import {AppError} from '../utils/app-error'
@@ -78,6 +78,82 @@ export class Shelter {
     }
     return allData
   }
+  public updateData(data: ShelterData[]):ShelterData[] {
+    const rmIndex: number[] = []
+
+    _.forEach(data, async (val, i) => {
+      rmIndex.push(i)
+      const petRepository: Repository<Pet> = this.db.getRepository(Pet)
+      const [error, result]: [any, Pet | undefined] = await safeAwait(
+        petRepository.findOne({
+          where: {
+            sub_id: val.animal_id,
+            accept_num: val.animal_subid,
+          },
+        }),
+      )
+
+      if (error) throw new AppError(error)
+
+      // save it, if the data not found
+      if (result === undefined) {
+        const pet: Pet = petRepository.create()
+        pet.ref = <Ref>'gov'
+        pet.sub_id = val.animal_id
+        pet.accept_num = val.animal_subid
+        pet.area_id = val.animal_area_pkid
+        pet.kind = val.animal_kind
+        pet.sex = sexConvert(val.animal_sex)
+        pet.color = val.animal_colour
+        pet.age = ageConvert(val.animal_age)
+        pet.ligation = ternaryConvert(val.animal_sterilization)
+        pet.rabies = ternaryConvert(val.animal_bacterin)
+        pet.title = val.animal_place
+        pet.status = petStatusConvert(val.animal_status)
+        pet.remark = val.animal_remark
+        pet.address =val.shelter_address
+        pet.phone = val.shelter_tel
+        pet.image = [val.album_file]
+        pet.created_at = new Date(val.animal_createtime)
+
+        const [error, result] : [any, Pet] =
+        await safeAwait(this.db.getRepository(Pet).save(pet))
+        if (error) throw new AppError(error)
+        console.log(`insert: ${result}`)
+        console.log(result)
+      } else {
+        // or update the pet data and push the index to the rmIndex array
+        const [error, result] : [any, UpdateResult] =
+        await safeAwait(petRepository.update({
+          sub_id: val.animal_id,
+          accept_num: val.animal_subid},
+          {
+            ref: <Ref>'gov',
+            area_id: val.animal_area_pkid,
+            kind: val.animal_kind,
+            sex: sexConvert(val.animal_sex),
+            color: val.animal_colour,
+            age: ageConvert(val.animal_age),
+            ligation: ternaryConvert(val.animal_sterilization),
+            rabies: ternaryConvert(val.animal_bacterin),
+            title: val.animal_place,
+            status: petStatusConvert(val.animal_status),
+            remark: val.animal_remark,
+            address: val.shelter_address,
+            phone: val.shelter_tel,
+            image: [val.album_file],
+            created_at: new Date(val.animal_createtime),
+          }))
+        if (error) throw new AppError(error)
+        console.log(`update: ${result}`)
+        console.log(result)
+        rmIndex.push(i)
+      }
+    })
+    _.pullAt(data, rmIndex)
+    console.log(data.length)
+    return data
+  }
   public async saveData(data: ShelterData[]) {
     const petData: Partial<Pet>[] = []
     _.forEach(data, (val) => {
@@ -123,5 +199,6 @@ export class Shelter {
 export async function getShelterData(db: Connection) {
   const shelter = new Shelter(db)
   const data: ShelterData[] = await shelter.getData()
-  await shelter.saveData(data)
+  shelter.updateData(data)
+  // await shelter.saveData(data)
 }
