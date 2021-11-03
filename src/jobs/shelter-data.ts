@@ -1,11 +1,10 @@
 /* eslint-disable camelcase */
-/* eslint-disable require-jsdoc */
 import axios, {AxiosResponse} from 'axios'
-import _ from 'lodash'
+import chalk from 'chalk'
 import safeAwait from 'safe-await'
-import {Connection, InsertResult, Repository, UpdateResult} from 'typeorm'
 
 import {Pet, Ref} from '../entity/Pet'
+import {PetRepository} from '../repositories/pet.repository'
 import {AppError} from '../utils/app-error'
 import {
   ageConvert,
@@ -13,7 +12,6 @@ import {
   sexConvert,
   ternaryConvert,
 } from '../utils/value-convert'
-
 
 type ShelterData = {
   animal_id: number
@@ -44,19 +42,17 @@ type ShelterData = {
   shelter_address: string
   shelter_tel: string
 }
-// type PetData
+/** Class representing a pet repository  */
 export class Shelter {
   public url: string = process.env.NATIONAL_ANIMAL_SHELTER!
-  private db: Connection
   private batch: number = 1
-  /**
-   * @param  {Connection} db
-   */
-  constructor(db: Connection) {
-    this.db = db
+  private petRepository: PetRepository
+  /** Create a shelter */
+  constructor() {
+    this.petRepository = new PetRepository()
   }
-  /** get data
-   * @return {Promise<ShelterData[]>} all pet data
+  /** 取得狀態為待認養的動物資料
+   * @return {Promise<ShelterData[]>}
    */
   public async getData(): Promise<ShelterData[]> {
     const allData: ShelterData[] = []
@@ -73,132 +69,131 @@ export class Shelter {
       if (error) throw new AppError(error)
       const data: ShelterData[] = response.data
       if (!data.length) break
-      _.forEach(data, (val) => allData.push(val),
+      _.forEach(data, (val) => {
+        // Because shelters need the values of
+        // animal_id and animal_subid to be linked
+        if (val.animal_id && val.animal_subid) {
+          allData.push(val)
+        }
+      },
       )
     }
     return allData
   }
-  public updateData(data: ShelterData[]):ShelterData[] {
+  /** 更新動物的資訊
+   * @param  {ShelterData[]} data - From API
+   * @return {ShelterData[]}
+   */
+  public async updateData(data: ShelterData[]) : Promise<ShelterData[]> {
     const rmIndex: number[] = []
 
-    _.forEach(data, async (val, i) => {
-      rmIndex.push(i)
-      const petRepository: Repository<Pet> = this.db.getRepository(Pet)
-      const [error, result]: [any, Pet | undefined] = await safeAwait(
-        petRepository.findOne({
-          where: {
-            sub_id: val.animal_id,
-            accept_num: val.animal_subid,
-          },
-        }),
-      )
 
+    data.forEach(async (ele, i) => {
+      const [error, result]: [any, Pet|undefined] =
+      await safeAwait(this.petRepository.findOne({
+        sub_id: ele.animal_id,
+        accept_num: ele.animal_subid,
+      }))
       if (error) throw new AppError(error)
-
-      // save it, if the data not found
-      if (result === undefined) {
-        const pet: Pet = petRepository.create()
-        pet.ref = <Ref>'gov'
-        pet.sub_id = val.animal_id
-        pet.accept_num = val.animal_subid
-        pet.area_id = val.animal_area_pkid
-        pet.kind = val.animal_kind
-        pet.sex = sexConvert(val.animal_sex)
-        pet.color = val.animal_colour
-        pet.age = ageConvert(val.animal_age)
-        pet.ligation = ternaryConvert(val.animal_sterilization)
-        pet.rabies = ternaryConvert(val.animal_bacterin)
-        pet.title = val.animal_place
-        pet.status = petStatusConvert(val.animal_status)
-        pet.remark = val.animal_remark
-        pet.address =val.shelter_address
-        pet.phone = val.shelter_tel
-        pet.image = [val.album_file]
-        pet.created_at = new Date(val.animal_createtime)
-
-        const [error, result] : [any, Pet] =
-        await safeAwait(this.db.getRepository(Pet).save(pet))
-        if (error) throw new AppError(error)
-        console.log(`insert: ${result}`)
-        console.log(result)
-      } else {
-        // or update the pet data and push the index to the rmIndex array
-        const [error, result] : [any, UpdateResult] =
-        await safeAwait(petRepository.update({
-          sub_id: val.animal_id,
-          accept_num: val.animal_subid},
-          {
-            ref: <Ref>'gov',
-            area_id: val.animal_area_pkid,
-            kind: val.animal_kind,
-            sex: sexConvert(val.animal_sex),
-            color: val.animal_colour,
-            age: ageConvert(val.animal_age),
-            ligation: ternaryConvert(val.animal_sterilization),
-            rabies: ternaryConvert(val.animal_bacterin),
-            title: val.animal_place,
-            status: petStatusConvert(val.animal_status),
-            remark: val.animal_remark,
-            address: val.shelter_address,
-            phone: val.shelter_tel,
-            image: [val.album_file],
-            created_at: new Date(val.animal_createtime),
-          }))
-        if (error) throw new AppError(error)
-        console.log(`update: ${result}`)
-        console.log(result)
-        rmIndex.push(i)
+      if (result) {
+        // update it
       }
     })
-    _.pullAt(data, rmIndex)
-    console.log(data.length)
+    //   // save it, if the data not found
+    //   if (result === undefined) {
+    //     const pet: Pet = petRepository.create()
+    //     pet.ref = <Ref>'gov'
+    //     pet.sub_id = val.animal_id
+    //     pet.accept_num = val.animal_subid
+    //     pet.area_id = val.animal_area_pkid
+    //     pet.kind = val.animal_kind
+    //     pet.sex = sexConvert(val.animal_sex)
+    //     pet.color = val.animal_colour
+    //     pet.age = ageConvert(val.animal_age)
+    //     pet.ligation = ternaryConvert(val.animal_sterilization)
+    //     pet.rabies = ternaryConvert(val.animal_bacterin)
+    //     pet.title = val.animal_place
+    //     pet.status = petStatusConvert(val.animal_status)
+    //     pet.remark = val.animal_remark
+    //     pet.address =val.shelter_address
+    //     pet.phone = val.shelter_tel
+    //     pet.image = [val.album_file]
+    //     pet.created_at = new Date(val.animal_createtime)
+
+    //     const [error, result] : [any, Pet] =
+    //     await safeAwait(this.db.getRepository(Pet).save(pet))
+    //     if (error) throw new AppError(error)
+    //     console.log(`insert: ${result}`)
+    //     console.log(result)
+    //   } else {
+    //     // or update the pet data and push the index to the rmIndex array
+    //     const [error, result] : [any, UpdateResult] =
+    //     await safeAwait(petRepository.update({
+    //       sub_id: val.animal_id,
+    //       accept_num: val.animal_subid},
+    //       {
+    //         ref: <Ref>'gov',
+    //         area_id: val.animal_area_pkid,
+    //         kind: val.animal_kind,
+    //         sex: sexConvert(val.animal_sex),
+    //         color: val.animal_colour,
+    //         age: ageConvert(val.animal_age),
+    //         ligation: ternaryConvert(val.animal_sterilization),
+    //         rabies: ternaryConvert(val.animal_bacterin),
+    //         title: val.animal_place,
+    //         status: petStatusConvert(val.animal_status),
+    //         remark: val.animal_remark,
+    //         address: val.shelter_address,
+    //         phone: val.shelter_tel,
+    //         image: [val.album_file],
+    //         created_at: new Date(val.animal_createtime),
+    //       }))
+    //     if (error) throw new AppError(error)
+    //     console.log(`update: ${result}`)
+    //     console.log(result)
+    //     rmIndex.push(i)
+    //   }
+    // })
+    // _.pullAt(data, rmIndex)
+    // console.log(data.length)
     return data
   }
+  /** 儲存寵物的資訊
+   * @param  {ShelterData[]} data - From axios
+   */
   public async saveData(data: ShelterData[]) {
-    const petData: Partial<Pet>[] = []
-    _.forEach(data, (val) => {
-      // Because shelters need the values of
-      // animal_id and animal_subid to be linked
-      if (val.animal_id && val.animal_subid) {
-        petData.push({
-          ref: <Ref>'gov',
-          sub_id: val.animal_id,
-          accept_num: val.animal_subid,
-          area_id: val.animal_area_pkid,
-          kind: val.animal_kind,
-          sex: sexConvert(val.animal_sex),
-          color: val.animal_colour,
-          age: ageConvert(val.animal_age),
-          ligation: ternaryConvert(val.animal_sterilization),
-          rabies: ternaryConvert(val.animal_bacterin),
-          title: val.animal_place,
-          status: petStatusConvert(val.animal_status),
-          remark: val.animal_remark,
-          address: val.shelter_address,
-          phone: val.shelter_tel,
-          image: [val.album_file],
-          created_at: new Date(val.animal_createtime),
-        })
-      }
-    },
-    )
-    const [error, result]: [any, InsertResult] =
-      await safeAwait(
-        this.db.createQueryBuilder()
-          .insert()
-          .into(Pet)
-          .values(petData)
-          .execute())
-
+    const petData: Pet[] = []
+    data.forEach((ele) =>
+      petData.push({
+        ref: <Ref>'gov',
+        sub_id: ele.animal_id,
+        accept_num: ele.animal_subid,
+        area_id: ele.animal_area_pkid,
+        kind: ele.animal_kind,
+        sex: sexConvert(ele.animal_sex),
+        color: ele.animal_colour,
+        age: ageConvert(ele.animal_age),
+        ligation: ternaryConvert(ele.animal_sterilization),
+        rabies: ternaryConvert(ele.animal_bacterin),
+        title: ele.animal_place,
+        status: petStatusConvert(ele.animal_status),
+        remark: ele.animal_remark,
+        address: ele.shelter_address,
+        phone: ele.shelter_tel,
+        image: [ele.album_file],
+        created_at: new Date(ele.animal_createtime),
+      }))
+    const [error, result] : [any, Pet[]] =
+    await safeAwait(this.petRepository.saveMany(petData))
     if (error) throw new AppError(error)
-    console.log(result.raw)
+    if (result) console.log(chalk.green(`=== Get ${result.length} data ===`))
   }
 }
 
-
-export async function getShelterData(db: Connection) {
-  const shelter = new Shelter(db)
+/** Get shelter data*/
+export async function getShelterData() {
+  const shelter = new Shelter()
   const data: ShelterData[] = await shelter.getData()
-  shelter.updateData(data)
   // await shelter.saveData(data)
+  await shelter.updateData(data)
 }
