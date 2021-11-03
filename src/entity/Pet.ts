@@ -44,7 +44,7 @@ export enum Status {
 @Index(['sub_id', 'accept_num'], {unique: true})
 export class Pet {
   @PrimaryGeneratedColumn()
-  id: number
+  id?: number
 
   @Column({type: 'bigint', nullable: false})
   sub_id: number
@@ -107,5 +107,5 @@ export class Pet {
   created_at: Date
 
   @UpdateDateColumn()
-  updated_at: Date
+  updated_at?: Date
 }
