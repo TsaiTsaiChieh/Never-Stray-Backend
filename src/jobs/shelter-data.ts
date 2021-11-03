@@ -51,7 +51,10 @@ export class Shelter {
   constructor() {
     this.petRepository = new PetRepository()
   }
-  /** 取得狀態為待認養的動物資料
+
+  /**
+   * 取得狀態為待認養的動物資料
+   *
    * @return {Promise<ShelterData[]>}
    */
   public async getData(): Promise<ShelterData[]> {
@@ -69,24 +72,24 @@ export class Shelter {
       if (error) throw new AppError(error)
       const data: ShelterData[] = response.data
       if (!data.length) break
-      _.forEach(data, (val) => {
+      data.forEach((ele) => {
         // Because shelters need the values of
         // animal_id and animal_subid to be linked
-        if (val.animal_id && val.animal_subid) {
-          allData.push(val)
+        if (ele.animal_id && ele.animal_subid) {
+          allData.push(ele)
         }
-      },
-      )
+      })
     }
     return allData
   }
-  /** 更新動物的資訊
+  /**
+   * 更新動物的資訊
+   *
    * @param  {ShelterData[]} data - From API
    * @return {ShelterData[]}
    */
   public async updateData(data: ShelterData[]): Promise<ShelterData[]> {
     const rmIndex: number[] = []
-
 
     data.forEach(async (ele, i) => {
       const [error, result]: [any, Pet | undefined] =
@@ -96,7 +99,27 @@ export class Shelter {
         }))
       if (error) throw new AppError(error)
       if (result) {
-        // update it
+        this.petRepository.update({
+          sub_id: ele.animal_id,
+          accept_num: ele.animal_subid,
+        }, {
+          ref: <Ref>'gov',
+          area_id: ele.animal_area_pkid,
+          kind: ele.animal_kind,
+          sex: sexConvert(ele.animal_sex),
+          color: ele.animal_colour,
+          age: ageConvert(ele.animal_age),
+          ligation: ternaryConvert(ele.animal_sterilization),
+          rabies: ternaryConvert(ele.animal_bacterin),
+          title: ele.animal_place,
+          status: petStatusConvert(ele.animal_status),
+          remark: ele.animal_remark,
+          address: ele.shelter_address,
+          phone: ele.shelter_tel,
+          image: [ele.album_file],
+          created_at: new Date(ele.animal_createtime),
+        })
+        rmIndex.push(i)
       }
     })
     //   // save it, if the data not found
@@ -158,7 +181,8 @@ export class Shelter {
     // console.log(data.length)
     return data
   }
-  /** 儲存寵物的資訊
+  /**
+   * 儲存寵物的資訊
    * @param  {ShelterData[]} data - From axios
    */
   public async saveData(data: ShelterData[]) {
