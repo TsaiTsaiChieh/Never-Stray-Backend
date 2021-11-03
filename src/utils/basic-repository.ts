@@ -4,15 +4,17 @@ import {
   getRepository,
   ObjectType,
   Repository,
+  UpdateResult,
 } from 'typeorm'
+import {QueryDeepPartialEntity} from 'typeorm/query-builder/QueryPartialEntity'
 
 /** Class representing a basic repository  */
 export class BasicRepository<T> {
   protected repository: Repository<T>
   private entity: ObjectType<T>
-   /**
-   * @param  {ObjectType<T>} entity
-   */
+  /**
+  * @param  {ObjectType<T>} entity
+  */
   constructor(entity: ObjectType<T>) {
     this.entity = entity
     this.repository = getRepository(entity)
@@ -24,7 +26,7 @@ export class BasicRepository<T> {
    * @param  {T} data - Single data to save
    * @return {Promise<T>}
    */
-   save(data: T):Promise<T> {
+  save(data: T): Promise<T> {
     return this.repository.save(data)
   }
 
@@ -34,7 +36,7 @@ export class BasicRepository<T> {
    * @param  {T} data - Multiple data to save
    * @return {Promise<T>}
    */
-  saveMany(data: T[]):Promise<T[]> {
+  saveMany(data: T[]): Promise<T[]> {
     return this.repository.save(data)
   }
 
@@ -47,7 +49,18 @@ export class BasicRepository<T> {
    * @return {Promise<T|undefined>}
    */
   findOne(conditions?: FindConditions<T>,
-    options?: FindOneOptions<T>) : Promise<T|undefined> {
+    options?: FindOneOptions<T>): Promise<T | undefined> {
     return this.repository.findOne(conditions, options)
+  }
+  /**
+   * 更新指定欄位的資料
+   *
+   * @param  {FindConditions<T>} conditions - Given conditions
+   * @param  {QueryDeepPartialEntity<T>} data - Updates entity partially
+   * @return {Promise<UpdateResult>}
+   */
+  update(conditions: FindConditions<T>,
+    data: QueryDeepPartialEntity<T>): Promise<UpdateResult> {
+    return this.repository.update(conditions, data)
   }
 }
