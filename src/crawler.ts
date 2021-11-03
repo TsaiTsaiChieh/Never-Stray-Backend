@@ -8,10 +8,10 @@ dotenv.config()
 
 const JOB_PORT: number = parseInt(process.env.JOB_PORT!);
 (async () => {
-  const {app, db} = await initializerApp()
+  const {app} = await initializerApp()
   app.listen(JOB_PORT, (): void => {
     console.log(`Crawler listening at http://localhost:${JOB_PORT}`)
-    getShelterData(db)
+    getShelterData()
     scheduleJob('* * * * * *', function() {
       // getShelterData(db)
     })
