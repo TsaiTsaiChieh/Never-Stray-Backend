@@ -35,7 +35,9 @@
           "Get",
           "Req",
           "Res",
-          "Unique"
+          "Unique", 
+          "Not",
+          "IsNull"
         ]
       }
     ],
