@@ -1,5 +1,6 @@
 import {
   FindConditions,
+  FindManyOptions,
   FindOneOptions,
   getRepository,
   ObjectType,
@@ -38,6 +39,19 @@ export class BasicRepository<T> {
    */
   saveMany(data: T[]): Promise<T[]> {
     return this.repository.save(data)
+  }
+
+  /**
+   * 尋找資料
+   *
+   * @param  {FindConditions<T>} [condition] - Used for find operations
+   * @return {Promise<T>}
+   */
+  find(condition?: FindConditions<T>):Promise<T[]> {
+    const options: FindManyOptions<T> = {
+      where: condition,
+    }
+    return this.repository.find(options)
   }
 
   /**
