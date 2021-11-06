@@ -2,8 +2,9 @@
 import axios, {AxiosResponse} from 'axios'
 import chalk from 'chalk'
 import safeAwait from 'safe-await'
+import {IsNull, Not, UpdateResult} from 'typeorm'
 
-import {Pet, Ref} from '../entity/Pet'
+import {Pet, Ref, Status} from '../entity/Pet'
 import {PetRepository} from '../repositories/pet.repository'
 import {AppError} from '../utils/app-error'
 import {
@@ -83,45 +84,89 @@ export class Shelter {
     return allData
   }
   /**
-   * 更新動物的資訊
+   * 更新動物的狀態
+   *
+   * 搜尋狀態為待認領的動物資料，若未在狀態為待認領的 API 裡，則放入待更新區，
+   * 反之，更新資料，並將移除 API 裡的一筆動物資料
    *
    * @param  {ShelterData[]} data - From API
    * @return {ShelterData[]}
    */
-  public async updateData(data: ShelterData[]): Promise<ShelterData[]> {
-    const rmIndex: number[] = []
+  public async updatePetStatus(data: ShelterData[]): Promise<ShelterData[]> {
+    // const rmIndex: number[] = []
+    const shouldUpdateDataIds: number[] = []
+    const dataIds: number[] = data.map((val)=> val.animal_id)
+    // dataIds = data.forEach((ele)=> )
+    const [error, result]: [any, Pet[]] =
+    await safeAwait(this.petRepository.find(
+      {
+        status: Status.OPEN,
+        accept_num: Not(IsNull()),
+    }))
+    if (error) throw new AppError(error)
+    console.log(dataIds)
 
-    data.forEach(async (ele, i) => {
-      const [error, result]: [any, Pet | undefined] =
-        await safeAwait(this.petRepository.findOne({
-          sub_id: ele.animal_id,
-          accept_num: ele.animal_subid,
-        }))
-      if (error) throw new AppError(error)
-      if (result) {
-        this.petRepository.update({
-          sub_id: ele.animal_id,
-          accept_num: ele.animal_subid,
+    result.forEach(async (ele) => {
+      const in_data_index = dataIds.indexOf(ele.sub_id)
+      if (in_data_index < 0) shouldUpdateDataIds.push(ele.sub_id)
+      else {
+        const [error, result]: [any, UpdateResult] =
+         await safeAwait(this.petRepository.update({
+           sub_id: ele.sub_id,
+           accept_num: ele.accept_num,
         }, {
           ref: <Ref>'gov',
-          area_id: ele.animal_area_pkid,
-          kind: ele.animal_kind,
-          sex: sexConvert(ele.animal_sex),
-          color: ele.animal_colour,
-          age: ageConvert(ele.animal_age),
-          ligation: ternaryConvert(ele.animal_sterilization),
-          rabies: ternaryConvert(ele.animal_bacterin),
-          title: ele.animal_place,
-          status: petStatusConvert(ele.animal_status),
-          remark: ele.animal_remark,
-          address: ele.shelter_address,
-          phone: ele.shelter_tel,
-          image: [ele.album_file],
-          created_at: new Date(ele.animal_createtime),
-        })
-        rmIndex.push(i)
+          area_id: data[in_data_index].animal_area_pkid,
+          kind: data[in_data_index].animal_kind,
+          sex: sexConvert(data[in_data_index].animal_sex),
+          color: data[in_data_index].animal_colour,
+          age: ageConvert(data[in_data_index].animal_age),
+          ligation: ternaryConvert(data[in_data_index].animal_sterilization),
+          rabies: ternaryConvert(data[in_data_index].animal_bacterin),
+          title: data[in_data_index].animal_place,
+          status: petStatusConvert(data[in_data_index].animal_status),
+          remark: data[in_data_index].animal_remark,
+          address: data[in_data_index].shelter_address,
+          phone: data[in_data_index].shelter_tel,
+          image: [data[in_data_index].album_file],
+          created_at: new Date(data[in_data_index].animal_createtime),
+        }))
+        if (error) throw new AppError(error)
       }
     })
+    // console.log(result)
+
+    // data.forEach(async (ele, i) => {
+    //   const [error, result]: [any, Pet | undefined] =
+    //     await safeAwait(this.petRepository.findOne({
+    //       sub_id: ele.animal_id,
+    //       accept_num: ele.animal_subid,
+    //     }))
+    //   if (error) throw new AppError(error)
+    //   if (result) {
+    //     this.petRepository.update({
+    //       sub_id: ele.animal_id,
+    //       accept_num: ele.animal_subid,
+    //     }, {
+    //       ref: <Ref>'gov',
+    //       area_id: ele.animal_area_pkid,
+    //       kind: ele.animal_kind,
+    //       sex: sexConvert(ele.animal_sex),
+    //       color: ele.animal_colour,
+    //       age: ageConvert(ele.animal_age),
+    //       ligation: ternaryConvert(ele.animal_sterilization),
+    //       rabies: ternaryConvert(ele.animal_bacterin),
+    //       title: ele.animal_place,
+    //       status: petStatusConvert(ele.animal_status),
+    //       remark: ele.animal_remark,
+    //       address: ele.shelter_address,
+    //       phone: ele.shelter_tel,
+    //       image: [ele.album_file],
+    //       created_at: new Date(ele.animal_createtime),
+    //     })
+    //     rmIndex.push(i)
+    //   }
+    // })
     //   // save it, if the data not found
     //   if (result === undefined) {
     //     const pet: Pet = petRepository.create()
@@ -219,5 +264,5 @@ export async function getShelterData() {
   const shelter = new Shelter()
   const data: ShelterData[] = await shelter.getData()
   // await shelter.saveData(data)
-  await shelter.updateData(data)
+  await shelter.updatePetStatus(data)
 }
