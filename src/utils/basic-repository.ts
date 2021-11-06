@@ -44,10 +44,10 @@ export class BasicRepository<T> {
   /**
    * 尋找資料
    *
-   * @param  {FindConditions<T>} [condition] - Used for find operations
+   * @param  {FindConditions<T>[]} [condition] - Used for find operations
    * @return {Promise<T>}
    */
-  find(condition?: FindConditions<T>):Promise<T[]> {
+  find(condition?: FindConditions<T>[]): Promise<T[]> {
     const options: FindManyOptions<T> = {
       where: condition,
     }
