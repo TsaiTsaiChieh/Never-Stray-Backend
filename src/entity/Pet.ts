@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable require-jsdoc */
 import {
   Column,
   CreateDateColumn,
@@ -42,6 +40,8 @@ export enum Status {
 
 @Entity({name: 'pets'})
 @Index(['sub_id', 'accept_num'], {unique: true})
+@Index(['status', 'accept_num'])
+/** Class representing a pet */
 export class Pet {
   @PrimaryGeneratedColumn()
   id?: number
@@ -109,3 +109,4 @@ export class Pet {
   @UpdateDateColumn()
   updated_at?: Date
 }
+
