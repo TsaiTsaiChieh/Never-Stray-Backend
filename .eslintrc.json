@@ -35,13 +35,18 @@
           "Get",
           "Req",
           "Res",
-          "Unique", 
+          "Unique",
           "Not",
           "IsNull"
         ]
       }
     ],
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "_"
+      }
+    ],
     "indent": [
       "off",
       2
@@ -49,6 +54,27 @@
     "eol-last": [
       "error",
       "always"
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "_"
+      }
+    ],
+    "camelcase": [
+      "error",
+      {
+        "ignoreDestructuring": true,
+        "ignoreImports": true,
+        "ignoreGlobals": true,
+        "allow": [
+          "sub_id",
+          "accept_num",
+          "area_id",
+          "created_at",
+          "updated_at"
+        ]
+      }
     ]
   }
 }
