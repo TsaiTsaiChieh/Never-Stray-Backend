@@ -10,8 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Pet = exports.Status = exports.Ternary = exports.Age = exports.Sex = exports.Ref = void 0;
-/* eslint-disable camelcase */
-/* eslint-disable require-jsdoc */
 var typeorm_1 = require("typeorm");
 var Ref;
 (function (Ref) {
@@ -46,6 +44,7 @@ var Status;
     Status["DEAD"] = "Dead";
 })(Status = exports.Status || (exports.Status = {}));
 var Pet = /** @class */ (function () {
+    /** Class representing a pet */
     function Pet() {
     }
     __decorate([
@@ -135,7 +134,9 @@ var Pet = /** @class */ (function () {
     ], Pet.prototype, "updated_at", void 0);
     Pet = __decorate([
         typeorm_1.Entity({ name: 'pets' }),
-        typeorm_1.Index(['sub_id', 'accept_num'], { unique: true })
+        typeorm_1.Index(['sub_id', 'accept_num'], { unique: true }),
+        typeorm_1.Index(['status', 'accept_num'])
+        /** Class representing a pet */
     ], Pet);
     return Pet;
 }());

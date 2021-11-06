@@ -19,6 +19,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppError = void 0;
+var chalk_1 = __importDefault(require("chalk"));
 var http_status_1 = __importDefault(require("http-status"));
 /**
  * Custom error
@@ -40,6 +41,7 @@ var AppError = /** @class */ (function (_super) {
         _this.status = ("" + statusCode).startsWith('4') ? 'fail' : 'error';
         _this.isOperational = true;
         Error.captureStackTrace(_this, _this.constructor);
+        console.error(chalk_1.default.red(message));
         return _this;
     }
     return AppError;

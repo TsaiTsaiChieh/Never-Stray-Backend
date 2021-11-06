@@ -35,36 +35,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initializerApp = void 0;
-var express_1 = __importDefault(require("express"));
-var routing_controllers_1 = require("routing-controllers");
-var safe_await_1 = __importDefault(require("safe-await"));
-var database_1 = require("./config/database");
-var app_error_1 = require("./utils/app-error");
-var initializerApp = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var app, _a, error, db, application;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                app = express_1.default();
-                return [4 /*yield*/, safe_await_1.default(database_1.connection())];
-            case 1:
-                _a = _b.sent(), error = _a[0], db = _a[1];
-                if (error)
-                    throw new app_error_1.AppError(error);
-                routing_controllers_1.useExpressServer(app, {
-                    controllers: [__dirname + "/controllers/*.ts"],
-                });
-                application = {
-                    app: app,
-                    db: db,
-                };
-                return [2 /*return*/, application];
-        }
-    });
-}); };
-exports.initializerApp = initializerApp;
+exports.AddPetIndex1636214506207 = void 0;
+var AddPetIndex1636214506207 = /** @class */ (function () {
+    function AddPetIndex1636214506207() {
+        this.name = 'AddPetIndex1636214506207';
+    }
+    AddPetIndex1636214506207.prototype.up = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("\n            CREATE INDEX `IDX_6e94e5943dfbc8b2bb9ff0de55` \n            ON `ns-app`.`pets` (`status`, `accept_num`)\n        ")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AddPetIndex1636214506207.prototype.down = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("\n            CREATE INDEX `abc` \n            ON `ns-app`.`pets` (`status`, `accept_num`)\n        ")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return AddPetIndex1636214506207;
+}());
+exports.AddPetIndex1636214506207 = AddPetIndex1636214506207;

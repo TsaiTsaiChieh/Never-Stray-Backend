@@ -46,15 +46,15 @@ var shelter_data_1 = require("./jobs/shelter-data");
 dotenv_1.default.config();
 var JOB_PORT = parseInt(process.env.JOB_PORT);
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, app, db;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var app;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0: return [4 /*yield*/, initializer_1.initializerApp()];
             case 1:
-                _a = _b.sent(), app = _a.app, db = _a.db;
+                app = (_a.sent()).app;
                 app.listen(JOB_PORT, function () {
                     console.log("Crawler listening at http://localhost:" + JOB_PORT);
-                    shelter_data_1.getShelterData(db);
+                    shelter_data_1.getShelterData();
                     node_schedule_1.scheduleJob('* * * * * *', function () {
                         // getShelterData(db)
                     });
