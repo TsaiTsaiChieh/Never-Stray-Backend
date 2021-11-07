@@ -15,6 +15,7 @@ services:
       - .:/app
     environment:
       - NODE_ENV=development
+      - TYPEORM_HOST=db
     env_file:
       - .env
     ports:
