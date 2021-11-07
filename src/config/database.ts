@@ -9,5 +9,6 @@ export const connection = async (): Promise<Connection> => {
     password: process.env.TYPEORM_PASSWORD,
     database: process.env.TYPEORM_DATABASE,
     entities: ['**/src/entity/*{.ts,.js}'],
+    logging: false,
   })
 }
