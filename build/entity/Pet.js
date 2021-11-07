@@ -52,12 +52,12 @@ var Pet = /** @class */ (function () {
         __metadata("design:type", Number)
     ], Pet.prototype, "id", void 0);
     __decorate([
-        typeorm_1.Column({ type: 'bigint', nullable: false }),
+        typeorm_1.Column({ type: 'int', nullable: false }),
         __metadata("design:type", Number)
     ], Pet.prototype, "sub_id", void 0);
     __decorate([
         typeorm_1.Column({
-            type: 'varchar', length: 16,
+            type: 'varchar', length: 32,
             nullable: true, comment: '政府收容編號',
         }),
         __metadata("design:type", String)
@@ -109,7 +109,7 @@ var Pet = /** @class */ (function () {
         __metadata("design:type", String)
     ], Pet.prototype, "status", void 0);
     __decorate([
-        typeorm_1.Column({ type: 'tinytext', nullable: true }),
+        typeorm_1.Column({ type: 'text', nullable: true }),
         __metadata("design:type", String)
     ], Pet.prototype, "remark", void 0);
     __decorate([

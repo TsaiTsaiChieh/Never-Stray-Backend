@@ -54,9 +54,8 @@ var JOB_PORT = parseInt(process.env.JOB_PORT);
                 app = (_a.sent()).app;
                 app.listen(JOB_PORT, function () {
                     console.log("Crawler listening at http://localhost:" + JOB_PORT);
-                    shelter_data_1.getShelterData();
-                    node_schedule_1.scheduleJob('* * * * * *', function () {
-                        // getShelterData(db)
+                    node_schedule_1.scheduleJob('* * 1 * * *', function () {
+                        shelter_data_1.getShelterData();
                     });
                 });
                 return [2 /*return*/];
