@@ -46,11 +46,11 @@ export class Pet {
   @PrimaryGeneratedColumn()
   id?: number
 
-  @Column({type: 'bigint', nullable: false})
+  @Column({type: 'int', nullable: false})
   sub_id: number
 
   @Column({
-    type: 'varchar', length: 16,
+    type: 'varchar', length: 32,
     nullable: true, comment: '政府收容編號',
   })
   accept_num: string
@@ -91,7 +91,7 @@ export class Pet {
   @Column({type: 'enum', enum: Status, default: Status.UNKNOWN})
   status: Status
 
-  @Column({type: 'tinytext', nullable: true})
+  @Column({type: 'text', nullable: true})
   remark: string
 
   @Column({type: 'tinytext', nullable: true})
