@@ -42,16 +42,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.initializerApp = void 0;
 var express_1 = __importDefault(require("express"));
 var routing_controllers_1 = require("routing-controllers");
+var safe_await_1 = __importDefault(require("safe-await"));
 var database_1 = require("./config/database");
+var app_error_1 = require("./utils/app-error");
 var initializerApp = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var app, db, application;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var app, _a, error, db, application;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
                 app = express_1.default();
-                return [4 /*yield*/, database_1.connection()];
+                return [4 /*yield*/, safe_await_1.default(database_1.connection())];
             case 1:
-                db = _a.sent();
+                _a = _b.sent(), error = _a[0], db = _a[1];
+                if (error)
+                    throw new app_error_1.AppError(error);
                 routing_controllers_1.useExpressServer(app, {
                     controllers: [__dirname + "/controllers/*.ts"],
                 });

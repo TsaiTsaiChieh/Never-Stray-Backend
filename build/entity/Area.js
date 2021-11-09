@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Area = exports.City = exports.Region = void 0;
-/* eslint-disable require-jsdoc */
 var typeorm_1 = require("typeorm");
 var Region;
 (function (Region) {
@@ -46,6 +45,7 @@ var City;
     City[City["LNN"] = 23] = "LNN"; // 連江縣
 })(City = exports.City || (exports.City = {}));
 var Area = /** @class */ (function () {
+    /** Class representing the Area */
     function Area() {
     }
     __decorate([
@@ -67,6 +67,7 @@ var Area = /** @class */ (function () {
     Area = __decorate([
         typeorm_1.Entity({ name: 'areas' }),
         typeorm_1.Index('REGION_CITY_INDEX', ['region', 'city'], { unique: true })
+        /** Class representing the Area */
     ], Area);
     return Area;
 }());

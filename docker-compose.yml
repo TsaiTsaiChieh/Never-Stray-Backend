@@ -1,7 +1,7 @@
 version: "3"
 services:
   node-app:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
       target: base
@@ -15,10 +15,27 @@ services:
       - .:/app
     environment:
       - NODE_ENV=development
+      - TYPEORM_HOST=db
     env_file:
       - .env
-    ports: 
+    ports:
       - ${APP_PORT}:${APP_PORT}
+    networks:
+      - application
+    depends_on:
+      - db
+  cron-job:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    command: yarn ts-node src/crawler.ts
+    environment:
+      - TYPEORM_HOST=db
+    env_file:
+      - .env
+    ports:
+      - ${JOB_PORT}:${JOB_PORT}
     networks:
       - application
     depends_on:
@@ -29,16 +46,16 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     env_file:
       - .env
-    environment: 
+    environment:
       MYSQL_ROOT_PASSWORD:
       MYSQL_DATABASE:
       TZ: Asia/Taipei
-    ports: 
+    ports:
       - 3306:3306
-    volumes: 
+    volumes:
       - .:/ns-app
     cap_add:
-      - SYS_NICE  # CAP_SYS_NICE
+      - SYS_NICE # CAP_SYS_NICE
     networks:
       - application
 networks:

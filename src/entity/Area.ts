@@ -1,4 +1,3 @@
-/* eslint-disable require-jsdoc */
 import {Column, Entity, Index, PrimaryGeneratedColumn} from 'typeorm'
 
 export enum Region {
@@ -36,6 +35,7 @@ export enum City {
 
 @Entity({name: 'areas'})
 @Index('REGION_CITY_INDEX', ['region', 'city'], {unique: true})
+/** Class representing the Area */
 export class Area {
   @PrimaryGeneratedColumn()
   id: number

@@ -35,36 +35,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateAreaTable1629272574171 = void 0;
-var CreateAreaTable1629272574171 = /** @class */ (function () {
-    function CreateAreaTable1629272574171() {
-        this.name = 'CreateAreaTable1629272574171';
-    }
-    CreateAreaTable1629272574171.prototype.up = function (queryRunner) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("\n            CREATE TABLE `ns-app`.`areas` (\n                `id` int NOT NULL AUTO_INCREMENT,\n                `area` enum ('E', 'W', 'S', 'N', 'M') NOT NULL,\n                `city` enum (\n                    '2',\n                    '3',\n                    '4',\n                    '5',\n                    '6',\n                    '7',\n                    '8',\n                    '9',\n                    '10',\n                    '11',\n                    '12',\n                    '13',\n                    '14',\n                    '15',\n                    '16',\n                    '17',\n                    '18',\n                    '19',\n                    '20',\n                    '21',\n                    '22',\n                    '23'\n                ) NOT NULL,\n                PRIMARY KEY (`id`)\n            ) ENGINE = InnoDB\n        ")];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    CreateAreaTable1629272574171.prototype.down = function (queryRunner) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("\n            DROP TABLE `ns-app`.`areas`\n        ")];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return CreateAreaTable1629272574171;
-}());
-exports.CreateAreaTable1629272574171 = CreateAreaTable1629272574171;
+var dotenv_1 = __importDefault(require("dotenv"));
+var node_schedule_1 = require("node-schedule");
+var initializer_1 = require("./initializer");
+var shelter_data_1 = require("./jobs/shelter-data");
+dotenv_1.default.config();
+var JOB_PORT = parseInt(process.env.JOB_PORT);
+(function () { return __awaiter(void 0, void 0, void 0, function () {
+    var app;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, initializer_1.initializerApp()];
+            case 1:
+                app = (_a.sent()).app;
+                app.listen(JOB_PORT, function () {
+                    console.log("Crawler listening at http://localhost:" + JOB_PORT);
+                    node_schedule_1.scheduleJob('* * 1 * * *', function () {
+                        shelter_data_1.getShelterData();
+                    });
+                });
+                return [2 /*return*/];
+        }
+    });
+}); })();

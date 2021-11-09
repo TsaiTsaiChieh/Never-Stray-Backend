@@ -1,7 +1,10 @@
-/* eslint-disable camelcase */
-/* eslint-disable require-jsdoc */
 import {
-  Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm'
 
 export enum Ref {
@@ -16,15 +19,15 @@ export enum Sex {
 }
 
 export enum Age {
-  ADULT = 'Adult',
-  CHILD = 'Child',
-  UNKNOWN = 'Unknown'
+  ADULT = 'A',
+  CHILD = 'C',
+  UNKNOWN = 'U'
 }
 
 export enum Ternary {
-  TRUE = 'True',
-  FALSE = 'False',
-  UNKNOWN = 'Unknown'
+  TRUE = 'T',
+  FALSE = 'F',
+  UNKNOWN = 'U'
 }
 
 export enum Status {
@@ -36,9 +39,21 @@ export enum Status {
 }
 
 @Entity({name: 'pets'})
+@Index(['sub_id', 'accept_num'], {unique: true})
+@Index(['status', 'accept_num'])
+/** Class representing a pet */
 export class Pet {
   @PrimaryGeneratedColumn()
-  id: number
+  id?: number
+
+  @Column({type: 'int', nullable: false})
+  sub_id: number
+
+  @Column({
+    type: 'varchar', length: 32,
+    nullable: true, comment: '政府收容編號',
+  })
+  accept_num: string
 
   @Column({type: 'enum', enum: Ref, nullable: false})
   ref: Ref
@@ -58,10 +73,16 @@ export class Pet {
   @Column({type: 'enum', enum: Age, default: Age.UNKNOWN})
   age: Age
 
-  @Column({type: 'enum', enum: Ternary, default: Ternary.UNKNOWN})
+  @Column({
+    type: 'enum', enum: Ternary,
+    default: Ternary.UNKNOWN, comment: '是否絕育',
+  })
   ligation: Ternary
 
-  @Column({type: 'enum', enum: Ternary, default: Ternary.UNKNOWN})
+  @Column({
+    type: 'enum', enum: Ternary,
+    default: Ternary.UNKNOWN, comment: '是否施打狂犬病疫苗',
+  })
   rabies: Ternary
 
   @Column({type: 'tinytext'})
@@ -70,7 +91,7 @@ export class Pet {
   @Column({type: 'enum', enum: Status, default: Status.UNKNOWN})
   status: Status
 
-  @Column({type: 'tinytext', nullable: true})
+  @Column({type: 'text', nullable: true})
   remark: string
 
   @Column({type: 'tinytext', nullable: true})
@@ -80,11 +101,12 @@ export class Pet {
   phone: string
 
   @Column({type: 'json', nullable: true})
-  image: string
+  image: string[]
 
   @CreateDateColumn()
   created_at: Date
 
   @UpdateDateColumn()
-  updated_at: Date
+  updated_at?: Date
 }
+

@@ -48,6 +48,7 @@ var connection = function () { return __awaiter(void 0, void 0, void 0, function
                 password: process.env.TYPEORM_PASSWORD,
                 database: process.env.TYPEORM_DATABASE,
                 entities: ['**/src/entity/*{.ts,.js}'],
+                logging: false,
             })];
     });
 }); };
