@@ -38,6 +38,12 @@ export enum Status {
   DEAD = 'Dead'
 }
 
+export enum Kind {
+  DOG = 'D',
+  CAT = 'C',
+  OTHER = 'O'
+}
+
 @Entity({name: 'pets'})
 @Index(['sub_id', 'accept_num'], {unique: true})
 @Index(['status', 'accept_num'])
@@ -61,8 +67,8 @@ export class Pet {
   @Column({type: 'tinyint', nullable: false})
   area_id: number
 
-  @Column({type: 'tinytext', nullable: false})
-  kind: string
+  @Column({type: 'enum', nullable: false})
+  kind: Kind
 
   @Column({type: 'enum', enum: Sex, default: Sex.UNKNOWN})
   sex: Sex
