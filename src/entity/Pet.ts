@@ -1,8 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  Column, CreateDateColumn, Entity,
-  Index, PrimaryGeneratedColumn, UpdateDateColumn,
+    Column, CreateDateColumn, Entity, Index,
+    JoinColumn, ManyToOne, PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm'
 
+import {Area, City} from './Area'
 
 export enum Ref {
   GOV = 'gov',
@@ -61,8 +65,9 @@ export class Pet {
   @Column({type: 'enum', enum: Ref, nullable: false})
   ref: Ref
 
-  @Column({type: 'tinyint', nullable: false})
-  area_id: number
+  @ManyToOne((type) => Area)
+  @JoinColumn({'name': 'city_id', 'referencedColumnName': 'city'})
+  city?: City
 
   @Column({type: 'enum', enum: Kind, nullable: false})
   kind: Kind
