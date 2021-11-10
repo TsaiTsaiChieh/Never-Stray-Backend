@@ -1,6 +1,7 @@
-import {Age, Sex, Status, Ternary} from '../entity/Pet'
+import {Age, Kind, Sex, Status, Ternary} from '../entity/Pet'
 
 /** Sex string converter
+ *
  * @param  {string} sex sex string
  * @return {Sex} sex enum value
  */
@@ -18,7 +19,9 @@ export function sexConvert(sex: string): Sex {
       return Sex.UNKNOWN
   }
 }
+
 /** Age string converter
+ *
  * @param  {string} age age string to lower case
  * @return {Age} age enum value
  */
@@ -32,7 +35,9 @@ export function ageConvert(age: string): Age {
       return Age.UNKNOWN
   }
 }
+
 /** Ternary string converter
+ *
  * @param  {string} value ternary string
  * @return {Ternary} ternary enum value
  */
@@ -46,7 +51,9 @@ export function ternaryConvert(value: string): Ternary {
       return Ternary.UNKNOWN
   }
 }
-/** Pet status converter
+
+/** The status of pet status converter
+ *
  * @param  {string} status status string
  * @return {Status} status enum value
  */
@@ -62,5 +69,20 @@ export function petStatusConvert(status: string): Status {
       return Status.OTHER
     default:
       return Status.UNKNOWN
+  }
+}
+/** The kind of pet converter
+ *
+ * @param  {string} kind kind string
+ * @return {Kind} kind enum value
+ */
+export function petKindConvert(kind: string): Kind {
+  switch (kind) {
+    case '狗':
+      return Kind.DOG
+    case '貓':
+      return Kind.CAT
+    default:
+      return Kind.OTHER
   }
 }
