@@ -66,7 +66,8 @@ var Area = /** @class */ (function () {
     ], Area.prototype, "name", void 0);
     Area = __decorate([
         typeorm_1.Entity({ name: 'areas' }),
-        typeorm_1.Index('REGION_CITY_INDEX', ['region', 'city'], { unique: true })
+        typeorm_1.Index(['city']),
+        typeorm_1.Index(['region', 'city'], { unique: true })
         /** Class representing the Area */
     ], Area);
     return Area;

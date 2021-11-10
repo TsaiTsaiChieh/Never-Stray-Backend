@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.petStatusConvert = exports.ternaryConvert = exports.ageConvert = exports.sexConvert = void 0;
+exports.petKindConvert = exports.petStatusConvert = exports.ternaryConvert = exports.ageConvert = exports.sexConvert = void 0;
 var Pet_1 = require("../entity/Pet");
 /** Sex string converter
+ *
  * @param  {string} sex sex string
  * @return {Sex} sex enum value
  */
@@ -22,6 +23,7 @@ function sexConvert(sex) {
 }
 exports.sexConvert = sexConvert;
 /** Age string converter
+ *
  * @param  {string} age age string to lower case
  * @return {Age} age enum value
  */
@@ -37,6 +39,7 @@ function ageConvert(age) {
 }
 exports.ageConvert = ageConvert;
 /** Ternary string converter
+ *
  * @param  {string} value ternary string
  * @return {Ternary} ternary enum value
  */
@@ -51,7 +54,8 @@ function ternaryConvert(value) {
     }
 }
 exports.ternaryConvert = ternaryConvert;
-/** Pet status converter
+/** The status of pet status converter
+ *
  * @param  {string} status status string
  * @return {Status} status enum value
  */
@@ -70,3 +74,19 @@ function petStatusConvert(status) {
     }
 }
 exports.petStatusConvert = petStatusConvert;
+/** The kind of pet converter
+ *
+ * @param  {string} kind kind string
+ * @return {Kind} kind enum value
+ */
+function petKindConvert(kind) {
+    switch (kind) {
+        case '狗':
+            return Pet_1.Kind.DOG;
+        case '貓':
+            return Pet_1.Kind.CAT;
+        default:
+            return Pet_1.Kind.OTHER;
+    }
+}
+exports.petKindConvert = petKindConvert;

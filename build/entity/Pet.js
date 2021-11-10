@@ -9,8 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Pet = exports.Status = exports.Ternary = exports.Age = exports.Sex = exports.Ref = void 0;
+exports.Pet = exports.Kind = exports.Status = exports.Ternary = exports.Age = exports.Sex = exports.Ref = void 0;
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 var typeorm_1 = require("typeorm");
+var Area_1 = require("./Area");
 var Ref;
 (function (Ref) {
     Ref["GOV"] = "gov";
@@ -43,6 +46,12 @@ var Status;
     Status["OTHER"] = "Other";
     Status["DEAD"] = "Dead";
 })(Status = exports.Status || (exports.Status = {}));
+var Kind;
+(function (Kind) {
+    Kind["DOG"] = "D";
+    Kind["CAT"] = "C";
+    Kind["OTHER"] = "O";
+})(Kind = exports.Kind || (exports.Kind = {}));
 var Pet = /** @class */ (function () {
     /** Class representing a pet */
     function Pet() {
@@ -67,11 +76,12 @@ var Pet = /** @class */ (function () {
         __metadata("design:type", String)
     ], Pet.prototype, "ref", void 0);
     __decorate([
-        typeorm_1.Column({ type: 'tinyint', nullable: false }),
+        typeorm_1.ManyToOne(function (type) { return Area_1.Area; }),
+        typeorm_1.JoinColumn({ 'name': 'city_id', 'referencedColumnName': 'city' }),
         __metadata("design:type", Number)
-    ], Pet.prototype, "area_id", void 0);
+    ], Pet.prototype, "city", void 0);
     __decorate([
-        typeorm_1.Column({ type: 'tinytext', nullable: false }),
+        typeorm_1.Column({ type: 'enum', enum: Kind, nullable: false }),
         __metadata("design:type", String)
     ], Pet.prototype, "kind", void 0);
     __decorate([
@@ -122,7 +132,7 @@ var Pet = /** @class */ (function () {
     ], Pet.prototype, "phone", void 0);
     __decorate([
         typeorm_1.Column({ type: 'json', nullable: true }),
-        __metadata("design:type", Array)
+        __metadata("design:type", Object)
     ], Pet.prototype, "image", void 0);
     __decorate([
         typeorm_1.CreateDateColumn(),
