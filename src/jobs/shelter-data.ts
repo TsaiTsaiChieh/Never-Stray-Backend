@@ -9,6 +9,7 @@ import {PetRepository} from '../repositories/pet.repository'
 import {AppError} from '../utils/app-error'
 import {
   ageConvert,
+  petKindConvert,
   petStatusConvert,
   sexConvert,
   ternaryConvert,
@@ -135,7 +136,7 @@ export class Shelter {
           }, {
             ref: <Ref>'gov',
             area_id: data[in_data_index].animal_area_pkid,
-            kind: data[in_data_index].animal_kind,
+            kind: petKindConvert(data[in_data_index].animal_kind),
             sex: sexConvert(data[in_data_index].animal_sex),
             color: data[in_data_index].animal_colour,
             age: ageConvert(data[in_data_index].animal_age),
@@ -178,7 +179,7 @@ export class Shelter {
         sub_id: ele.animal_id,
         accept_num: ele.animal_subid,
         area_id: ele.animal_area_pkid,
-        kind: ele.animal_kind,
+        kind: petKindConvert(ele.animal_kind),
         sex: sexConvert(ele.animal_sex),
         color: ele.animal_colour,
         age: ageConvert(ele.animal_age),
