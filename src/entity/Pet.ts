@@ -1,11 +1,8 @@
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  Column, CreateDateColumn, Entity,
+  Index, PrimaryGeneratedColumn, UpdateDateColumn,
 } from 'typeorm'
+
 
 export enum Ref {
   GOV = 'gov',
@@ -67,7 +64,7 @@ export class Pet {
   @Column({type: 'tinyint', nullable: false})
   area_id: number
 
-  @Column({type: 'enum', nullable: false})
+  @Column({type: 'enum', enum: Kind, nullable: false})
   kind: Kind
 
   @Column({type: 'enum', enum: Sex, default: Sex.UNKNOWN})
@@ -107,7 +104,7 @@ export class Pet {
   phone: string
 
   @Column({type: 'json', nullable: true})
-  image: string[]
+  image: string[] | null
 
   @CreateDateColumn()
   created_at: Date
