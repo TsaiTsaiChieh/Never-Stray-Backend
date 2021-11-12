@@ -135,7 +135,7 @@ export class Shelter {
             accept_num: ele.accept_num,
           }, {
             ref: <Ref>'gov',
-            area_id: data[in_data_index].animal_area_pkid,
+            city: data[in_data_index].animal_area_pkid,
             kind: petKindConvert(data[in_data_index].animal_kind),
             sex: sexConvert(data[in_data_index].animal_sex),
             color: data[in_data_index].animal_colour,
@@ -178,7 +178,7 @@ export class Shelter {
         ref: <Ref>'gov',
         sub_id: ele.animal_id,
         accept_num: ele.animal_subid,
-        area_id: ele.animal_area_pkid,
+        city: ele.animal_area_pkid,
         kind: petKindConvert(ele.animal_kind),
         sex: sexConvert(ele.animal_sex),
         color: ele.animal_colour,
