@@ -63,7 +63,7 @@ var ConnectionController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        con = typeorm_1.getConnectionManager().get();
+                        con = (0, typeorm_1.getConnectionManager)().get();
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 4, 5, 7]);
@@ -96,23 +96,23 @@ var ConnectionController = /** @class */ (function () {
         });
     };
     __decorate([
-        routing_controllers_1.Get('/api'),
-        __param(0, routing_controllers_1.Req()),
-        __param(1, routing_controllers_1.Res()),
+        (0, routing_controllers_1.Get)('/api'),
+        __param(0, (0, routing_controllers_1.Req)()),
+        __param(1, (0, routing_controllers_1.Res)()),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", void 0)
     ], ConnectionController.prototype, "pingAPI", null);
     __decorate([
-        routing_controllers_1.Get('/db'),
-        __param(0, routing_controllers_1.Req()),
-        __param(1, routing_controllers_1.Res()),
+        (0, routing_controllers_1.Get)('/db'),
+        __param(0, (0, routing_controllers_1.Req)()),
+        __param(1, (0, routing_controllers_1.Res)()),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", Promise)
     ], ConnectionController.prototype, "pingDB", null);
     ConnectionController = __decorate([
-        routing_controllers_1.Controller('/ping')
+        (0, routing_controllers_1.Controller)('/ping')
     ], ConnectionController);
     return ConnectionController;
 }());

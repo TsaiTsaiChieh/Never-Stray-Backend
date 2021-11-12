@@ -37,7 +37,10 @@
           "Res",
           "Unique",
           "Not",
-          "IsNull"
+          "IsNull",
+          "OneToMany",
+          "ManyToOne",
+          "JoinColumn"
         ]
       }
     ],
@@ -72,7 +75,34 @@
           "accept_num",
           "area_id",
           "created_at",
-          "updated_at"
+          "updated_at",
+          "city_id",
+          "animal_id",
+          "animal_subid",
+          "animal_area_pkid",
+          "animal_shelter_pkid",
+          "animal_place",
+          "animal_kind",
+          "animal_sex",
+          "animal_bodytype",
+          "animal_colour",
+          "animal_age",
+          "animal_sterilization",
+          "animal_bacterin",
+          "animal_foundplace",
+          "animal_title",
+          "animal_status",
+          "animal_remark",
+          "animal_caption",
+          "animal_opendate",
+          "animal_closeddate",
+          "animal_update",
+          "animal_createtime",
+          "shelter_name",
+          "album_file",
+          "album_update",
+          "shelter_address",
+          "shelter_tel"
         ]
       }
     ]

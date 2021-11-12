@@ -1,11 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
+    Column, CreateDateColumn, Entity, Index,
+    JoinColumn, ManyToOne, PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm'
+
+import {Area, City} from './Area'
 
 export enum Ref {
   GOV = 'gov',
@@ -38,6 +39,12 @@ export enum Status {
   DEAD = 'Dead'
 }
 
+export enum Kind {
+  DOG = 'D',
+  CAT = 'C',
+  OTHER = 'O'
+}
+
 @Entity({name: 'pets'})
 @Index(['sub_id', 'accept_num'], {unique: true})
 @Index(['status', 'accept_num'])
@@ -58,11 +65,12 @@ export class Pet {
   @Column({type: 'enum', enum: Ref, nullable: false})
   ref: Ref
 
-  @Column({type: 'tinyint', nullable: false})
-  area_id: number
+  @ManyToOne((type) => Area)
+  @JoinColumn({'name': 'city_id', 'referencedColumnName': 'city'})
+  city?: City
 
-  @Column({type: 'tinytext', nullable: false})
-  kind: string
+  @Column({type: 'enum', enum: Kind, nullable: false})
+  kind: Kind
 
   @Column({type: 'enum', enum: Sex, default: Sex.UNKNOWN})
   sex: Sex
@@ -101,7 +109,7 @@ export class Pet {
   phone: string
 
   @Column({type: 'json', nullable: true})
-  image: string[]
+  image: string[] | null
 
   @CreateDateColumn()
   created_at: Date

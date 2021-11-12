@@ -50,13 +50,13 @@ var initializerApp = function () { return __awaiter(void 0, void 0, void 0, func
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                app = express_1.default();
-                return [4 /*yield*/, safe_await_1.default(database_1.connection())];
+                app = (0, express_1.default)();
+                return [4 /*yield*/, (0, safe_await_1.default)((0, database_1.connection)())];
             case 1:
                 _a = _b.sent(), error = _a[0], db = _a[1];
                 if (error)
                     throw new app_error_1.AppError(error);
-                routing_controllers_1.useExpressServer(app, {
+                (0, routing_controllers_1.useExpressServer)(app, {
                     controllers: [__dirname + "/controllers/*.ts"],
                 });
                 application = {

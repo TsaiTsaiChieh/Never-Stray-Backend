@@ -75,7 +75,7 @@ var Shelter = /** @class */ (function () {
                     case 1:
                         if (!loopFlag) return [3 /*break*/, 4];
                         console.log(chalk_1.default.yellow("--- Page: " + page + " ---"));
-                        return [4 /*yield*/, safe_await_1.default(axios_1.default.get(this.url + "\n        &$top=" + this.batch + "\n        &$skip=" + this.batch * page + "\n        &animal_status=OPEN"))];
+                        return [4 /*yield*/, (0, safe_await_1.default)(axios_1.default.get(this.url + "\n        &$top=" + this.batch + "\n        &$skip=" + this.batch * page + "\n        &animal_status=OPEN"))];
                     case 2:
                         _a = _b.sent(), error = _a[0], response = _a[1];
                         if (error)
@@ -117,14 +117,14 @@ var Shelter = /** @class */ (function () {
                 switch (_d.label) {
                     case 0:
                         ids = data.map(function (val) { return val.animal_id; });
-                        return [4 /*yield*/, safe_await_1.default(this.petRepository.find([
+                        return [4 /*yield*/, (0, safe_await_1.default)(this.petRepository.find([
                                 {
                                     status: Pet_1.Status.OPEN,
-                                    accept_num: typeorm_1.Not(typeorm_1.IsNull()),
+                                    accept_num: (0, typeorm_1.Not)((0, typeorm_1.IsNull)()),
                                 },
                                 {
                                     status: Pet_1.Status.UNKNOWN,
-                                    accept_num: typeorm_1.Not(typeorm_1.IsNull()),
+                                    accept_num: (0, typeorm_1.Not)((0, typeorm_1.IsNull)()),
                                 },
                             ]))];
                     case 1:
@@ -138,7 +138,7 @@ var Shelter = /** @class */ (function () {
                         ele = result_1[_i];
                         in_data_index = ids.indexOf(Number(ele.sub_id));
                         if (!(in_data_index < 0)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, safe_await_1.default(this.petRepository.update({
+                        return [4 /*yield*/, (0, safe_await_1.default)(this.petRepository.update({
                                 id: ele.id,
                             }, {
                                 status: Pet_1.Status.UNKNOWN,
@@ -148,20 +148,20 @@ var Shelter = /** @class */ (function () {
                         if (error_1)
                             throw new app_error_1.AppError(error_1);
                         return [3 /*break*/, 6];
-                    case 4: return [4 /*yield*/, safe_await_1.default(this.petRepository.update({
+                    case 4: return [4 /*yield*/, (0, safe_await_1.default)(this.petRepository.update({
                             sub_id: ele.sub_id,
                             accept_num: ele.accept_num,
                         }, {
                             ref: 'gov',
-                            area_id: data[in_data_index].animal_area_pkid,
-                            kind: data[in_data_index].animal_kind,
-                            sex: value_convert_1.sexConvert(data[in_data_index].animal_sex),
+                            city: data[in_data_index].animal_area_pkid,
+                            kind: (0, value_convert_1.petKindConvert)(data[in_data_index].animal_kind),
+                            sex: (0, value_convert_1.sexConvert)(data[in_data_index].animal_sex),
                             color: data[in_data_index].animal_colour,
-                            age: value_convert_1.ageConvert(data[in_data_index].animal_age),
-                            ligation: value_convert_1.ternaryConvert(data[in_data_index].animal_sterilization),
-                            rabies: value_convert_1.ternaryConvert(data[in_data_index].animal_bacterin),
+                            age: (0, value_convert_1.ageConvert)(data[in_data_index].animal_age),
+                            ligation: (0, value_convert_1.ternaryConvert)(data[in_data_index].animal_sterilization),
+                            rabies: (0, value_convert_1.ternaryConvert)(data[in_data_index].animal_bacterin),
                             title: data[in_data_index].animal_place,
-                            status: value_convert_1.petStatusConvert(data[in_data_index].animal_status),
+                            status: (0, value_convert_1.petStatusConvert)(data[in_data_index].animal_status),
                             remark: data[in_data_index].animal_remark,
                             address: data[in_data_index].shelter_address,
                             phone: data[in_data_index].shelter_tel,
@@ -207,15 +207,15 @@ var Shelter = /** @class */ (function () {
                                 ref: 'gov',
                                 sub_id: ele.animal_id,
                                 accept_num: ele.animal_subid,
-                                area_id: ele.animal_area_pkid,
-                                kind: ele.animal_kind,
-                                sex: value_convert_1.sexConvert(ele.animal_sex),
+                                city: ele.animal_area_pkid,
+                                kind: (0, value_convert_1.petKindConvert)(ele.animal_kind),
+                                sex: (0, value_convert_1.sexConvert)(ele.animal_sex),
                                 color: ele.animal_colour,
-                                age: value_convert_1.ageConvert(ele.animal_age),
-                                ligation: value_convert_1.ternaryConvert(ele.animal_sterilization),
-                                rabies: value_convert_1.ternaryConvert(ele.animal_bacterin),
+                                age: (0, value_convert_1.ageConvert)(ele.animal_age),
+                                ligation: (0, value_convert_1.ternaryConvert)(ele.animal_sterilization),
+                                rabies: (0, value_convert_1.ternaryConvert)(ele.animal_bacterin),
                                 title: ele.animal_place,
-                                status: value_convert_1.petStatusConvert(ele.animal_status),
+                                status: (0, value_convert_1.petStatusConvert)(ele.animal_status),
                                 remark: ele.animal_remark,
                                 address: ele.shelter_address,
                                 phone: ele.shelter_tel,
@@ -225,7 +225,7 @@ var Shelter = /** @class */ (function () {
                                     new Date(),
                             });
                         });
-                        return [4 /*yield*/, safe_await_1.default(this.petRepository.saveMany(petData))];
+                        return [4 /*yield*/, (0, safe_await_1.default)(this.petRepository.saveMany(petData))];
                     case 1:
                         _a = _b.sent(), error = _a[0], result = _a[1];
                         if (error)
