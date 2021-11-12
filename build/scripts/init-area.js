@@ -53,7 +53,7 @@ dotenv_1.default.config();
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, 4, 7]);
-                return [4 /*yield*/, initializer_1.initializerApp()];
+                return [4 /*yield*/, (0, initializer_1.initializerApp)()];
             case 1:
                 db = (_a.sent()).db;
                 data_1 = [];

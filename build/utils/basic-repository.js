@@ -9,7 +9,7 @@ var BasicRepository = /** @class */ (function () {
     */
     function BasicRepository(entity) {
         this.entity = entity;
-        this.repository = typeorm_1.getRepository(entity);
+        this.repository = (0, typeorm_1.getRepository)(entity);
     }
     /**
      * 儲存單一 Entity<T> 的資料

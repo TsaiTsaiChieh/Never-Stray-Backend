@@ -47,7 +47,7 @@ var APP_PORT = parseInt(process.env.APP_PORT);
     var app;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, initializer_1.initializerApp()];
+            case 0: return [4 /*yield*/, (0, initializer_1.initializerApp)()];
             case 1:
                 app = (_a.sent()).app;
                 app.listen(process.env.APP_PORT, function () {
