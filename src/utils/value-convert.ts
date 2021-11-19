@@ -1,3 +1,4 @@
+import {City} from '../entity/Area'
 import {Age, Kind, Sex, Status, Ternary} from '../entity/Pet'
 
 /** Sex string converter
@@ -71,6 +72,7 @@ export function petStatusConvert(status: string): Status {
       return Status.UNKNOWN
   }
 }
+
 /** The kind of pet converter
  *
  * @param  {string} kind kind string
@@ -84,5 +86,61 @@ export function petKindConvert(kind: string): Kind {
       return Kind.CAT
     default:
       return Kind.OTHER
+  }
+}
+
+/** The city of area converter
+ *
+ * @param  {string} city city string
+ * @return {City} city enum value
+ */
+export function cityConvert(city: number): City {
+  switch (city) {
+    case 2:
+      return City.TPE
+    case 3:
+      return City.TPH
+    case 4:
+      return City.KLU
+    case 5:
+      return City.ILN
+    case 6:
+      return City.TYC
+    case 7:
+      return City.HSH
+    case 8:
+      return City.HSC
+    case 9:
+      return City.MAL
+    case 10:
+      return City.TXG
+    case 11:
+      return City.CWH
+    case 12:
+      return City.NTO
+    case 13:
+      return City.YLH
+    case 14:
+      return City.CHY
+    case 15:
+      return City.CYI
+    case 16:
+      return City.TNN
+    case 17:
+      return City.KHH
+    case 18:
+      return City.IUH
+    case 19:
+      return City.HWA
+    case 20:
+      return City.TTT
+    case 21:
+      return City.PEH
+    case 22:
+      return City.KMN
+    case 23:
+      return City.LNN
+  default:
+    return City.TPE
   }
 }
