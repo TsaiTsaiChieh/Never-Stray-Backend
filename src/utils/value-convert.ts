@@ -1,4 +1,4 @@
-import {City} from '../entity/Area'
+import {City, Region} from '../entity/Area'
 import {Age, Kind, Sex, Status, Ternary} from '../entity/Pet'
 
 /** Sex string converter
@@ -144,3 +144,26 @@ export function cityConvert(city: number): City {
     return City.TPE
   }
 }
+
+/** The region of area converter
+ *
+ * @param  {string} region region string
+ * @return {Region} region enum value
+ */
+export function regionConvert(region: string): Region {
+  switch (region) {
+    case Region.EAST:
+      return Region.EAST
+    case Region.WEST:
+      return Region.WEST
+    case Region.SOUTH:
+      return Region.SOUTH
+    case Region.NORTH:
+      return Region.NORTH
+    case Region.MIDDLE:
+      return Region.MIDDLE
+    default:
+      return Region.NORTH
+  }
+}
+
