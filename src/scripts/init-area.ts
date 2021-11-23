@@ -19,7 +19,7 @@ type AreaData = {
 
 /** Class representing an area initial data*/
 class AreaInitData {
-  private _: any | Connection
+  private _: Connection
   private areas: AreaData[] = areas
   private areaRepository: AreaRepository
 
@@ -27,10 +27,16 @@ class AreaInitData {
   constructor() {
     dotenv.config()
   }
+
   /** Builder */
   async build() {
     this._ = (await initializerApp()).db
     this.areaRepository = new AreaRepository()
+  }
+
+  /** Destructor */
+  async destroy() {
+    this._.close()
   }
 
   /**
@@ -88,6 +94,7 @@ async function initArea(): Promise<void> {
   await areaInitData.build()
   const areaIdx: number[] = await areaInitData.findData()
   await areaInitData.saveData(areaIdx)
+  areaInitData.destroy()
   return
 }
 
