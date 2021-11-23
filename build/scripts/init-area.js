@@ -39,51 +39,139 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var chalk_1 = __importDefault(require("chalk"));
 var dotenv_1 = __importDefault(require("dotenv"));
-var lodash_1 = __importDefault(require("lodash"));
-var typeorm_1 = require("typeorm");
-var Area_1 = require("../entity/Area");
+var safe_await_1 = __importDefault(require("safe-await"));
 var initializer_1 = require("../initializer");
 var areas_json_1 = __importDefault(require("../JSON/areas.json"));
-dotenv_1.default.config();
-(function (areas) { return __awaiter(void 0, void 0, void 0, function () {
-    var db, data_1, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 3, 4, 7]);
-                return [4 /*yield*/, (0, initializer_1.initializerApp)()];
-            case 1:
-                db = (_a.sent()).db;
-                data_1 = [];
-                lodash_1.default.forEach(areas, function (val) {
-                    //  type assertion
-                    data_1.push({
-                        region: val.region,
-                        city: val.city,
-                        name: val.name,
-                    });
-                });
-                return [4 /*yield*/, db.createQueryBuilder()
-                        .insert()
-                        .into(Area_1.Area)
-                        .values(data_1).execute()];
-            case 2:
-                _a.sent();
-                return [3 /*break*/, 7];
-            case 3:
-                error_1 = _a.sent();
-                console.log(chalk_1.default.red(error_1));
-                return [3 /*break*/, 7];
-            case 4:
-                if (!(db instanceof typeorm_1.Connection)) return [3 /*break*/, 6];
-                return [4 /*yield*/, db.close()];
-            case 5:
-                _a.sent();
-                _a.label = 6;
-            case 6: return [7 /*endfinally*/];
-            case 7: return [2 /*return*/];
-        }
+var area_repository_1 = require("../repositories/area.repository");
+var app_error_1 = require("../utils/app-error");
+var chalk_logger_1 = require("../utils/chalk-logger");
+var value_convert_1 = require("../utils/value-convert");
+/** Class representing an area initial data*/
+var AreaInitData = /** @class */ (function () {
+    /** Constructor */
+    function AreaInitData() {
+        this.areas = areas_json_1.default;
+        dotenv_1.default.config();
+    }
+    /** Builder */
+    AreaInitData.prototype.build = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, (0, initializer_1.initializerApp)()];
+                    case 1:
+                        _a._ = (_b.sent()).db;
+                        this.areaRepository = new area_repository_1.AreaRepository();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /** Destructor */
+    AreaInitData.prototype.destroy = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this._.close();
+                return [2 /*return*/];
+            });
+        });
+    };
+    /**
+     * 搜尋 area table 初始資料，回傳未在 area table 出現的資料 index
+     *
+     * @return {Promise<number[]>} Promise<number[]>
+     */
+    AreaInitData.prototype.findData = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var areaIdx, i, _a, error, result;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        areaIdx = this.areas.map(function (_, i) { return i; });
+                        i = 0;
+                        _b.label = 1;
+                    case 1:
+                        if (!(i < this.areas.length)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, (0, safe_await_1.default)(this.areaRepository.findOne({ city: (0, value_convert_1.cityConvert)(areas_json_1.default[i].city) }))];
+                    case 2:
+                        _a = _b.sent(), error = _a[0], result = _a[1];
+                        if (error)
+                            throw new app_error_1.AppError(error);
+                        // Filter out the index which already existed in the DB
+                        if (result) {
+                            (0, chalk_logger_1.yellowLog)("=== " + result.name + " already in areas table ===");
+                            areaIdx.splice(areaIdx.indexOf(i), 1);
+                        }
+                        _b.label = 3;
+                    case 3:
+                        i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/, areaIdx];
+                }
+            });
+        });
+    };
+    /**
+     * 儲存區域的初始資料
+     *
+     * @param  {number[]} areaIdx Indexes which should be saved
+     * @return {Promise<void>} Promise<void>
+     */
+    AreaInitData.prototype.saveData = function (areaIdx) {
+        return __awaiter(this, void 0, void 0, function () {
+            var areaData, _i, _a, ele, _b, error, result;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        areaData = [];
+                        this.areas = this.areas.filter(function (_, i) { return areaIdx.includes(i); });
+                        for (_i = 0, _a = this.areas; _i < _a.length; _i++) {
+                            ele = _a[_i];
+                            areaData.push({
+                                region: (0, value_convert_1.regionConvert)(ele.region),
+                                city: (0, value_convert_1.cityConvert)(ele.city),
+                                name: ele.name,
+                            });
+                        }
+                        return [4 /*yield*/, (0, safe_await_1.default)(this.areaRepository.saveMany(areaData))];
+                    case 1:
+                        _b = _c.sent(), error = _b[0], result = _b[1];
+                        if (error)
+                            throw new app_error_1.AppError(error);
+                        if (result)
+                            (0, chalk_logger_1.greenLog)("=== Saved " + JSON.stringify(result) + " ===");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return AreaInitData;
+}());
+/** Initial area data*/
+function initArea() {
+    return __awaiter(this, void 0, void 0, function () {
+        var areaInitData, areaIdx;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    areaInitData = new AreaInitData();
+                    return [4 /*yield*/, areaInitData.build()];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, areaInitData.findData()];
+                case 2:
+                    areaIdx = _a.sent();
+                    return [4 /*yield*/, areaInitData.saveData(areaIdx)];
+                case 3:
+                    _a.sent();
+                    areaInitData.destroy();
+                    return [2 /*return*/];
+            }
+        });
     });
-}); })(areas_json_1.default);
+}
+initArea();

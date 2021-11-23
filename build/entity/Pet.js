@@ -78,7 +78,7 @@ var Pet = /** @class */ (function () {
     __decorate([
         (0, typeorm_1.ManyToOne)(function (type) { return Area_1.Area; }),
         (0, typeorm_1.JoinColumn)({ 'name': 'city_id', 'referencedColumnName': 'city' }),
-        __metadata("design:type", Number)
+        __metadata("design:type", String)
     ], Pet.prototype, "city", void 0);
     __decorate([
         (0, typeorm_1.Column)({ type: 'enum', enum: Kind, nullable: false }),

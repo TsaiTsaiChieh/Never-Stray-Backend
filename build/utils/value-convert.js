@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.petKindConvert = exports.petStatusConvert = exports.ternaryConvert = exports.ageConvert = exports.sexConvert = void 0;
+exports.regionConvert = exports.cityConvert = exports.petKindConvert = exports.petStatusConvert = exports.ternaryConvert = exports.ageConvert = exports.sexConvert = void 0;
+var Area_1 = require("../entity/Area");
 var Pet_1 = require("../entity/Pet");
 /** Sex string converter
  *
@@ -90,3 +91,81 @@ function petKindConvert(kind) {
     }
 }
 exports.petKindConvert = petKindConvert;
+/** The city of area converter
+ *
+ * @param  {string} city city string
+ * @return {City} city enum value
+ */
+function cityConvert(city) {
+    switch (city) {
+        case 2:
+            return Area_1.City.TPE;
+        case 3:
+            return Area_1.City.TPH;
+        case 4:
+            return Area_1.City.KLU;
+        case 5:
+            return Area_1.City.ILN;
+        case 6:
+            return Area_1.City.TYC;
+        case 7:
+            return Area_1.City.HSH;
+        case 8:
+            return Area_1.City.HSC;
+        case 9:
+            return Area_1.City.MAL;
+        case 10:
+            return Area_1.City.TXG;
+        case 11:
+            return Area_1.City.CWH;
+        case 12:
+            return Area_1.City.NTO;
+        case 13:
+            return Area_1.City.YLH;
+        case 14:
+            return Area_1.City.CHY;
+        case 15:
+            return Area_1.City.CYI;
+        case 16:
+            return Area_1.City.TNN;
+        case 17:
+            return Area_1.City.KHH;
+        case 18:
+            return Area_1.City.IUH;
+        case 19:
+            return Area_1.City.HWA;
+        case 20:
+            return Area_1.City.TTT;
+        case 21:
+            return Area_1.City.PEH;
+        case 22:
+            return Area_1.City.KMN;
+        case 23:
+            return Area_1.City.LNN;
+        default:
+            return Area_1.City.TPE;
+    }
+}
+exports.cityConvert = cityConvert;
+/** The region of area converter
+ *
+ * @param  {string} region region string
+ * @return {Region} region enum value
+ */
+function regionConvert(region) {
+    switch (region) {
+        case Area_1.Region.EAST:
+            return Area_1.Region.EAST;
+        case Area_1.Region.WEST:
+            return Area_1.Region.WEST;
+        case Area_1.Region.SOUTH:
+            return Area_1.Region.SOUTH;
+        case Area_1.Region.NORTH:
+            return Area_1.Region.NORTH;
+        case Area_1.Region.MIDDLE:
+            return Area_1.Region.MIDDLE;
+        default:
+            return Area_1.Region.NORTH;
+    }
+}
+exports.regionConvert = regionConvert;

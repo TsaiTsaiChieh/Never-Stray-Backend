@@ -153,7 +153,7 @@ var Shelter = /** @class */ (function () {
                             accept_num: ele.accept_num,
                         }, {
                             ref: 'gov',
-                            city: data[in_data_index].animal_area_pkid,
+                            city: (0, value_convert_1.cityConvert)(data[in_data_index].animal_area_pkid),
                             kind: (0, value_convert_1.petKindConvert)(data[in_data_index].animal_kind),
                             sex: (0, value_convert_1.sexConvert)(data[in_data_index].animal_sex),
                             color: data[in_data_index].animal_colour,
@@ -207,7 +207,7 @@ var Shelter = /** @class */ (function () {
                                 ref: 'gov',
                                 sub_id: ele.animal_id,
                                 accept_num: ele.animal_subid,
-                                city: ele.animal_area_pkid,
+                                city: (0, value_convert_1.cityConvert)(ele.animal_area_pkid),
                                 kind: (0, value_convert_1.petKindConvert)(ele.animal_kind),
                                 sex: (0, value_convert_1.sexConvert)(ele.animal_sex),
                                 color: ele.animal_colour,
