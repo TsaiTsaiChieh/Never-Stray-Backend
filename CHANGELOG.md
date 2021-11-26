@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -  db schema and some base settings ***by TsaiTsaiChieh*** [#1](https://github.com/TsaiTsaiChieh/Never-Stray/pull/1)
 
 #### Changed:
+-  refactor init-area script ***by TsaiTsaiChieh*** [#5](https://github.com/TsaiTsaiChieh/Never-Stray/pull/5)
 -  alter pets table: add city_id foreign key, change kind to enum type ***by TsaiTsaiChieh*** [#4](https://github.com/TsaiTsaiChieh/Never-Stray/pull/4)
 
 #### Removed:
