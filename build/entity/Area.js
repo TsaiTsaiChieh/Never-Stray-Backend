@@ -21,28 +21,28 @@ var Region;
 })(Region = exports.Region || (exports.Region = {}));
 var City;
 (function (City) {
-    City[City["TPE"] = 2] = "TPE";
-    City[City["TPH"] = 3] = "TPH";
-    City[City["KLU"] = 4] = "KLU";
-    City[City["ILN"] = 5] = "ILN";
-    City[City["TYC"] = 6] = "TYC";
-    City[City["HSH"] = 7] = "HSH";
-    City[City["HSC"] = 8] = "HSC";
-    City[City["MAL"] = 9] = "MAL";
-    City[City["TXG"] = 10] = "TXG";
-    City[City["CWH"] = 11] = "CWH";
-    City[City["NTO"] = 12] = "NTO";
-    City[City["YLH"] = 13] = "YLH";
-    City[City["CHY"] = 14] = "CHY";
-    City[City["CYI"] = 15] = "CYI";
-    City[City["TNN"] = 16] = "TNN";
-    City[City["KHH"] = 17] = "KHH";
-    City[City["IUH"] = 18] = "IUH";
-    City[City["HWA"] = 19] = "HWA";
-    City[City["TTT"] = 20] = "TTT";
-    City[City["PEH"] = 21] = "PEH";
-    City[City["KMN"] = 22] = "KMN";
-    City[City["LNN"] = 23] = "LNN"; // 連江縣
+    City["TPE"] = "2";
+    City["TPH"] = "3";
+    City["KLU"] = "4";
+    City["ILN"] = "5";
+    City["TYC"] = "6";
+    City["HSH"] = "7";
+    City["HSC"] = "8";
+    City["MAL"] = "9";
+    City["TXG"] = "10";
+    City["CWH"] = "11";
+    City["NTO"] = "12";
+    City["YLH"] = "13";
+    City["CHY"] = "14";
+    City["CYI"] = "15";
+    City["TNN"] = "16";
+    City["KHH"] = "17";
+    City["IUH"] = "18";
+    City["HWA"] = "19";
+    City["TTT"] = "20";
+    City["PEH"] = "21";
+    City["KMN"] = "22";
+    City["LNN"] = "23"; // 連江縣
 })(City = exports.City || (exports.City = {}));
 var Area = /** @class */ (function () {
     /** Class representing the Area */
@@ -58,7 +58,7 @@ var Area = /** @class */ (function () {
     ], Area.prototype, "region", void 0);
     __decorate([
         (0, typeorm_1.Column)({ type: 'enum', enum: City, nullable: false }),
-        __metadata("design:type", Number)
+        __metadata("design:type", String)
     ], Area.prototype, "city", void 0);
     __decorate([
         (0, typeorm_1.Column)({ length: 4 }),

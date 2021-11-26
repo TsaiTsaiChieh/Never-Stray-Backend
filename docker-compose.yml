@@ -29,7 +29,13 @@ services:
       context: .
       dockerfile: Dockerfile
       target: base
-    command: yarn ts-node src/crawler.ts
+    command:
+      - /bin/sh
+      - -c
+      - |
+        echo "Wait for DB service to start"
+        sleep 10
+        yarn ts-node src/crawler.ts
     environment:
       - TYPEORM_HOST=db
     env_file:
