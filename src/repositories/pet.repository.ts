@@ -1,4 +1,4 @@
-import {Pet} from '../entity/Pet'
+import {Pet} from '../entity/pet.entity'
 import {BasicRepository} from '../utils/basic-repository'
 
 /** Class representing a pet repository  */

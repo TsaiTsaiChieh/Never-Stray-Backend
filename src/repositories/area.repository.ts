@@ -1,4 +1,4 @@
-import {Area} from '../entity/Area'
+import {Area} from '../entity/area.entity'
 import {BasicRepository} from '../utils/basic-repository'
 
 /** Class representing an area repository */

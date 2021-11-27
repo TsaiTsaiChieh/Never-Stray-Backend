@@ -3,7 +3,7 @@ import _ from 'lodash'
 import safeAwait from 'safe-await'
 import {Connection} from 'typeorm'
 
-import {Area} from '../entity/Area'
+import {Area} from '../entity/area.entity'
 import {initializerApp} from '../initializer'
 import areas from '../JSON/areas.json'
 import {AreaRepository} from '../repositories/area.repository'

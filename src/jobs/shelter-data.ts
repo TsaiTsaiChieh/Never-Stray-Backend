@@ -4,7 +4,7 @@ import chalk from 'chalk'
 import safeAwait from 'safe-await'
 import {IsNull, Not, UpdateResult} from 'typeorm'
 
-import {Pet, Ref, Status} from '../entity/Pet'
+import {Pet, Ref, Status} from '../entity/pet.entity'
 import {PetRepository} from '../repositories/pet.repository'
 import {AppError} from '../utils/app-error'
 import {
