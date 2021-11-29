@@ -6,7 +6,8 @@ import {
     UpdateDateColumn,
 } from 'typeorm'
 
-import {Area, City} from './Area'
+
+import {Area, City} from './area.entity'
 
 export enum Ref {
   GOV = 'gov',
@@ -18,7 +19,6 @@ export enum Sex {
   MALE = 'M',
   UNKNOWN = 'U'
 }
-
 export enum Age {
   ADULT = 'A',
   CHILD = 'C',

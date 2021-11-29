@@ -1,5 +1,5 @@
-import {City, Region} from '../entity/Area'
-import {Age, Kind, Sex, Status, Ternary} from '../entity/Pet'
+import {City, Region} from '../entity/area.entity'
+import {Age, Kind, Sex, Status, Ternary} from '../entity/pet.entity'
 
 /** Sex string converter
  *
