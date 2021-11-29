@@ -1,21 +1,15 @@
-import {Request, Response} from 'express'
-import {Controller, Get, Req, Res} from 'routing-controllers'
-import {ajv} from '../utils/ajv-service'
 import {JSONSchemaType} from 'ajv'
+import {Request, Response} from 'express'
 import httpStatus from 'http-status'
-// import { Person } from 'typing/types'
+import {Controller, Get, Req, Res} from 'routing-controllers'
 
-type RefType = 'gov' | 'map' | 'own'
-type AgeType = 'A' | 'C' | 'U'
-type SexType = 'F' | 'M' | 'U'
-type RegionType = 'E' | 'W' | 'S' | 'N' | 'M'
-// type OrderType = 'ASC' | 'DESC'
+import {ajv} from '../utils/ajv-service'
 
 interface PetQuery {
-  ref?: RefType
-  age?: AgeType
-  sex?: SexType
-  region?: RegionType
+  ref?: PetRefType
+  age?: PetAgeType
+  sex?: PetSexType
+  region?: AreaRegionType
   order?: OrderType
 }
 
@@ -46,5 +40,5 @@ export class PetController {
     const valid: boolean = ajv.validate(schema, req.query)
     if (!valid) return res.status(httpStatus.BAD_REQUEST).json(ajv.errors)
     else return res.status(200).send('OK')
-}
+  }
 }
