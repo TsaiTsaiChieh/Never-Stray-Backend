@@ -22,7 +22,7 @@ const schema: JSONSchemaType<PetQuery> = {
       maximum: 100,
       nullable: true,
     },
-    page: {type: 'number', default: 1, nullable: true},
+    page: {type: 'number', default: 1, minimum: 1, nullable: true},
   },
 }
 
@@ -37,37 +37,21 @@ export class PetController {
   @Get('/search')
   async getAll(@Req() req: Request, @Res() res: Response): Promise<any> {
     const reqQuery: PetQuery = req.query
-    // const query: PetQuery = {
-    //   // ref: <PetRefType> req.query.ref,
-    //   // age: <PetAgeType> req.query.age,
-    //   // sex: <PetSexType> req.query.sex,
-    //   // region: <AreaRegionType> req.query.region,
-    //   // order: <OrderType> req.query.order,
-    //   // limit: parseInt(req.query.limit) ? req.query.limit : undefined,
-    //   // page: Number(req.query.page) ? req.query.page : 0,
-    //   ref: reqQuery.ref,
-    //   age: reqQuery.age,
-    //   sex: reqQuery.sex,
-    //   region: reqQuery.region,
-    //   order: reqQuery.order,
-    //   limit: Number(reqQuery.limit) ? reqQuery.limit : undefined,
-    //   page: reqQuery.page,
-    // }
-    // if (reqQuery.limit) console.log(`${query.limit}-----${typeof(query.limit)}`)
-    const a = Number(reqQuery)
-    console.log(`${a}, ${typeof(a)}`)
-
-    // const query: PetQuery = req.query
-    console.log(req.query.limit)
-
+    const query: PetQuery = {
+      ref: reqQuery.ref,
+      age: reqQuery.age,
+      sex: reqQuery.sex,
+      region: reqQuery.region,
+      order: reqQuery.order,
+      limit: reqQuery.limit ? Number(reqQuery.limit) : undefined,
+      page: reqQuery.page ? Number(reqQuery.page): undefined,
+    }
     const valid: boolean = ajv.validate(schema, query)
-    console.log(query)
 
     if (!valid) return res.status(httpStatus.BAD_REQUEST).json(ajv.errors)
-    else return res.status(200).send('OK')
-    // else {
-    //   // const query: PetQuery = req.query
-    //   res.status(200).send(await this.petModel.getAll(query))
-    // }
+    else {
+      const result = await this.petModel.getAll(query)
+      return res.status(200).json(result)
+    }
   }
 }
