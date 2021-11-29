@@ -1,5 +1,5 @@
 /**
- * 區域分布
+ * 區域分佈
  *
  * @enum {string} E 東部
  * @enum {string} W 西部
