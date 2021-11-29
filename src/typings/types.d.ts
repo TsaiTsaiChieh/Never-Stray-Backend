@@ -5,7 +5,7 @@
  * @enum {number} 0 false
  * @enum {number} -1 undefined/unknown
  */
- type triStateType = 1 | 0 | -1
+type triStateType = 1 | 0 | -1
 
 /**
  * 排序方式

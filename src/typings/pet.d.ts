@@ -23,7 +23,7 @@ type PetSexType = 'F' | 'M' | 'U'
  * @enum {string} M male
  * @enum {string} U unknown
  */
- type PetAgeType = 'A' | 'C' | 'U'
+type PetAgeType = 'A' | 'C' | 'U'
 
 /**
  * 寵物狀態
@@ -34,7 +34,7 @@ type PetSexType = 'F' | 'M' | 'U'
  * @enum {string} Other 其他
  * @enum {string} Dead 死亡
  */
- type PetStatusType = 'Unknown' | 'Open' | 'Adopted' | 'Other' | 'Dead'
+type PetStatusType = 'Unknown' | 'Open' | 'Adopted' | 'Other' | 'Dead'
 
  /**
  * 寵物狀態
@@ -43,4 +43,4 @@ type PetSexType = 'F' | 'M' | 'U'
  * @enum {string} C 貓
  * @enum {string} O 其他
  */
-  type PetKindType = 'D' | 'C' | 'O'
+type PetKindType = 'D' | 'C' | 'O'
