@@ -2,9 +2,11 @@
 import {JSONSchemaType} from 'ajv'
 import {Request, Response} from 'express'
 import httpStatus from 'http-status'
-import {PetModel} from '../models/pet.model'
 import {Controller, Get, Req, Res} from 'routing-controllers'
+import safeAwait from 'safe-await'
 
+import {Pet} from '../entity/pet.entity'
+import {PetModel} from '../models/pet.model'
 import {ajv} from '../utils/ajv-service'
 
 const schema: JSONSchemaType<PetQuery> = {
@@ -16,13 +18,13 @@ const schema: JSONSchemaType<PetQuery> = {
     region: {type: 'string', enum: ['E', 'W', 'S', 'N', 'M'], nullable: true},
     order: {type: 'string', enum: ['ASC', 'DESC'], nullable: true},
     limit: {
-      type: 'number',
+      type: 'integer',
       default: parseInt(process.env.PET_QUERY_LIMIT!),
       minimum: 1,
       maximum: 100,
       nullable: true,
     },
-    page: {type: 'number', default: 1, minimum: 1, nullable: true},
+    page: {type: 'integer', default: 1, minimum: 1, nullable: true},
   },
 }
 
@@ -50,8 +52,13 @@ export class PetController {
 
     if (!valid) return res.status(httpStatus.BAD_REQUEST).json(ajv.errors)
     else {
-      const result = await this.petModel.getAll(query)
-      return res.status(200).json(result)
+      const [error, result]: [ErrorType, Pet[]] =
+      await safeAwait(this.petModel.getAll(query))
+      if (error) {
+        return res.status(error.code)
+        .json(error.isOperational ? error : error.status)
+      }
+      return res.json(result)
     }
   }
 }
