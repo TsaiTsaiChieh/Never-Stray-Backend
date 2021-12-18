@@ -71,6 +71,9 @@ export class Pet {
   @Column({type: 'enum', enum: Ref, nullable: false})
   ref: Ref
 
+  @Column({type: 'enum', enum: City, nullable: false, name: 'city_id'})
+  city_id?: City
+
   @ManyToOne((type) => Area)
   @JoinColumn({name: 'city_id', referencedColumnName: 'city'})
   city?: City
