@@ -84,7 +84,7 @@ export class Pet {
   @Column({type: 'enum', enum: Sex, default: Sex.UNKNOWN})
   sex: Sex
 
-  @Column({type: 'tinytext'})
+  @Column({type: 'varchar', length: 32, nullable: true})
   color: string
 
   @Column({type: 'enum', enum: Age, default: Age.UNKNOWN})
@@ -106,7 +106,7 @@ export class Pet {
   })
   rabies: Ternary
 
-  @Column({type: 'tinytext'})
+  @Column({type: 'varchar', length: 255, nullable: true})
   title: string
 
   @Column({type: 'enum', enum: Status, default: Status.UNKNOWN})
@@ -115,10 +115,10 @@ export class Pet {
   @Column({type: 'text', nullable: true})
   remark: string
 
-  @Column({type: 'tinytext', nullable: true})
+  @Column({type: 'varchar', length: 255, nullable: true})
   address: string
 
-  @Column({type: 'tinytext', nullable: true})
+  @Column({type: 'varchar', length: 16, nullable: true})
   phone: string
 
   @Column({type: 'json', nullable: true})
