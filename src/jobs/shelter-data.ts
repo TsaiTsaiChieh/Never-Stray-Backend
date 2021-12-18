@@ -67,12 +67,14 @@ export class Shelter {
     for (let page = 0; loopFlag; page++) {
       console.log(chalk.yellow(`--- Page: ${page} ---`))
       const [error, response]: [any, AxiosResponse<ShelterData[]>] =
-        await safeAwait(axios.get(
-          `${this.url}
+        await safeAwait(
+          axios.get(
+            `${this.url}
         &$top=${this.batch}
         &$skip=${this.batch * page}
         &animal_status=OPEN`,
-        ))
+          ),
+        )
       if (error) throw new AppError(error)
 
       const data: ShelterData[] = response.data
@@ -103,59 +105,69 @@ export class Shelter {
     const ids: number[] = data.map((val) => val.animal_id)
 
     // Get the status of pet data that is open from DB
-    const [error, result]: [any, Pet[]] =
-      await safeAwait(this.petRepository.find(
-        [
-          {
-            status: Status.OPEN,
-            accept_num: Not(IsNull()),
-          },
-          {
-            status: Status.UNKNOWN,
-            accept_num: Not(IsNull()),
-          },
-        ]))
+    const [error, result]: [any, Pet[]] = await safeAwait(
+      this.petRepository.find([
+        {
+          status: Status.OPEN,
+          accept_num: Not(IsNull()),
+        },
+        {
+          status: Status.UNKNOWN,
+          accept_num: Not(IsNull()),
+        },
+      ]),
+    )
     if (error) throw new AppError(error)
 
     for (const ele of result) {
       const in_data_index = ids.indexOf(Number(ele.sub_id))
 
       if (in_data_index < 0) {
-        const [error, _]: [any, UpdateResult] =
-          await safeAwait(
-            this.petRepository.update({
+        const [error, _]: [any, UpdateResult] = await safeAwait(
+          this.petRepository.update(
+            {
               id: ele.id,
-            }, {
+            },
+            {
               status: Status.UNKNOWN,
-            }))
+            },
+          ),
+        )
         if (error) throw new AppError(error)
       } else {
-        const [error, _]: [any, UpdateResult] =
-          await safeAwait(this.petRepository.update({
-            sub_id: ele.sub_id,
-            accept_num: ele.accept_num,
-          }, {
-            ref: <Ref>'gov',
-            city: cityConvert(data[in_data_index].animal_area_pkid),
-            kind: petKindConvert(data[in_data_index].animal_kind),
-            sex: sexConvert(data[in_data_index].animal_sex),
-            color: data[in_data_index].animal_colour,
-            age: ageConvert(data[in_data_index].animal_age),
-            ligation: ternaryConvert(data[in_data_index].animal_sterilization),
-            rabies: ternaryConvert(data[in_data_index].animal_bacterin),
-            title: data[in_data_index].animal_place,
-            status: petStatusConvert(data[in_data_index].animal_status),
-            remark: data[in_data_index].animal_remark,
-            address: data[in_data_index].shelter_address,
-            phone: data[in_data_index].shelter_tel,
-            image: [data[in_data_index].album_file],
-            created_at: data[in_data_index].animal_createtime ?
-              new Date(data[in_data_index].animal_createtime) :
-              new Date(),
-          }))
+        const [error, _]: [any, UpdateResult] = await safeAwait(
+          this.petRepository.update(
+            {
+              sub_id: ele.sub_id,
+              accept_num: ele.accept_num,
+            },
+            {
+              ref: <Ref>'gov',
+              city: cityConvert(data[in_data_index].animal_area_pkid),
+              kind: petKindConvert(data[in_data_index].animal_kind),
+              sex: sexConvert(data[in_data_index].animal_sex),
+              color: data[in_data_index].animal_colour,
+              age: ageConvert(data[in_data_index].animal_age),
+              ligation: ternaryConvert(
+                data[in_data_index].animal_sterilization,
+              ),
+              rabies: ternaryConvert(data[in_data_index].animal_bacterin),
+              title: data[in_data_index].animal_place,
+              status: petStatusConvert(data[in_data_index].animal_status),
+              remark: data[in_data_index].animal_remark,
+              address: data[in_data_index].shelter_address,
+              phone: data[in_data_index].shelter_tel,
+              image: [data[in_data_index].album_file],
+              created_at: data[in_data_index].animal_createtime ?
+                new Date(data[in_data_index].animal_createtime) :
+                new Date(),
+            },
+          ),
+        )
         if (error) throw new AppError(error)
-        console.log(chalk.green(
-          `=== Update [${ele.sub_id}, ${ele.accept_num}] data ===`))
+        console.log(
+          chalk.green(`=== Update [${ele.sub_id}, ${ele.accept_num}] data ===`),
+        )
         // Filter out the ID which already been updated
         ids.splice(in_data_index, 1)
       }
@@ -195,9 +207,11 @@ export class Shelter {
         created_at: ele.animal_createtime ?
           new Date(ele.animal_createtime) :
           new Date(),
-      }))
-    const [error, result]: [any, Pet[]] =
-      await safeAwait(this.petRepository.saveMany(petData))
+      }),
+    )
+    const [error, result]: [any, Pet[]] = await safeAwait(
+      this.petRepository.saveMany(petData),
+    )
     if (error) throw new AppError(error)
     if (result) console.log(chalk.green(`=== Saved ${result.length} data ===`))
   }
@@ -211,5 +225,3 @@ export async function getShelterData(): Promise<void> {
   await shelter.saveData(data, ids)
   return
 }
-
-
