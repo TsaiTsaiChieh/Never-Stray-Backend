@@ -1,34 +1,38 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-    Column, CreateDateColumn, Entity, Index,
-    JoinColumn, ManyToOne, PrimaryGeneratedColumn,
-    UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm'
-
 
 import {Area, City} from './area.entity'
 
 export enum Ref {
   GOV = 'gov',
   MAP = 'map',
-  OWN = 'own'
+  OWN = 'own',
 }
 export enum Sex {
   FEMALE = 'F',
   MALE = 'M',
-  UNKNOWN = 'U'
+  UNKNOWN = 'U',
 }
 export enum Age {
   ADULT = 'A',
   CHILD = 'C',
-  UNKNOWN = 'U'
+  UNKNOWN = 'U',
 }
 
 export enum Ternary {
   TRUE = 'T',
   FALSE = 'F',
-  UNKNOWN = 'U'
+  UNKNOWN = 'U',
 }
 
 export enum Status {
@@ -36,13 +40,13 @@ export enum Status {
   OPEN = 'Open',
   ADOPTED = 'Adopted',
   OTHER = 'Other',
-  DEAD = 'Dead'
+  DEAD = 'Dead',
 }
 
 export enum Kind {
   DOG = 'D',
   CAT = 'C',
-  OTHER = 'O'
+  OTHER = 'O',
 }
 
 @Entity({name: 'pets'})
@@ -57,8 +61,10 @@ export class Pet {
   sub_id: number
 
   @Column({
-    type: 'varchar', length: 32,
-    nullable: true, comment: '政府收容編號',
+    type: 'varchar',
+    length: 32,
+    nullable: true,
+    comment: '政府收容編號',
   })
   accept_num: string
 
@@ -66,7 +72,7 @@ export class Pet {
   ref: Ref
 
   @ManyToOne((type) => Area)
-  @JoinColumn({'name': 'city_id', 'referencedColumnName': 'city'})
+  @JoinColumn({name: 'city_id', referencedColumnName: 'city'})
   city?: City
 
   @Column({type: 'enum', enum: Kind, nullable: false})
@@ -82,14 +88,18 @@ export class Pet {
   age: Age
 
   @Column({
-    type: 'enum', enum: Ternary,
-    default: Ternary.UNKNOWN, comment: '是否絕育',
+    type: 'enum',
+    enum: Ternary,
+    default: Ternary.UNKNOWN,
+    comment: '是否絕育',
   })
   ligation: Ternary
 
   @Column({
-    type: 'enum', enum: Ternary,
-    default: Ternary.UNKNOWN, comment: '是否施打狂犬病疫苗',
+    type: 'enum',
+    enum: Ternary,
+    default: Ternary.UNKNOWN,
+    comment: '是否施打狂犬病疫苗',
   })
   rabies: Ternary
 
@@ -117,4 +127,3 @@ export class Pet {
   @UpdateDateColumn()
   updated_at?: Date
 }
-
