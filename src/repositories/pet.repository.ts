@@ -1,4 +1,5 @@
 /* eslint-disable require-jsdoc */
+import {Area} from '../entity/area.entity'
 import safeAwait from 'safe-await'
 import {SelectQueryBuilder} from 'typeorm'
 
@@ -11,19 +12,29 @@ export class PetRepository extends BasicRepository<Pet> {
   }
 
   async findByFilters(query: PetQuery): Promise<Pet[]> {
-    const page: number = query.page ? query.page : 1
-    const limit: number = query.limit ? query.limit : 10
-    const skip: number = (page-1)*limit
+    const offset: number = (query.page! - 1) * query.limit!
 
-    const queryBuilder: SelectQueryBuilder<Pet> =
-    this.repository.createQueryBuilder('pet')
-    queryBuilder.where('pet.sex = :sex', {sex: query.sex})
-    queryBuilder.skip(skip).take(query.limit)
-    const [error, result]: [any, Pet[]] =
-    await safeAwait(queryBuilder.getMany())
+    const queryBuilder: SelectQueryBuilder<Pet> = this.repository
+      .createQueryBuilder('pet')
+      .leftJoin(Area, 'area', 'area.city = pet.city_id')
+    if (query.ref) queryBuilder.where('pet.ref = :ref', {ref: query.ref})
+    if (query.age) queryBuilder.andWhere('pet.age = :age', {age: query.age})
+    if (query.sex) queryBuilder.andWhere('pet.sex = :sex', {sex: query.sex})
+    if (query.region) {
+      queryBuilder.andWhere('area.region = :region', {region: query.region})
+    }
+    if (query.order) {
+      queryBuilder.orderBy(
+        `pet.${query.order}`,
+        `${query.ascend ? 'ASC' : 'DESC'}`,
+      )
+    }
+    queryBuilder.offset(offset).limit(query.limit)
+
+    const [error, result]: [any, Pet[]] = await safeAwait(
+      queryBuilder.getMany(),
+    )
     if (error) throw error
-    console.log(result)
-
     return result
   }
 }
