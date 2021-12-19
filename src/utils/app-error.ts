@@ -11,10 +11,10 @@ export class AppError extends Error {
 
   constructor(
     message: string,
-    details?: string,
+    details?: any,
     isOperational: boolean = true,
     code: number = httpStatus.INTERNAL_SERVER_ERROR,
-    ) {
+  ) {
     super()
     this.message = message
     this.details = details
@@ -30,7 +30,7 @@ export class AppError extends Error {
 export class DBError extends AppError {
   constructor(
     message: string = 'MySQL 錯誤',
-    details: string,
+    details: any,
     isOperational: boolean = true,
     code: number = httpStatus.INTERNAL_SERVER_ERROR,
   ) {
