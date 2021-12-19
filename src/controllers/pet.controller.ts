@@ -16,7 +16,22 @@ const schema: JSONSchemaType<PetQuery> = {
     age: {type: 'string', enum: ['A', 'C', 'U'], nullable: true},
     sex: {type: 'string', enum: ['F', 'M', 'U'], nullable: true},
     region: {type: 'string', enum: ['E', 'W', 'S', 'N', 'M'], nullable: true},
-    order: {type: 'string', enum: ['ASC', 'DESC'], nullable: true},
+    order: {
+      type: 'string',
+      enum: [
+        'id',
+        'ref',
+        'city_id',
+        'kind',
+        'sex',
+        'color',
+        'age',
+        'created_at',
+        'updated_at',
+      ],
+      nullable: true,
+    },
+    ascend: {type: 'integer', default: 1, enum: [0, 1], nullable: true},
     limit: {
       type: 'integer',
       default: parseInt(process.env.PET_QUERY_LIMIT!),
@@ -45,18 +60,21 @@ export class PetController {
       sex: reqQuery.sex,
       region: reqQuery.region,
       order: reqQuery.order,
+      ascend: reqQuery.ascend ? Number(reqQuery.ascend) : undefined,
       limit: reqQuery.limit ? Number(reqQuery.limit) : undefined,
-      page: reqQuery.page ? Number(reqQuery.page): undefined,
+      page: reqQuery.page ? Number(reqQuery.page) : undefined,
     }
     const valid: boolean = ajv.validate(schema, query)
 
     if (!valid) return res.status(httpStatus.BAD_REQUEST).json(ajv.errors)
     else {
-      const [error, result]: [ErrorType, Pet[]] =
-      await safeAwait(this.petModel.getAll(query))
+      const [error, result]: [ErrorType, Pet[]] = await safeAwait(
+        this.petModel.getAll(query),
+      )
       if (error) {
-        return res.status(error.code)
-        .json(error.isOperational ? error : error.status)
+        return res
+          .status(error.code)
+          .json(error.isOperational ? error : error.status)
       }
       return res.json(result)
     }
