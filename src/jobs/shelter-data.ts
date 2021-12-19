@@ -2,7 +2,7 @@
 import axios, {AxiosResponse} from 'axios'
 import safeAwait from 'safe-await'
 import {IsNull, Not, UpdateResult} from 'typeorm'
-import {greenLog, yellowLog} from 'utils/chalk-logger'
+import {greenLog, yellowLog} from '../utils/chalk-logger'
 
 import {Pet, Ref, Status} from '../entity/pet.entity'
 import {PetRepository} from '../repositories/pet.repository'

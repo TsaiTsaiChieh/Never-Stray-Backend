@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import {greenLog} from 'utils/chalk-logger'
+import {greenLog} from './utils/chalk-logger'
 
 import {initializerApp} from './initializer'
 
