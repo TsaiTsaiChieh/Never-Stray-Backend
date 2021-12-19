@@ -2,11 +2,12 @@
 import axios, {AxiosResponse} from 'axios'
 import safeAwait from 'safe-await'
 import {IsNull, Not, UpdateResult} from 'typeorm'
-import {greenLog, yellowLog} from '../utils/chalk-logger'
 
 import {Pet, Ref, Status} from '../entity/pet.entity'
 import {PetRepository} from '../repositories/pet.repository'
 import {AppError} from '../utils/app-error'
+import {greenLog, yellowLog} from '../utils/chalk-logger'
+import {deepCopy} from '../utils/helper'
 import {
   ageConvert,
   cityConvert,
@@ -45,6 +46,7 @@ type ShelterData = {
   shelter_address: string
   shelter_tel: string
 }
+
 /** Class representing a pet repository  */
 export class Shelter {
   public url: string = process.env.NATIONAL_ANIMAL_SHELTER!
@@ -95,13 +97,14 @@ export class Shelter {
    * 搜尋狀態為待認領的動物資料，若未在狀態為待認領的 API 裡，則狀態改為未知，
    * 反之，更新資料，移除 API 裡該筆動物資料的 ID 後回傳
    *
-   * @param  {ShelterData[]} data - From API
-   * @return {number[]} ids - Should be saved data's IDs
+   * @param  {ShelterData[]} data From API
+   * @return {number[]} left_ids data IDs after filter out
    */
   public async updatePetStatus(data: ShelterData[]): Promise<number[]> {
     // Get all animal ids from API
     const ids: number[] = data.map((val) => val.animal_id)
-
+    const left_ids = deepCopy(ids)
+    yellowLog(ids)
     // Get the status of pet data that is open from DB
     const [error, result]: [any, Pet[]] = await safeAwait(
       this.petRepository.find([
@@ -165,18 +168,18 @@ export class Shelter {
         if (error) throw new AppError(error)
         greenLog(`=== Update [${ele.sub_id}, ${ele.accept_num}] data ===`)
         // Filter out the ID which already been updated
-        ids.splice(in_data_index, 1)
+        left_ids.splice(in_data_index, 1)
       }
     }
-    greenLog(`=== ${ids.length} data should be stored ===`)
-    return ids
+    greenLog(`=== ${left_ids.length} data should be stored ===`)
+    return left_ids
   }
 
   /**
    * 儲存寵物的資訊
    *
-   * @param  {ShelterData[]} data - From axios
-   * @param  {number[]} ids - ID which already been updated after filter out
+   * @param  {ShelterData[]} data From axios
+   * @param  {number[]} ids IDs which already been updated after filter out
    */
   public async saveData(data: ShelterData[], ids: number[]): Promise<void> {
     const petData: Pet[] = []
