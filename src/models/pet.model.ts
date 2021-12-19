@@ -11,10 +11,11 @@ export class PetModel {
     this.petRepository = new PetRepository()
   }
 
-  async getAll(query: PetQuery):Promise<any> {
-    const [error, result]: [SQLErrorType, Pet[]] =
-    await safeAwait(this.petRepository.findByFilters(query))
-    if (error) return new DBError(error.sqlMessage, error.sql)
+  async getAll(query: PetQuery): Promise<any> {
+    const [error, result]: [any, Pet[]] = await safeAwait(
+      this.petRepository.findByFilters(query),
+    )
+    if (error) return new DBError(error.toString(), error)
     return result
   }
 }
