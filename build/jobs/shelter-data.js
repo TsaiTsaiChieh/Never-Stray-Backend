@@ -44,10 +44,11 @@ exports.getShelterData = exports.Shelter = void 0;
 var axios_1 = __importDefault(require("axios"));
 var safe_await_1 = __importDefault(require("safe-await"));
 var typeorm_1 = require("typeorm");
-var chalk_logger_1 = require("../utils/chalk-logger");
 var pet_entity_1 = require("../entity/pet.entity");
 var pet_repository_1 = require("../repositories/pet.repository");
 var app_error_1 = require("../utils/app-error");
+var chalk_logger_1 = require("../utils/chalk-logger");
+var helper_1 = require("../utils/helper");
 var value_convert_1 = require("../utils/value-convert");
 /** Class representing a pet repository  */
 var Shelter = /** @class */ (function () {
@@ -107,16 +108,18 @@ var Shelter = /** @class */ (function () {
      * 搜尋狀態為待認領的動物資料，若未在狀態為待認領的 API 裡，則狀態改為未知，
      * 反之，更新資料，移除 API 裡該筆動物資料的 ID 後回傳
      *
-     * @param  {ShelterData[]} data - From API
-     * @return {number[]} ids - Should be saved data's IDs
+     * @param  {ShelterData[]} data From API
+     * @return {number[]} left_ids data IDs after filter out
      */
     Shelter.prototype.updatePetStatus = function (data) {
         return __awaiter(this, void 0, void 0, function () {
-            var ids, _a, error, result, _i, result_1, ele, in_data_index, _b, error_1, _1, _c, error_2, _2;
+            var ids, left_ids, _a, error, result, _i, result_1, ele, in_data_index, _b, error_1, _1, _c, error_2, _2;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
                         ids = data.map(function (val) { return val.animal_id; });
+                        left_ids = helper_1.deepCopy(ids);
+                        chalk_logger_1.yellowLog(ids);
                         return [4 /*yield*/, safe_await_1.default(this.petRepository.find([
                                 {
                                     status: pet_entity_1.Status.OPEN,
@@ -176,14 +179,14 @@ var Shelter = /** @class */ (function () {
                             throw new app_error_1.AppError(error_2);
                         chalk_logger_1.greenLog("=== Update [" + ele.sub_id + ", " + ele.accept_num + "] data ===");
                         // Filter out the ID which already been updated
-                        ids.splice(in_data_index, 1);
+                        left_ids.splice(in_data_index, 1);
                         _d.label = 6;
                     case 6:
                         _i++;
                         return [3 /*break*/, 2];
                     case 7:
-                        chalk_logger_1.greenLog("=== " + ids.length + " data should be stored ===");
-                        return [2 /*return*/, ids];
+                        chalk_logger_1.greenLog("=== " + left_ids.length + " data should be stored ===");
+                        return [2 /*return*/, left_ids];
                 }
             });
         });
@@ -191,8 +194,8 @@ var Shelter = /** @class */ (function () {
     /**
      * 儲存寵物的資訊
      *
-     * @param  {ShelterData[]} data - From axios
-     * @param  {number[]} ids - ID which already been updated after filter out
+     * @param  {ShelterData[]} data From axios
+     * @param  {number[]} ids IDs which already been updated after filter out
      */
     Shelter.prototype.saveData = function (data, ids) {
         return __awaiter(this, void 0, void 0, function () {
