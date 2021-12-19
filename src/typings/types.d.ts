@@ -16,27 +16,6 @@ type triStateType = 1 | 0 | -1
 type OrderType = 'ASC' | 'DESC'
 
 /**
- * SQL 錯誤訊息的架構
- *
- * @type {string} query - parameterized query
- * @type {string[]} parameters
- * @type {string} code
- * @type {number} errno
- * @type {string} sqlState
- * @type {string} sqlMessage - SQL error message
- * @type {string} sql - SQL raw query
- */
-type SQLErrorType = {
-  query: string
-  parameters: string[]
-  code: string
-  errno: number
-  sqlState: string
-  sqlMessage: string
-  sql: string
-}
-
-/**
  * 錯誤訊息的架構
  *
  * @type {string} message
