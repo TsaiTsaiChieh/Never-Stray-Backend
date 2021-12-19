@@ -55,7 +55,7 @@ var JOB_PORT = parseInt(process.env.JOB_PORT);
                 app = (_a.sent()).app;
                 app.listen(JOB_PORT, function () {
                     chalk_logger_1.greenLog("Crawler listening at http://localhost:" + JOB_PORT);
-                    node_schedule_1.scheduleJob('0 */1 * * * *', function () {
+                    node_schedule_1.scheduleJob('0 */1 * * *', function () {
                         chalk_logger_1.yellowLog("Get shelter data start at " + new Date());
                         shelter_data_1.getShelterData();
                     });
