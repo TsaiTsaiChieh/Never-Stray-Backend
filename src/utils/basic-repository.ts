@@ -14,8 +14,8 @@ export class BasicRepository<T> {
   protected repository: Repository<T>
   private entity: ObjectType<T>
   /**
-  * @param  {ObjectType<T>} entity
-  */
+   * @param  {ObjectType<T>} entity
+   */
   constructor(entity: ObjectType<T>) {
     this.entity = entity
     this.repository = getRepository(entity)
@@ -62,8 +62,10 @@ export class BasicRepository<T> {
    * where, relation, join, order
    * @return {Promise<T|undefined>}
    */
-  findOne(conditions?: FindConditions<T>,
-    options?: FindOneOptions<T>): Promise<T | undefined> {
+  findOne(
+    conditions?: FindConditions<T>,
+    options?: FindOneOptions<T>,
+  ): Promise<T | undefined> {
     return this.repository.findOne(conditions, options)
   }
   /**
@@ -73,8 +75,10 @@ export class BasicRepository<T> {
    * @param  {QueryDeepPartialEntity<T>} data - Updates entity partially
    * @return {Promise<UpdateResult>}
    */
-  update(conditions: FindConditions<T>,
-    data: QueryDeepPartialEntity<T>): Promise<UpdateResult> {
+  update(
+    conditions: FindConditions<T>,
+    data: QueryDeepPartialEntity<T>,
+  ): Promise<UpdateResult> {
     return this.repository.update(conditions, data)
   }
 }

@@ -6,8 +6,10 @@ import {Connection} from 'typeorm'
 import {connection} from './config/database'
 import {AppError} from './utils/app-error'
 
-export const initializerApp = async ():
-  Promise<{app: Application, db: Connection}> => {
+export const initializerApp = async (): Promise<{
+  app: Application
+  db: Connection
+}> => {
   const app: Application = express()
 
   const [error, db]: [any, Connection] = await safeAwait(connection())

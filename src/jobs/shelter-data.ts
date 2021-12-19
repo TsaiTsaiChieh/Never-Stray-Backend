@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import axios, {AxiosResponse} from 'axios'
-import chalk from 'chalk'
 import safeAwait from 'safe-await'
 import {IsNull, Not, UpdateResult} from 'typeorm'
+import {greenLog, yellowLog} from 'utils/chalk-logger'
 
 import {Pet, Ref, Status} from '../entity/pet.entity'
 import {PetRepository} from '../repositories/pet.repository'
@@ -63,16 +63,14 @@ export class Shelter {
   public async getData(): Promise<ShelterData[]> {
     const allData: ShelterData[] = []
     let loopFlag: boolean = true
-
     for (let page = 0; loopFlag; page++) {
-      console.log(chalk.yellow(`--- Page: ${page} ---`))
+      yellowLog(`--- Page: ${page} ---`)
       const [error, response]: [any, AxiosResponse<ShelterData[]>] =
         await safeAwait(
           axios.get(
-            `${this.url}
-        &$top=${this.batch}
-        &$skip=${this.batch * page}
-        &animal_status=OPEN`,
+            `${this.url}&$top=${this.batch}&$skip=${
+              this.batch * page
+            }&animal_status=OPEN`,
           ),
         )
       if (error) throw new AppError(error)
@@ -87,7 +85,7 @@ export class Shelter {
         }
       })
     }
-    console.log(chalk.green(`=== Get ${allData.length} data ===`))
+    greenLog(`=== Get ${allData.length} data ===`)
     return allData
   }
 
@@ -165,14 +163,12 @@ export class Shelter {
           ),
         )
         if (error) throw new AppError(error)
-        console.log(
-          chalk.green(`=== Update [${ele.sub_id}, ${ele.accept_num}] data ===`),
-        )
+        greenLog(`=== Update [${ele.sub_id}, ${ele.accept_num}] data ===`)
         // Filter out the ID which already been updated
         ids.splice(in_data_index, 1)
       }
     }
-    console.log(chalk.green(`=== ${ids.length} data should be stored ===`))
+    greenLog(`=== ${ids.length} data should be stored ===`)
     return ids
   }
 
@@ -213,7 +209,7 @@ export class Shelter {
       this.petRepository.saveMany(petData),
     )
     if (error) throw new AppError(error)
-    if (result) console.log(chalk.green(`=== Saved ${result.length} data ===`))
+    if (result) greenLog(`=== Saved ${result.length} data ===`)
   }
 }
 

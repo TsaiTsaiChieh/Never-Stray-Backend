@@ -36,7 +36,7 @@ type PetAgeType = 'A' | 'C' | 'U'
  */
 type PetStatusType = 'Unknown' | 'Open' | 'Adopted' | 'Other' | 'Dead'
 
- /**
+/**
  * 寵物狀態
  *
  * @enum {string} D 狗
@@ -45,23 +45,47 @@ type PetStatusType = 'Unknown' | 'Open' | 'Adopted' | 'Other' | 'Dead'
  */
 type PetKindType = 'D' | 'C' | 'O'
 
- /**
+/**
+ * 可排序欄位
+ *
+ * @enum {string} id 編碼
+ * @enum {string} ref 資料來源
+ * @enum {string} city_id 區域
+ * @enum {string} kind 種類
+ * @enum {string} sex 性別
+ * @enum {string} color 顏色
+ * @enum {string} age 年齡
+ * @enum {string} created_at 建立時間
+ * @enum {string} updated_at 更新時間
+ */
+type PetOrderType =
+  | 'id'
+  | 'ref'
+  | 'city_id'
+  | 'kind'
+  | 'sex'
+  | 'color'
+  | 'age'
+  | 'created_at'
+  | 'updated_at'
+/**
  * pet query
  *
  * @type {PetRefType} ref 資料來源
  * @type {PetAgeType} age 寵物年齡
  * @type {PetSexType} sex 寵物性別
  * @type {AreaRegionType} region 區域分佈
- * @type {OrderType} order 排序方式
+ * @type {PetOrderType} order 排序方式
  * @type {number} limit 限制傳回的資料筆數
  * @type {number} page 分頁
  */
 interface PetQuery {
-    ref?: PetRefType
-    age?: PetAgeType
-    sex?: PetSexType
-    region?: AreaRegionType
-    order?: OrderType
-    limit?: number
-    page?: number
-  }
+  ref?: PetRefType
+  age?: PetAgeType
+  sex?: PetSexType
+  region?: AreaRegionType
+  order?: PetOrderType
+  ascend?: number
+  limit?: number
+  page?: number
+}

@@ -3,10 +3,10 @@
 import {MigrationInterface, QueryRunner} from 'typeorm'
 
 export class CreatePetAndAreaTable1636729732395 implements MigrationInterface {
-    name = 'CreatePetAndAreaTable1636729732395'
+  name = 'CreatePetAndAreaTable1636729732395'
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             CREATE TABLE \`ns-app\`.\`areas\` (
                 \`id\` int NOT NULL AUTO_INCREMENT,
                 \`region\` enum ('E', 'W', 'S', 'N', 'M') NOT NULL,
@@ -40,7 +40,7 @@ export class CreatePetAndAreaTable1636729732395 implements MigrationInterface {
                 PRIMARY KEY (\`id\`)
             ) ENGINE = InnoDB
         `)
-        await queryRunner.query(`
+    await queryRunner.query(`
             CREATE TABLE \`ns-app\`.\`pets\` (
                 \`id\` int NOT NULL AUTO_INCREMENT,
                 \`sub_id\` int NOT NULL,
@@ -89,33 +89,33 @@ export class CreatePetAndAreaTable1636729732395 implements MigrationInterface {
                 PRIMARY KEY (\`id\`)
             ) ENGINE = InnoDB
         `)
-        await queryRunner.query(`
+    await queryRunner.query(`
             ALTER TABLE \`ns-app\`.\`pets\`
             ADD CONSTRAINT \`FK_859edd5c48585a95bd7c7d4e4c9\` FOREIGN KEY (\`city_id\`) REFERENCES \`ns-app\`.\`areas\`(\`city\`) ON DELETE NO ACTION ON UPDATE NO ACTION
         `)
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             ALTER TABLE \`ns-app\`.\`pets\` DROP FOREIGN KEY \`FK_859edd5c48585a95bd7c7d4e4c9\`
         `)
-        await queryRunner.query(`
+    await queryRunner.query(`
             DROP INDEX \`IDX_e87fb3dcb389be107725e1f1bf\` ON \`ns-app\`.\`pets\`
         `)
-        await queryRunner.query(`
+    await queryRunner.query(`
             DROP INDEX \`IDX_6e94e5943dfbc8b2bb9ff0de55\` ON \`ns-app\`.\`pets\`
         `)
-        await queryRunner.query(`
+    await queryRunner.query(`
             DROP TABLE \`ns-app\`.\`pets\`
         `)
-        await queryRunner.query(`
+    await queryRunner.query(`
             DROP INDEX \`IDX_83604f081c8f39604d33db2e7d\` ON \`ns-app\`.\`areas\`
         `)
-        await queryRunner.query(`
+    await queryRunner.query(`
             DROP INDEX \`IDX_e9481f082921789e2cb47a79a5\` ON \`ns-app\`.\`areas\`
         `)
-        await queryRunner.query(`
+    await queryRunner.query(`
             DROP TABLE \`ns-app\`.\`areas\`
         `)
-    }
+  }
 }

@@ -8,4 +8,3 @@
  * @enum {string} M 中部
  */
 type AreaRegionType = 'E' | 'W' | 'S' | 'N' | 'M'
-

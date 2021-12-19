@@ -140,8 +140,8 @@ export function cityConvert(city: number): City {
       return City.KMN
     case 23:
       return City.LNN
-  default:
-    return City.TPE
+    default:
+      return City.TPE
   }
 }
 
@@ -166,4 +166,3 @@ export function regionConvert(region: string): Region {
       return Region.NORTH
   }
 }
-

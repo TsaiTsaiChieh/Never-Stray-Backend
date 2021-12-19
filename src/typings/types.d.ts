@@ -29,11 +29,11 @@ type OrderType = 'ASC' | 'DESC'
 type SQLErrorType = {
   query: string
   parameters: string[]
-  code: string,
-  errno: number,
-  sqlState: string,
-  sqlMessage: string,
-  sql: string,
+  code: string
+  errno: number
+  sqlState: string
+  sqlMessage: string
+  sql: string
 }
 
 /**
@@ -45,10 +45,10 @@ type SQLErrorType = {
  * @enum {string} status - fail or error
  * @type {boolean} isOperational
  */
- type ErrorType = {
+type ErrorType = {
   message: string
   details?: string
-  code: number,
-  status: 'fail' | 'error',
-  isOperational: boolean,
+  code: number
+  status: 'fail' | 'error'
+  isOperational: boolean
 }
