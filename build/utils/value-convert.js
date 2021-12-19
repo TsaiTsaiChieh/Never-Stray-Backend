@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.regionConvert = exports.cityConvert = exports.petKindConvert = exports.petStatusConvert = exports.ternaryConvert = exports.ageConvert = exports.sexConvert = void 0;
-var Area_1 = require("../entity/Area");
-var Pet_1 = require("../entity/Pet");
+var area_entity_1 = require("../entity/area.entity");
+var pet_entity_1 = require("../entity/pet.entity");
 /** Sex string converter
  *
  * @param  {string} sex sex string
@@ -10,16 +10,16 @@ var Pet_1 = require("../entity/Pet");
  */
 function sexConvert(sex) {
     switch (sex) {
-        case Pet_1.Sex.MALE:
+        case pet_entity_1.Sex.MALE:
         case '公':
         case '男':
-            return Pet_1.Sex.MALE;
-        case Pet_1.Sex.FEMALE:
+            return pet_entity_1.Sex.MALE;
+        case pet_entity_1.Sex.FEMALE:
         case '母':
         case '女':
-            return Pet_1.Sex.FEMALE;
+            return pet_entity_1.Sex.FEMALE;
         default:
-            return Pet_1.Sex.UNKNOWN;
+            return pet_entity_1.Sex.UNKNOWN;
     }
 }
 exports.sexConvert = sexConvert;
@@ -31,11 +31,11 @@ exports.sexConvert = sexConvert;
 function ageConvert(age) {
     switch (age.toLowerCase()) {
         case 'adult':
-            return Pet_1.Age.ADULT;
+            return pet_entity_1.Age.ADULT;
         case 'child':
-            return Pet_1.Age.CHILD;
+            return pet_entity_1.Age.CHILD;
         default:
-            return Pet_1.Age.UNKNOWN;
+            return pet_entity_1.Age.UNKNOWN;
     }
 }
 exports.ageConvert = ageConvert;
@@ -46,12 +46,12 @@ exports.ageConvert = ageConvert;
  */
 function ternaryConvert(value) {
     switch (value) {
-        case Pet_1.Ternary.FALSE:
-            return Pet_1.Ternary.FALSE;
-        case Pet_1.Ternary.TRUE:
-            return Pet_1.Ternary.TRUE;
+        case pet_entity_1.Ternary.FALSE:
+            return pet_entity_1.Ternary.FALSE;
+        case pet_entity_1.Ternary.TRUE:
+            return pet_entity_1.Ternary.TRUE;
         default:
-            return Pet_1.Ternary.UNKNOWN;
+            return pet_entity_1.Ternary.UNKNOWN;
     }
 }
 exports.ternaryConvert = ternaryConvert;
@@ -62,16 +62,16 @@ exports.ternaryConvert = ternaryConvert;
  */
 function petStatusConvert(status) {
     switch (status.toLowerCase()) {
-        case Pet_1.Status.ADOPTED.toLowerCase():
-            return Pet_1.Status.ADOPTED;
-        case Pet_1.Status.OPEN.toLowerCase():
-            return Pet_1.Status.OPEN;
-        case Pet_1.Status.DEAD.toLowerCase():
-            return Pet_1.Status.DEAD;
-        case Pet_1.Status.OTHER.toLowerCase():
-            return Pet_1.Status.OTHER;
+        case pet_entity_1.Status.ADOPTED.toLowerCase():
+            return pet_entity_1.Status.ADOPTED;
+        case pet_entity_1.Status.OPEN.toLowerCase():
+            return pet_entity_1.Status.OPEN;
+        case pet_entity_1.Status.DEAD.toLowerCase():
+            return pet_entity_1.Status.DEAD;
+        case pet_entity_1.Status.OTHER.toLowerCase():
+            return pet_entity_1.Status.OTHER;
         default:
-            return Pet_1.Status.UNKNOWN;
+            return pet_entity_1.Status.UNKNOWN;
     }
 }
 exports.petStatusConvert = petStatusConvert;
@@ -83,11 +83,11 @@ exports.petStatusConvert = petStatusConvert;
 function petKindConvert(kind) {
     switch (kind) {
         case '狗':
-            return Pet_1.Kind.DOG;
+            return pet_entity_1.Kind.DOG;
         case '貓':
-            return Pet_1.Kind.CAT;
+            return pet_entity_1.Kind.CAT;
         default:
-            return Pet_1.Kind.OTHER;
+            return pet_entity_1.Kind.OTHER;
     }
 }
 exports.petKindConvert = petKindConvert;
@@ -99,51 +99,51 @@ exports.petKindConvert = petKindConvert;
 function cityConvert(city) {
     switch (city) {
         case 2:
-            return Area_1.City.TPE;
+            return area_entity_1.City.TPE;
         case 3:
-            return Area_1.City.TPH;
+            return area_entity_1.City.TPH;
         case 4:
-            return Area_1.City.KLU;
+            return area_entity_1.City.KLU;
         case 5:
-            return Area_1.City.ILN;
+            return area_entity_1.City.ILN;
         case 6:
-            return Area_1.City.TYC;
+            return area_entity_1.City.TYC;
         case 7:
-            return Area_1.City.HSH;
+            return area_entity_1.City.HSH;
         case 8:
-            return Area_1.City.HSC;
+            return area_entity_1.City.HSC;
         case 9:
-            return Area_1.City.MAL;
+            return area_entity_1.City.MAL;
         case 10:
-            return Area_1.City.TXG;
+            return area_entity_1.City.TXG;
         case 11:
-            return Area_1.City.CWH;
+            return area_entity_1.City.CWH;
         case 12:
-            return Area_1.City.NTO;
+            return area_entity_1.City.NTO;
         case 13:
-            return Area_1.City.YLH;
+            return area_entity_1.City.YLH;
         case 14:
-            return Area_1.City.CHY;
+            return area_entity_1.City.CHY;
         case 15:
-            return Area_1.City.CYI;
+            return area_entity_1.City.CYI;
         case 16:
-            return Area_1.City.TNN;
+            return area_entity_1.City.TNN;
         case 17:
-            return Area_1.City.KHH;
+            return area_entity_1.City.KHH;
         case 18:
-            return Area_1.City.IUH;
+            return area_entity_1.City.IUH;
         case 19:
-            return Area_1.City.HWA;
+            return area_entity_1.City.HWA;
         case 20:
-            return Area_1.City.TTT;
+            return area_entity_1.City.TTT;
         case 21:
-            return Area_1.City.PEH;
+            return area_entity_1.City.PEH;
         case 22:
-            return Area_1.City.KMN;
+            return area_entity_1.City.KMN;
         case 23:
-            return Area_1.City.LNN;
+            return area_entity_1.City.LNN;
         default:
-            return Area_1.City.TPE;
+            return area_entity_1.City.TPE;
     }
 }
 exports.cityConvert = cityConvert;
@@ -154,18 +154,18 @@ exports.cityConvert = cityConvert;
  */
 function regionConvert(region) {
     switch (region) {
-        case Area_1.Region.EAST:
-            return Area_1.Region.EAST;
-        case Area_1.Region.WEST:
-            return Area_1.Region.WEST;
-        case Area_1.Region.SOUTH:
-            return Area_1.Region.SOUTH;
-        case Area_1.Region.NORTH:
-            return Area_1.Region.NORTH;
-        case Area_1.Region.MIDDLE:
-            return Area_1.Region.MIDDLE;
+        case area_entity_1.Region.EAST:
+            return area_entity_1.Region.EAST;
+        case area_entity_1.Region.WEST:
+            return area_entity_1.Region.WEST;
+        case area_entity_1.Region.SOUTH:
+            return area_entity_1.Region.SOUTH;
+        case area_entity_1.Region.NORTH:
+            return area_entity_1.Region.NORTH;
+        case area_entity_1.Region.MIDDLE:
+            return area_entity_1.Region.MIDDLE;
         default:
-            return Area_1.Region.NORTH;
+            return area_entity_1.Region.NORTH;
     }
 }
 exports.regionConvert = regionConvert;

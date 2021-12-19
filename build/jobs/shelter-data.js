@@ -42,10 +42,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getShelterData = exports.Shelter = void 0;
 /* eslint-disable camelcase */
 var axios_1 = __importDefault(require("axios"));
-var chalk_1 = __importDefault(require("chalk"));
 var safe_await_1 = __importDefault(require("safe-await"));
 var typeorm_1 = require("typeorm");
-var Pet_1 = require("../entity/Pet");
+var chalk_logger_1 = require("../utils/chalk-logger");
+var pet_entity_1 = require("../entity/pet.entity");
 var pet_repository_1 = require("../repositories/pet.repository");
 var app_error_1 = require("../utils/app-error");
 var value_convert_1 = require("../utils/value-convert");
@@ -74,8 +74,8 @@ var Shelter = /** @class */ (function () {
                         _b.label = 1;
                     case 1:
                         if (!loopFlag) return [3 /*break*/, 4];
-                        console.log(chalk_1.default.yellow("--- Page: " + page + " ---"));
-                        return [4 /*yield*/, (0, safe_await_1.default)(axios_1.default.get(this.url + "\n        &$top=" + this.batch + "\n        &$skip=" + this.batch * page + "\n        &animal_status=OPEN"))];
+                        chalk_logger_1.yellowLog("--- Page: " + page + " ---");
+                        return [4 /*yield*/, safe_await_1.default(axios_1.default.get(this.url + "&$top=" + this.batch + "&$skip=" + this.batch * page + "&animal_status=OPEN"))];
                     case 2:
                         _a = _b.sent(), error = _a[0], response = _a[1];
                         if (error)
@@ -95,7 +95,7 @@ var Shelter = /** @class */ (function () {
                         page++;
                         return [3 /*break*/, 1];
                     case 4:
-                        console.log(chalk_1.default.green("=== Get " + allData.length + " data ==="));
+                        chalk_logger_1.greenLog("=== Get " + allData.length + " data ===");
                         return [2 /*return*/, allData];
                 }
             });
@@ -117,14 +117,14 @@ var Shelter = /** @class */ (function () {
                 switch (_d.label) {
                     case 0:
                         ids = data.map(function (val) { return val.animal_id; });
-                        return [4 /*yield*/, (0, safe_await_1.default)(this.petRepository.find([
+                        return [4 /*yield*/, safe_await_1.default(this.petRepository.find([
                                 {
-                                    status: Pet_1.Status.OPEN,
-                                    accept_num: (0, typeorm_1.Not)((0, typeorm_1.IsNull)()),
+                                    status: pet_entity_1.Status.OPEN,
+                                    accept_num: typeorm_1.Not(typeorm_1.IsNull()),
                                 },
                                 {
-                                    status: Pet_1.Status.UNKNOWN,
-                                    accept_num: (0, typeorm_1.Not)((0, typeorm_1.IsNull)()),
+                                    status: pet_entity_1.Status.UNKNOWN,
+                                    accept_num: typeorm_1.Not(typeorm_1.IsNull()),
                                 },
                             ]))];
                     case 1:
@@ -138,30 +138,30 @@ var Shelter = /** @class */ (function () {
                         ele = result_1[_i];
                         in_data_index = ids.indexOf(Number(ele.sub_id));
                         if (!(in_data_index < 0)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, (0, safe_await_1.default)(this.petRepository.update({
+                        return [4 /*yield*/, safe_await_1.default(this.petRepository.update({
                                 id: ele.id,
                             }, {
-                                status: Pet_1.Status.UNKNOWN,
+                                status: pet_entity_1.Status.UNKNOWN,
                             }))];
                     case 3:
                         _b = _d.sent(), error_1 = _b[0], _1 = _b[1];
                         if (error_1)
                             throw new app_error_1.AppError(error_1);
                         return [3 /*break*/, 6];
-                    case 4: return [4 /*yield*/, (0, safe_await_1.default)(this.petRepository.update({
+                    case 4: return [4 /*yield*/, safe_await_1.default(this.petRepository.update({
                             sub_id: ele.sub_id,
                             accept_num: ele.accept_num,
                         }, {
                             ref: 'gov',
-                            city: (0, value_convert_1.cityConvert)(data[in_data_index].animal_area_pkid),
-                            kind: (0, value_convert_1.petKindConvert)(data[in_data_index].animal_kind),
-                            sex: (0, value_convert_1.sexConvert)(data[in_data_index].animal_sex),
+                            city_id: value_convert_1.cityConvert(data[in_data_index].animal_area_pkid),
+                            kind: value_convert_1.petKindConvert(data[in_data_index].animal_kind),
+                            sex: value_convert_1.sexConvert(data[in_data_index].animal_sex),
                             color: data[in_data_index].animal_colour,
-                            age: (0, value_convert_1.ageConvert)(data[in_data_index].animal_age),
-                            ligation: (0, value_convert_1.ternaryConvert)(data[in_data_index].animal_sterilization),
-                            rabies: (0, value_convert_1.ternaryConvert)(data[in_data_index].animal_bacterin),
+                            age: value_convert_1.ageConvert(data[in_data_index].animal_age),
+                            ligation: value_convert_1.ternaryConvert(data[in_data_index].animal_sterilization),
+                            rabies: value_convert_1.ternaryConvert(data[in_data_index].animal_bacterin),
                             title: data[in_data_index].animal_place,
-                            status: (0, value_convert_1.petStatusConvert)(data[in_data_index].animal_status),
+                            status: value_convert_1.petStatusConvert(data[in_data_index].animal_status),
                             remark: data[in_data_index].animal_remark,
                             address: data[in_data_index].shelter_address,
                             phone: data[in_data_index].shelter_tel,
@@ -174,7 +174,7 @@ var Shelter = /** @class */ (function () {
                         _c = _d.sent(), error_2 = _c[0], _2 = _c[1];
                         if (error_2)
                             throw new app_error_1.AppError(error_2);
-                        console.log(chalk_1.default.green("=== Update [" + ele.sub_id + ", " + ele.accept_num + "] data ==="));
+                        chalk_logger_1.greenLog("=== Update [" + ele.sub_id + ", " + ele.accept_num + "] data ===");
                         // Filter out the ID which already been updated
                         ids.splice(in_data_index, 1);
                         _d.label = 6;
@@ -182,7 +182,7 @@ var Shelter = /** @class */ (function () {
                         _i++;
                         return [3 /*break*/, 2];
                     case 7:
-                        console.log(chalk_1.default.green("=== " + ids.length + " data should be stored ==="));
+                        chalk_logger_1.greenLog("=== " + ids.length + " data should be stored ===");
                         return [2 /*return*/, ids];
                 }
             });
@@ -207,15 +207,15 @@ var Shelter = /** @class */ (function () {
                                 ref: 'gov',
                                 sub_id: ele.animal_id,
                                 accept_num: ele.animal_subid,
-                                city: (0, value_convert_1.cityConvert)(ele.animal_area_pkid),
-                                kind: (0, value_convert_1.petKindConvert)(ele.animal_kind),
-                                sex: (0, value_convert_1.sexConvert)(ele.animal_sex),
+                                city_id: value_convert_1.cityConvert(ele.animal_area_pkid),
+                                kind: value_convert_1.petKindConvert(ele.animal_kind),
+                                sex: value_convert_1.sexConvert(ele.animal_sex),
                                 color: ele.animal_colour,
-                                age: (0, value_convert_1.ageConvert)(ele.animal_age),
-                                ligation: (0, value_convert_1.ternaryConvert)(ele.animal_sterilization),
-                                rabies: (0, value_convert_1.ternaryConvert)(ele.animal_bacterin),
+                                age: value_convert_1.ageConvert(ele.animal_age),
+                                ligation: value_convert_1.ternaryConvert(ele.animal_sterilization),
+                                rabies: value_convert_1.ternaryConvert(ele.animal_bacterin),
                                 title: ele.animal_place,
-                                status: (0, value_convert_1.petStatusConvert)(ele.animal_status),
+                                status: value_convert_1.petStatusConvert(ele.animal_status),
                                 remark: ele.animal_remark,
                                 address: ele.shelter_address,
                                 phone: ele.shelter_tel,
@@ -225,13 +225,13 @@ var Shelter = /** @class */ (function () {
                                     new Date(),
                             });
                         });
-                        return [4 /*yield*/, (0, safe_await_1.default)(this.petRepository.saveMany(petData))];
+                        return [4 /*yield*/, safe_await_1.default(this.petRepository.saveMany(petData))];
                     case 1:
                         _a = _b.sent(), error = _a[0], result = _a[1];
                         if (error)
                             throw new app_error_1.AppError(error);
                         if (result)
-                            console.log(chalk_1.default.green("=== Saved " + result.length + " data ==="));
+                            chalk_logger_1.greenLog("=== Saved " + result.length + " data ===");
                         return [2 /*return*/];
                 }
             });

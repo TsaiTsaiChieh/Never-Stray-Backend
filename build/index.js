@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var dotenv_1 = __importDefault(require("dotenv"));
+var chalk_logger_1 = require("./utils/chalk-logger");
 var initializer_1 = require("./initializer");
 dotenv_1.default.config();
 var APP_PORT = parseInt(process.env.APP_PORT);
@@ -47,11 +48,11 @@ var APP_PORT = parseInt(process.env.APP_PORT);
     var app;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, initializer_1.initializerApp)()];
+            case 0: return [4 /*yield*/, initializer_1.initializerApp()];
             case 1:
                 app = (_a.sent()).app;
                 app.listen(process.env.APP_PORT, function () {
-                    console.log("App listening at http://localhost:" + APP_PORT);
+                    chalk_logger_1.greenLog("App listening at http://localhost:" + APP_PORT);
                 });
                 return [2 /*return*/];
         }

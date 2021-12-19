@@ -16,14 +16,14 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AreaRepository = void 0;
-var Area_1 = require("../entity/Area");
+var area_entity_1 = require("../entity/area.entity");
 var basic_repository_1 = require("../utils/basic-repository");
 /** Class representing an area repository */
 var AreaRepository = /** @class */ (function (_super) {
     __extends(AreaRepository, _super);
     /** Create an area */
     function AreaRepository() {
-        return _super.call(this, Area_1.Area) || this;
+        return _super.call(this, area_entity_1.Area) || this;
     }
     return AreaRepository;
 }(basic_repository_1.BasicRepository));

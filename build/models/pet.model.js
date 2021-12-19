@@ -39,28 +39,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var dotenv_1 = __importDefault(require("dotenv"));
-var node_schedule_1 = require("node-schedule");
-var chalk_logger_1 = require("./utils/chalk-logger");
-var initializer_1 = require("./initializer");
-var shelter_data_1 = require("./jobs/shelter-data");
-dotenv_1.default.config();
-var JOB_PORT = parseInt(process.env.JOB_PORT);
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var app;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, initializer_1.initializerApp()];
-            case 1:
-                app = (_a.sent()).app;
-                app.listen(JOB_PORT, function () {
-                    chalk_logger_1.greenLog("Crawler listening at http://localhost:" + JOB_PORT);
-                    node_schedule_1.scheduleJob('0 */1 * * * *', function () {
-                        chalk_logger_1.yellowLog("Get shelter data start at " + new Date());
-                        shelter_data_1.getShelterData();
-                    });
-                });
-                return [2 /*return*/];
-        }
-    });
-}); })();
+exports.PetModel = void 0;
+/* eslint-disable require-jsdoc */
+var safe_await_1 = __importDefault(require("safe-await"));
+var pet_repository_1 = require("../repositories/pet.repository");
+var app_error_1 = require("../utils/app-error");
+var PetModel = /** @class */ (function () {
+    function PetModel() {
+        this.petRepository = new pet_repository_1.PetRepository();
+    }
+    PetModel.prototype.getAll = function (query) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, error, result;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, safe_await_1.default(this.petRepository.findByFilters(query))];
+                    case 1:
+                        _a = _b.sent(), error = _a[0], result = _a[1];
+                        if (error)
+                            return [2 /*return*/, new app_error_1.DBError(error.toString(), error)];
+                        return [2 /*return*/, result];
+                }
+            });
+        });
+    };
+    return PetModel;
+}());
+exports.PetModel = PetModel;

@@ -40,7 +40,7 @@ exports.connection = void 0;
 var typeorm_1 = require("typeorm");
 var connection = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        return [2 /*return*/, (0, typeorm_1.createConnection)({
+        return [2 /*return*/, typeorm_1.createConnection({
                 type: 'mysql',
                 host: process.env.TYPEORM_HOST,
                 port: parseInt(process.env.TYPEORM_PORT, 10),
