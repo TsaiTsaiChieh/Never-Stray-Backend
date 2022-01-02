@@ -5,17 +5,19 @@ import httpStatus from 'http-status'
 import {Controller, Get, Req, Res} from 'routing-controllers'
 import safeAwait from 'safe-await'
 
-import {Pet} from '../entity/pet.entity'
+import {City, Region} from '../entity/area.entity'
+import {Age, Pet, Ref, Sex} from '../entity/pet.entity'
 import {PetModel} from '../models/pet.model'
 import {ajv} from '../utils/ajv-service'
 
 const schema: JSONSchemaType<PetQuery> = {
   type: 'object',
   properties: {
-    ref: {type: 'string', enum: ['gov', 'map', 'own'], nullable: true},
-    age: {type: 'string', enum: ['A', 'C', 'U'], nullable: true},
-    sex: {type: 'string', enum: ['F', 'M', 'U'], nullable: true},
-    region: {type: 'string', enum: ['E', 'W', 'S', 'N', 'M'], nullable: true},
+    city: {type: 'string', enum: Object.values(City), nullable: true},
+    ref: {type: 'string', enum: Object.values(Ref), nullable: true},
+    age: {type: 'string', enum: Object.values(Age), nullable: true},
+    sex: {type: 'string', enum: Object.values(Sex), nullable: true},
+    region: {type: 'string', enum: Object.values(Region), nullable: true},
     order: {
       type: 'string',
       enum: [
@@ -55,6 +57,7 @@ export class PetController {
   async getAll(@Req() req: Request, @Res() res: Response): Promise<any> {
     const reqQuery: PetQuery = req.query
     const query: PetQuery = {
+      city: reqQuery.city,
       ref: reqQuery.ref,
       age: reqQuery.age,
       sex: reqQuery.sex,
