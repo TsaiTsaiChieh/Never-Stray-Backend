@@ -17,7 +17,12 @@ export class PetRepository extends BasicRepository<Pet> {
     const queryBuilder: SelectQueryBuilder<Pet> = this.repository
       .createQueryBuilder('pet')
       .leftJoin(Area, 'area', 'area.city = pet.city_id')
-    if (query.ref) queryBuilder.where('pet.ref = :ref', {ref: query.ref})
+    queryBuilder.where(`pet.status = 'Open'`)
+    if (query.city) {
+      queryBuilder.andWhere('pet.city_id = :city', {city: query.city})
+    }
+
+    if (query.ref) queryBuilder.andWhere('pet.ref = :ref', {ref: query.ref})
     if (query.age) queryBuilder.andWhere('pet.age = :age', {age: query.age})
     if (query.sex) queryBuilder.andWhere('pet.sex = :sex', {sex: query.sex})
     if (query.region) {
