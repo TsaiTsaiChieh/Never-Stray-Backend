@@ -155,7 +155,18 @@ var Pet = /** @class */ (function () {
     Pet = __decorate([
         typeorm_1.Entity({ name: 'pets' }),
         typeorm_1.Index(['sub_id', 'accept_num'], { unique: true }),
-        typeorm_1.Index(['status', 'accept_num'])
+        typeorm_1.Index(['status', 'accept_num']),
+        typeorm_1.Index([
+            'status',
+            'city_id',
+            'color',
+            'kind',
+            'age',
+            'sex',
+            'ref',
+            'created_at',
+            'updated_at',
+        ])
         /** Class representing a pet */
     ], Pet);
     return Pet;

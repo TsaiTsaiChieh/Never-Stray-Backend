@@ -55,15 +55,19 @@ exports.PetController = void 0;
 var http_status_1 = __importDefault(require("http-status"));
 var routing_controllers_1 = require("routing-controllers");
 var safe_await_1 = __importDefault(require("safe-await"));
+var area_entity_1 = require("../entity/area.entity");
+var pet_entity_1 = require("../entity/pet.entity");
 var pet_model_1 = require("../models/pet.model");
 var ajv_service_1 = require("../utils/ajv-service");
 var schema = {
     type: 'object',
     properties: {
-        ref: { type: 'string', enum: ['gov', 'map', 'own'], nullable: true },
-        age: { type: 'string', enum: ['A', 'C', 'U'], nullable: true },
-        sex: { type: 'string', enum: ['F', 'M', 'U'], nullable: true },
-        region: { type: 'string', enum: ['E', 'W', 'S', 'N', 'M'], nullable: true },
+        kind: { type: 'string', enum: Object.values(pet_entity_1.Kind), nullable: true },
+        city: { type: 'string', enum: Object.values(area_entity_1.City), nullable: true },
+        ref: { type: 'string', enum: Object.values(pet_entity_1.Ref), nullable: true },
+        age: { type: 'string', enum: Object.values(pet_entity_1.Age), nullable: true },
+        sex: { type: 'string', enum: Object.values(pet_entity_1.Sex), nullable: true },
+        region: { type: 'string', enum: Object.values(area_entity_1.Region), nullable: true },
         order: {
             type: 'string',
             enum: [
@@ -102,6 +106,8 @@ var PetController = /** @class */ (function () {
                     case 0:
                         reqQuery = req.query;
                         query = {
+                            kind: reqQuery.kind,
+                            city: reqQuery.city,
                             ref: reqQuery.ref,
                             age: reqQuery.age,
                             sex: reqQuery.sex,
