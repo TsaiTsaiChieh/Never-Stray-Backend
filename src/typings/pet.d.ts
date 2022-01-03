@@ -80,6 +80,7 @@ type PetOrderType =
  * @type {number} page 分頁
  */
 interface PetQuery {
+  kind?: PetKindType
   city?: AreaCityType
   ref?: PetRefType
   age?: PetAgeType

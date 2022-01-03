@@ -6,13 +6,14 @@ import {Controller, Get, Req, Res} from 'routing-controllers'
 import safeAwait from 'safe-await'
 
 import {City, Region} from '../entity/area.entity'
-import {Age, Pet, Ref, Sex} from '../entity/pet.entity'
+import {Age, Kind, Pet, Ref, Sex} from '../entity/pet.entity'
 import {PetModel} from '../models/pet.model'
 import {ajv} from '../utils/ajv-service'
 
 const schema: JSONSchemaType<PetQuery> = {
   type: 'object',
   properties: {
+    kind: {type: 'string', enum: Object.values(Kind), nullable: true},
     city: {type: 'string', enum: Object.values(City), nullable: true},
     ref: {type: 'string', enum: Object.values(Ref), nullable: true},
     age: {type: 'string', enum: Object.values(Age), nullable: true},
@@ -57,6 +58,7 @@ export class PetController {
   async getAll(@Req() req: Request, @Res() res: Response): Promise<any> {
     const reqQuery: PetQuery = req.query
     const query: PetQuery = {
+      kind: reqQuery.kind,
       city: reqQuery.city,
       ref: reqQuery.ref,
       age: reqQuery.age,
