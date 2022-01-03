@@ -52,6 +52,17 @@ export enum Kind {
 @Entity({name: 'pets'})
 @Index(['sub_id', 'accept_num'], {unique: true})
 @Index(['status', 'accept_num'])
+@Index([
+  'status',
+  'city_id',
+  'color',
+  'kind',
+  'age',
+  'sex',
+  'ref',
+  'created_at',
+  'updated_at',
+])
 /** Class representing a pet */
 export class Pet {
   @PrimaryGeneratedColumn()
