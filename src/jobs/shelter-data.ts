@@ -156,7 +156,6 @@ export class Shelter {
               title: data[in_data_index].animal_place,
               status: petStatusConvert(data[in_data_index].animal_status),
               remark: data[in_data_index].animal_remark,
-              address: data[in_data_index].shelter_address,
               phone: data[in_data_index].shelter_tel,
               image: [data[in_data_index].album_file],
               created_at: data[in_data_index].animal_createtime ?
@@ -200,7 +199,6 @@ export class Shelter {
         title: ele.animal_place,
         status: petStatusConvert(ele.animal_status),
         remark: ele.animal_remark,
-        address: ele.shelter_address,
         phone: ele.shelter_tel,
         image: [ele.album_file],
         created_at: ele.animal_createtime ?
