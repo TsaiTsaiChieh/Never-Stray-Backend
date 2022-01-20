@@ -2,8 +2,8 @@
 /* eslint-disable require-jsdoc */
 import {MigrationInterface, QueryRunner} from 'typeorm'
 
-export class CreatePetAndAreaTable1636729732395 implements MigrationInterface {
-  name = 'CreatePetAndAreaTable1636729732395'
+export class CreatePetAndAreaTables1642675420398 implements MigrationInterface {
+  name = 'CreatePetAndAreaTables1642675420398'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
@@ -79,11 +79,21 @@ export class CreatePetAndAreaTable1636729732395 implements MigrationInterface {
                 \`title\` varchar(255) NULL,
                 \`status\` enum ('Unknown', 'Open', 'Adopted', 'Other', 'Dead') NOT NULL DEFAULT 'Unknown',
                 \`remark\` text NULL,
-                \`address\` varchar(255) NULL,
                 \`phone\` varchar(16) NULL,
                 \`image\` json NULL,
                 \`created_at\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
                 \`updated_at\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+                INDEX \`IDX_102d71238583de038b1ab36bb8\` (
+                    \`status\`,
+                    \`city_id\`,
+                    \`color\`,
+                    \`kind\`,
+                    \`age\`,
+                    \`sex\`,
+                    \`ref\`,
+                    \`created_at\`,
+                    \`updated_at\`
+                ),
                 INDEX \`IDX_6e94e5943dfbc8b2bb9ff0de55\` (\`status\`, \`accept_num\`),
                 UNIQUE INDEX \`IDX_e87fb3dcb389be107725e1f1bf\` (\`sub_id\`, \`accept_num\`),
                 PRIMARY KEY (\`id\`)
@@ -104,6 +114,9 @@ export class CreatePetAndAreaTable1636729732395 implements MigrationInterface {
         `)
     await queryRunner.query(`
             DROP INDEX \`IDX_6e94e5943dfbc8b2bb9ff0de55\` ON \`ns-app\`.\`pets\`
+        `)
+    await queryRunner.query(`
+            DROP INDEX \`IDX_102d71238583de038b1ab36bb8\` ON \`ns-app\`.\`pets\`
         `)
     await queryRunner.query(`
             DROP TABLE \`ns-app\`.\`pets\`

@@ -36,19 +36,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreatePetAndAreaTable1636729732395 = void 0;
-var CreatePetAndAreaTable1636729732395 = /** @class */ (function () {
-    function CreatePetAndAreaTable1636729732395() {
-        this.name = 'CreatePetAndAreaTable1636729732395';
+exports.CreatePetAndAreaTables1642675420398 = void 0;
+var CreatePetAndAreaTables1642675420398 = /** @class */ (function () {
+    function CreatePetAndAreaTables1642675420398() {
+        this.name = 'CreatePetAndAreaTables1642675420398';
     }
-    CreatePetAndAreaTable1636729732395.prototype.up = function (queryRunner) {
+    CreatePetAndAreaTables1642675420398.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, queryRunner.query("\n            CREATE TABLE `ns-app`.`areas` (\n                `id` int NOT NULL AUTO_INCREMENT,\n                `region` enum ('E', 'W', 'S', 'N', 'M') NOT NULL,\n                `city` enum (\n                    '2',\n                    '3',\n                    '4',\n                    '5',\n                    '6',\n                    '7',\n                    '8',\n                    '9',\n                    '10',\n                    '11',\n                    '12',\n                    '13',\n                    '14',\n                    '15',\n                    '16',\n                    '17',\n                    '18',\n                    '19',\n                    '20',\n                    '21',\n                    '22',\n                    '23'\n                ) NOT NULL,\n                `name` varchar(4) NOT NULL,\n                UNIQUE INDEX `IDX_e9481f082921789e2cb47a79a5` (`region`, `city`),\n                INDEX `IDX_83604f081c8f39604d33db2e7d` (`city`),\n                PRIMARY KEY (`id`)\n            ) ENGINE = InnoDB\n        ")];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("\n            CREATE TABLE `ns-app`.`pets` (\n                `id` int NOT NULL AUTO_INCREMENT,\n                `sub_id` int NOT NULL,\n                `accept_num` varchar(32) NULL COMMENT '\u653F\u5E9C\u6536\u5BB9\u7DE8\u865F',\n                `ref` enum ('gov', 'map', 'own') NOT NULL,\n                `city_id` enum (\n                    '2',\n                    '3',\n                    '4',\n                    '5',\n                    '6',\n                    '7',\n                    '8',\n                    '9',\n                    '10',\n                    '11',\n                    '12',\n                    '13',\n                    '14',\n                    '15',\n                    '16',\n                    '17',\n                    '18',\n                    '19',\n                    '20',\n                    '21',\n                    '22',\n                    '23'\n                ) NOT NULL,\n                `kind` enum ('D', 'C', 'O') NOT NULL,\n                `sex` enum ('F', 'M', 'U') NOT NULL DEFAULT 'U',\n                `color` varchar(32) NULL,\n                `age` enum ('A', 'C', 'U') NOT NULL DEFAULT 'U',\n                `ligation` enum ('T', 'F', 'U') NOT NULL COMMENT '\u662F\u5426\u7D55\u80B2' DEFAULT 'U',\n                `rabies` enum ('T', 'F', 'U') NOT NULL COMMENT '\u662F\u5426\u65BD\u6253\u72C2\u72AC\u75C5\u75AB\u82D7' DEFAULT 'U',\n                `title` varchar(255) NULL,\n                `status` enum ('Unknown', 'Open', 'Adopted', 'Other', 'Dead') NOT NULL DEFAULT 'Unknown',\n                `remark` text NULL,\n                `address` varchar(255) NULL,\n                `phone` varchar(16) NULL,\n                `image` json NULL,\n                `created_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),\n                `updated_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),\n                INDEX `IDX_6e94e5943dfbc8b2bb9ff0de55` (`status`, `accept_num`),\n                UNIQUE INDEX `IDX_e87fb3dcb389be107725e1f1bf` (`sub_id`, `accept_num`),\n                PRIMARY KEY (`id`)\n            ) ENGINE = InnoDB\n        ")];
+                        return [4 /*yield*/, queryRunner.query("\n            CREATE TABLE `ns-app`.`pets` (\n                `id` int NOT NULL AUTO_INCREMENT,\n                `sub_id` int NOT NULL,\n                `accept_num` varchar(32) NULL COMMENT '\u653F\u5E9C\u6536\u5BB9\u7DE8\u865F',\n                `ref` enum ('gov', 'map', 'own') NOT NULL,\n                `city_id` enum (\n                    '2',\n                    '3',\n                    '4',\n                    '5',\n                    '6',\n                    '7',\n                    '8',\n                    '9',\n                    '10',\n                    '11',\n                    '12',\n                    '13',\n                    '14',\n                    '15',\n                    '16',\n                    '17',\n                    '18',\n                    '19',\n                    '20',\n                    '21',\n                    '22',\n                    '23'\n                ) NOT NULL,\n                `kind` enum ('D', 'C', 'O') NOT NULL,\n                `sex` enum ('F', 'M', 'U') NOT NULL DEFAULT 'U',\n                `color` varchar(32) NULL,\n                `age` enum ('A', 'C', 'U') NOT NULL DEFAULT 'U',\n                `ligation` enum ('T', 'F', 'U') NOT NULL COMMENT '\u662F\u5426\u7D55\u80B2' DEFAULT 'U',\n                `rabies` enum ('T', 'F', 'U') NOT NULL COMMENT '\u662F\u5426\u65BD\u6253\u72C2\u72AC\u75C5\u75AB\u82D7' DEFAULT 'U',\n                `title` varchar(255) NULL,\n                `status` enum ('Unknown', 'Open', 'Adopted', 'Other', 'Dead') NOT NULL DEFAULT 'Unknown',\n                `remark` text NULL,\n                `phone` varchar(16) NULL,\n                `image` json NULL,\n                `created_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),\n                `updated_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),\n                INDEX `IDX_102d71238583de038b1ab36bb8` (\n                    `status`,\n                    `city_id`,\n                    `color`,\n                    `kind`,\n                    `age`,\n                    `sex`,\n                    `ref`,\n                    `created_at`,\n                    `updated_at`\n                ),\n                INDEX `IDX_6e94e5943dfbc8b2bb9ff0de55` (`status`, `accept_num`),\n                UNIQUE INDEX `IDX_e87fb3dcb389be107725e1f1bf` (`sub_id`, `accept_num`),\n                PRIMARY KEY (`id`)\n            ) ENGINE = InnoDB\n        ")];
                     case 2:
                         _a.sent();
                         return [4 /*yield*/, queryRunner.query("\n            ALTER TABLE `ns-app`.`pets`\n            ADD CONSTRAINT `FK_859edd5c48585a95bd7c7d4e4c9` FOREIGN KEY (`city_id`) REFERENCES `ns-app`.`areas`(`city`) ON DELETE NO ACTION ON UPDATE NO ACTION\n        ")];
@@ -59,7 +59,7 @@ var CreatePetAndAreaTable1636729732395 = /** @class */ (function () {
             });
         });
     };
-    CreatePetAndAreaTable1636729732395.prototype.down = function (queryRunner) {
+    CreatePetAndAreaTables1642675420398.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -72,23 +72,26 @@ var CreatePetAndAreaTable1636729732395 = /** @class */ (function () {
                         return [4 /*yield*/, queryRunner.query("\n            DROP INDEX `IDX_6e94e5943dfbc8b2bb9ff0de55` ON `ns-app`.`pets`\n        ")];
                     case 3:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("\n            DROP TABLE `ns-app`.`pets`\n        ")];
+                        return [4 /*yield*/, queryRunner.query("\n            DROP INDEX `IDX_102d71238583de038b1ab36bb8` ON `ns-app`.`pets`\n        ")];
                     case 4:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("\n            DROP INDEX `IDX_83604f081c8f39604d33db2e7d` ON `ns-app`.`areas`\n        ")];
+                        return [4 /*yield*/, queryRunner.query("\n            DROP TABLE `ns-app`.`pets`\n        ")];
                     case 5:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("\n            DROP INDEX `IDX_e9481f082921789e2cb47a79a5` ON `ns-app`.`areas`\n        ")];
+                        return [4 /*yield*/, queryRunner.query("\n            DROP INDEX `IDX_83604f081c8f39604d33db2e7d` ON `ns-app`.`areas`\n        ")];
                     case 6:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("\n            DROP TABLE `ns-app`.`areas`\n        ")];
+                        return [4 /*yield*/, queryRunner.query("\n            DROP INDEX `IDX_e9481f082921789e2cb47a79a5` ON `ns-app`.`areas`\n        ")];
                     case 7:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("\n            DROP TABLE `ns-app`.`areas`\n        ")];
+                    case 8:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return CreatePetAndAreaTable1636729732395;
+    return CreatePetAndAreaTables1642675420398;
 }());
-exports.CreatePetAndAreaTable1636729732395 = CreatePetAndAreaTable1636729732395;
+exports.CreatePetAndAreaTables1642675420398 = CreatePetAndAreaTables1642675420398;
