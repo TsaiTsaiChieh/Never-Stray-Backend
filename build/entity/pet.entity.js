@@ -133,10 +133,6 @@ var Pet = /** @class */ (function () {
         __metadata("design:type", String)
     ], Pet.prototype, "remark", void 0);
     __decorate([
-        typeorm_1.Column({ type: 'varchar', length: 255, nullable: true }),
-        __metadata("design:type", String)
-    ], Pet.prototype, "address", void 0);
-    __decorate([
         typeorm_1.Column({ type: 'varchar', length: 16, nullable: true }),
         __metadata("design:type", String)
     ], Pet.prototype, "phone", void 0);
