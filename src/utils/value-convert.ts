@@ -166,3 +166,15 @@ export function regionConvert(region: string): Region {
       return Region.NORTH
   }
 }
+
+/** The color of pet converter
+ *
+ * @param  {string} color color string
+ * @return {string} string
+ */
+export function petColorConvert(color: string): string {
+  color = color.replace('色', '')
+  if (color === '灰黑') return '黑灰'
+  else if (color.includes('虎斑')) return '虎斑'
+  else return color
+}

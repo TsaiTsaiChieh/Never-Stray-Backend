@@ -11,6 +11,7 @@ import {deepCopy} from '../utils/helper'
 import {
   ageConvert,
   cityConvert,
+  petColorConvert,
   petKindConvert,
   petStatusConvert,
   sexConvert,
@@ -192,7 +193,7 @@ export class Shelter {
         city_id: cityConvert(ele.animal_area_pkid),
         kind: petKindConvert(ele.animal_kind),
         sex: sexConvert(ele.animal_sex),
-        color: ele.animal_colour,
+        color: petColorConvert(ele.animal_colour),
         age: ageConvert(ele.animal_age),
         ligation: ternaryConvert(ele.animal_sterilization),
         rabies: ternaryConvert(ele.animal_bacterin),
