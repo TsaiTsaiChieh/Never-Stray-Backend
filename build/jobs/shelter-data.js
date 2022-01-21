@@ -212,7 +212,7 @@ var Shelter = /** @class */ (function () {
                                 city_id: value_convert_1.cityConvert(ele.animal_area_pkid),
                                 kind: value_convert_1.petKindConvert(ele.animal_kind),
                                 sex: value_convert_1.sexConvert(ele.animal_sex),
-                                color: ele.animal_colour,
+                                color: value_convert_1.petColorConvert(ele.animal_colour),
                                 age: value_convert_1.ageConvert(ele.animal_age),
                                 ligation: value_convert_1.ternaryConvert(ele.animal_sterilization),
                                 rabies: value_convert_1.ternaryConvert(ele.animal_bacterin),

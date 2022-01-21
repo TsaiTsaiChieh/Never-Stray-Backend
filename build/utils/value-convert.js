@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.regionConvert = exports.cityConvert = exports.petKindConvert = exports.petStatusConvert = exports.ternaryConvert = exports.ageConvert = exports.sexConvert = void 0;
+exports.petColorConvert = exports.regionConvert = exports.cityConvert = exports.petKindConvert = exports.petStatusConvert = exports.ternaryConvert = exports.ageConvert = exports.sexConvert = void 0;
 var area_entity_1 = require("../entity/area.entity");
 var pet_entity_1 = require("../entity/pet.entity");
 /** Sex string converter
@@ -169,3 +169,18 @@ function regionConvert(region) {
     }
 }
 exports.regionConvert = regionConvert;
+/** The color of pet converter
+ *
+ * @param  {string} color color string
+ * @return {string} string
+ */
+function petColorConvert(color) {
+    color = color.replace('色', '');
+    if (color === '灰黑')
+        return '黑灰';
+    else if (color.includes('虎斑'))
+        return '虎斑';
+    else
+        return color;
+}
+exports.petColorConvert = petColorConvert;
