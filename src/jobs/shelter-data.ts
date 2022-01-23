@@ -148,7 +148,7 @@ export class Shelter {
               city_id: cityConvert(data[in_data_index].animal_area_pkid),
               kind: petKindConvert(data[in_data_index].animal_kind),
               sex: sexConvert(data[in_data_index].animal_sex),
-              color: data[in_data_index].animal_colour,
+              color: petColorConvert(data[in_data_index].animal_colour),
               age: ageConvert(data[in_data_index].animal_age),
               ligation: ternaryConvert(
                 data[in_data_index].animal_sterilization,
