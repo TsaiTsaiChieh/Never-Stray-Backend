@@ -159,7 +159,7 @@ var Shelter = /** @class */ (function () {
                             city_id: value_convert_1.cityConvert(data[in_data_index].animal_area_pkid),
                             kind: value_convert_1.petKindConvert(data[in_data_index].animal_kind),
                             sex: value_convert_1.sexConvert(data[in_data_index].animal_sex),
-                            color: data[in_data_index].animal_colour,
+                            color: value_convert_1.petColorConvert(data[in_data_index].animal_colour),
                             age: value_convert_1.ageConvert(data[in_data_index].animal_age),
                             ligation: value_convert_1.ternaryConvert(data[in_data_index].animal_sterilization),
                             rabies: value_convert_1.ternaryConvert(data[in_data_index].animal_bacterin),
