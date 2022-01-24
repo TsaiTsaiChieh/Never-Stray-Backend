@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 #### Added:
+-  pet table, crawler script and query pets API ***by TsaiTsaiChieh*** [#7](https://github.com/TsaiTsaiChieh/Never-Stray/pull/7)
 
 #### Changed:
 
