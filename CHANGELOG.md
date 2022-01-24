@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Removed:
 
 #### Fixed:
+-  rerun github worklow to generate chaneglog.md ***by TsaiTsaiChieh*** [#10](https://github.com/TsaiTsaiChieh/Never-Stray/pull/10)
 -  recover changelog.md ***by TsaiTsaiChieh*** [#9](https://github.com/TsaiTsaiChieh/Never-Stray/pull/9)
 -  recover changelog.md ***by TsaiTsaiChieh*** [#8](https://github.com/TsaiTsaiChieh/Never-Stray/pull/8)
 -  fix Number type 2 Typescript primitive type: number ***by TsaiTsaiChieh*** [#2](https://github.com/TsaiTsaiChieh/Never-Stray/pull/2)
