@@ -40,10 +40,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var dotenv_1 = __importDefault(require("dotenv"));
+var node_schedule_1 = require("node-schedule");
 var chalk_logger_1 = require("./utils/chalk-logger");
 var initializer_1 = require("./initializer");
+var shelter_data_1 = require("./jobs/shelter-data");
 dotenv_1.default.config();
-var APP_PORT = parseInt(process.env.APP_PORT);
+var JOB_PORT = parseInt(process.env.JOB_PORT);
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var app;
     return __generator(this, function (_a) {
@@ -51,8 +53,12 @@ var APP_PORT = parseInt(process.env.APP_PORT);
             case 0: return [4 /*yield*/, initializer_1.initializerApp()];
             case 1:
                 app = (_a.sent()).app;
-                app.listen(process.env.APP_PORT, function () {
-                    chalk_logger_1.greenLog("App listening at http://localhost:" + APP_PORT);
+                app.listen(JOB_PORT, function () {
+                    chalk_logger_1.greenLog("Crawler listening at http://localhost:" + JOB_PORT);
+                    node_schedule_1.scheduleJob('0 */1 * * *', function () {
+                        chalk_logger_1.yellowLog("Get shelter data start at " + new Date());
+                        shelter_data_1.getShelterData();
+                    });
                 });
                 return [2 /*return*/];
         }

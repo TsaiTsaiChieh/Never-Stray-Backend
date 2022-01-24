@@ -39,22 +39,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var dotenv_1 = __importDefault(require("dotenv"));
-var chalk_logger_1 = require("./utils/chalk-logger");
-var initializer_1 = require("./initializer");
-dotenv_1.default.config();
-var APP_PORT = parseInt(process.env.APP_PORT);
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var app;
+var express_1 = __importDefault(require("express"));
+var typeorm_1 = require("typeorm");
+var router = express_1.default.Router();
+router.get('/mysql', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, initializer_1.initializerApp()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, typeorm_1.createConnection({
+                        type: 'mysql',
+                        host: process.env.MYSQL_HOST,
+                        port: parseInt(process.env.TYPEORM_PORT, 10),
+                        username: process.env.TYPEORM_USERNAME,
+                        password: process.env.TYPEORM_PASSWORD,
+                        database: process.env.TYPEORM_DATABASE,
+                    })];
             case 1:
-                app = (_a.sent()).app;
-                app.listen(process.env.APP_PORT, function () {
-                    chalk_logger_1.greenLog("App listening at http://localhost:" + APP_PORT);
-                });
-                return [2 /*return*/];
+                _a.sent();
+                res.send('TypeORM connection successfully');
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                console.log("TypeORM connection error: " + error_1);
+                res.json(error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
-}); })();
+}); });
+exports.default = router;

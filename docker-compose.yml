@@ -1,19 +1,68 @@
 version: "3"
 services:
   node-app:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
       target: base
-    command: yarn dev
+    command:
+      - /bin/sh
+      - -c
+      - |
+        sh /app/entrypoint.sh
+        yarn dev
     volumes:
       - .:/app
     environment:
       - NODE_ENV=development
+      - APP_PORT=3000
+      - TYPEORM_HOST=db
     env_file:
       - .env
-    ports: 
-      - ${APP_PORT}:${APP_PORT}
+    ports:
+      - 3000:3000
+    networks:
+      - application
+    depends_on:
+      - db
+  cron-job:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    command:
+      - /bin/sh
+      - -c
+      - |
+        echo "Wait for DB service to start"
+        sleep 10
+        yarn ts-node src/crawler.ts
+    environment:
+      - TYPEORM_HOST=db
+    env_file:
+      - .env
+    ports:
+      - 3333:3333
+    networks:
+      - application
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE:
+      TZ: Asia/Taipei
+    ports:
+      - 3306:3306
+    volumes:
+      - .:/ns-app
+    cap_add:
+      - SYS_NICE # CAP_SYS_NICE
     networks:
       - application
 networks:
