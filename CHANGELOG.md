@@ -16,5 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Removed:
 
 #### Fixed:
+-  recover changelog.md ***by TsaiTsaiChieh*** [#8](https://github.com/TsaiTsaiChieh/Never-Stray/pull/8)
 
 ---
