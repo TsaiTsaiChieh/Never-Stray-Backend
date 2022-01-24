@@ -1,28 +1,39 @@
-import chalk from 'chalk'
+/* eslint-disable require-jsdoc */
 import httpStatus from 'http-status'
 
-/**
- * Custom error
- * @extends Error
- * @class AppError
- */
+import {redLog} from './chalk-logger'
+
 export class AppError extends Error {
-  protected statusCode: number
+  protected details: string | undefined
+  protected code: number
   protected status: string
   protected isOperational: boolean
-  /**
-     * Creates an instance of AppError.
-     * @param {string} message error message
-     * @param {HttpStatus} statusCode http status code, default is
-     * INTERNAL_SERVER_ERROR (500)
-     */
-  constructor(message: string,
-    statusCode: number = httpStatus.INTERNAL_SERVER_ERROR) {
-    super(message)
-    this.statusCode = statusCode
-    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error'
-    this.isOperational = true
+
+  constructor(
+    message: string,
+    details?: any,
+    isOperational: boolean = true,
+    code: number = httpStatus.INTERNAL_SERVER_ERROR,
+  ) {
+    super()
+    this.message = message
+    this.details = details
+    this.code = code
+    this.isOperational = isOperational
+    this.status = `${code}`.startsWith('4') ? 'fail' : 'error'
     Error.captureStackTrace(this, this.constructor)
-    console.error(chalk.red(message))
+    redLog(message)
+  }
+}
+
+/* === 500 INTERNAL SERVER ERROR === */
+export class DBError extends AppError {
+  constructor(
+    message: string = 'MySQL 錯誤',
+    details: any,
+    isOperational: boolean = true,
+    code: number = httpStatus.INTERNAL_SERVER_ERROR,
+  ) {
+    super(message, details, isOperational, code)
   }
 }

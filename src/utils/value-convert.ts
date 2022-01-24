@@ -1,5 +1,5 @@
-import {City, Region} from '../entity/Area'
-import {Age, Kind, Sex, Status, Ternary} from '../entity/Pet'
+import {City, Region} from '../entity/area.entity'
+import {Age, Kind, Sex, Status, Ternary} from '../entity/pet.entity'
 
 /** Sex string converter
  *
@@ -140,8 +140,8 @@ export function cityConvert(city: number): City {
       return City.KMN
     case 23:
       return City.LNN
-  default:
-    return City.TPE
+    default:
+      return City.TPE
   }
 }
 
@@ -167,3 +167,14 @@ export function regionConvert(region: string): Region {
   }
 }
 
+/** The color of pet converter
+ *
+ * @param  {string} color color string
+ * @return {string} string
+ */
+export function petColorConvert(color: string): string {
+  color = color.replace('色', '')
+  if (color === '灰黑') return '黑灰'
+  else if (color.includes('虎斑')) return '虎斑'
+  else return color
+}

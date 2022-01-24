@@ -15,11 +15,12 @@ services:
       - .:/app
     environment:
       - NODE_ENV=development
+      - APP_PORT=3000
       - TYPEORM_HOST=db
     env_file:
       - .env
     ports:
-      - ${APP_PORT}:${APP_PORT}
+      - 3000:3000
     networks:
       - application
     depends_on:
@@ -41,7 +42,7 @@ services:
     env_file:
       - .env
     ports:
-      - ${JOB_PORT}:${JOB_PORT}
+      - 3333:3333
     networks:
       - application
     depends_on:

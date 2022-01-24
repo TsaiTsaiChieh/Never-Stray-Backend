@@ -3,7 +3,7 @@ import _ from 'lodash'
 import safeAwait from 'safe-await'
 import {Connection} from 'typeorm'
 
-import {Area} from '../entity/Area'
+import {Area} from '../entity/area.entity'
 import {initializerApp} from '../initializer'
 import areas from '../JSON/areas.json'
 import {AreaRepository} from '../repositories/area.repository'
@@ -49,10 +49,9 @@ class AreaInitData {
     const areaIdx: number[] = this.areas.map((_, i) => i)
 
     for (let i = 0; i < this.areas.length; i++) {
-      const [error, result]: [any, Area | undefined] =
-      await safeAwait(this.areaRepository.findOne(
-        {city: cityConvert(areas[i].city)},
-      ))
+      const [error, result]: [any, Area | undefined] = await safeAwait(
+        this.areaRepository.findOne({city: cityConvert(areas[i].city)}),
+      )
       if (error) throw new AppError(error)
       // Filter out the index which already existed in the DB
       if (result) {
@@ -75,16 +74,17 @@ class AreaInitData {
 
     for (const ele of this.areas) {
       areaData.push({
-          region: regionConvert(ele.region),
-          city: cityConvert(ele.city),
-          name: ele.name,
+        region: regionConvert(ele.region),
+        city: cityConvert(ele.city),
+        name: ele.name,
       })
     }
 
-    const [error, result]:[any, Area[]] =
-     await safeAwait(this.areaRepository.saveMany(areaData))
-     if (error) throw new AppError(error)
-     if (result) greenLog(`=== Saved ${JSON.stringify(result)} ===`)
+    const [error, result]: [any, Area[]] = await safeAwait(
+      this.areaRepository.saveMany(areaData),
+    )
+    if (error) throw new AppError(error)
+    if (result) greenLog(`=== Saved ${JSON.stringify(result)} ===`)
   }
 }
 

@@ -5,11 +5,11 @@ var typeorm_1 = require("typeorm");
 /** Class representing a basic repository  */
 var BasicRepository = /** @class */ (function () {
     /**
-    * @param  {ObjectType<T>} entity
-    */
+     * @param  {ObjectType<T>} entity
+     */
     function BasicRepository(entity) {
         this.entity = entity;
-        this.repository = (0, typeorm_1.getRepository)(entity);
+        this.repository = typeorm_1.getRepository(entity);
     }
     /**
      * 儲存單一 Entity<T> 的資料

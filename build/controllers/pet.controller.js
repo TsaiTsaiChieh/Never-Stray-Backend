@@ -47,73 +47,104 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ConnectionController = void 0;
+exports.PetController = void 0;
+var http_status_1 = __importDefault(require("http-status"));
 var routing_controllers_1 = require("routing-controllers");
-var typeorm_1 = require("typeorm");
-var ConnectionController = /** @class */ (function () {
-    function ConnectionController() {
+var safe_await_1 = __importDefault(require("safe-await"));
+var area_entity_1 = require("../entity/area.entity");
+var pet_entity_1 = require("../entity/pet.entity");
+var pet_model_1 = require("../models/pet.model");
+var ajv_service_1 = require("../utils/ajv-service");
+var schema = {
+    type: 'object',
+    properties: {
+        kind: { type: 'string', enum: Object.values(pet_entity_1.Kind), nullable: true },
+        city: { type: 'string', enum: Object.values(area_entity_1.City), nullable: true },
+        ref: { type: 'string', enum: Object.values(pet_entity_1.Ref), nullable: true },
+        age: { type: 'string', enum: Object.values(pet_entity_1.Age), nullable: true },
+        sex: { type: 'string', enum: Object.values(pet_entity_1.Sex), nullable: true },
+        region: { type: 'string', enum: Object.values(area_entity_1.Region), nullable: true },
+        order: {
+            type: 'string',
+            enum: [
+                'id',
+                'ref',
+                'city_id',
+                'kind',
+                'sex',
+                'color',
+                'age',
+                'created_at',
+                'updated_at',
+            ],
+            nullable: true,
+        },
+        ascend: { type: 'integer', default: 1, enum: [0, 1], nullable: true },
+        limit: {
+            type: 'integer',
+            default: parseInt(process.env.PET_QUERY_LIMIT),
+            minimum: 1,
+            maximum: 100,
+            nullable: true,
+        },
+        page: { type: 'integer', default: 1, minimum: 1, nullable: true },
+    },
+};
+var PetController = /** @class */ (function () {
+    function PetController() {
+        this.petModel = new pet_model_1.PetModel();
     }
-    ConnectionController.prototype.pingAPI = function (req, res) {
-        return res.send('Pong');
-    };
-    ConnectionController.prototype.pingDB = function (req, res) {
+    PetController.prototype.getAll = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var con, canConnect, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var reqQuery, query, valid, _a, error, result;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        con = typeorm_1.getConnectionManager().get();
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, 5, 7]);
-                        canConnect = false;
-                        if (!!con.isConnected) return [3 /*break*/, 3];
-                        return [4 /*yield*/, con.connect()
-                            // Store connection result
-                        ];
+                        reqQuery = req.query;
+                        query = {
+                            kind: reqQuery.kind,
+                            city: reqQuery.city,
+                            ref: reqQuery.ref,
+                            age: reqQuery.age,
+                            sex: reqQuery.sex,
+                            region: reqQuery.region,
+                            order: reqQuery.order,
+                            ascend: reqQuery.ascend ? Number(reqQuery.ascend) : undefined,
+                            limit: reqQuery.limit ? Number(reqQuery.limit) : undefined,
+                            page: reqQuery.page ? Number(reqQuery.page) : undefined,
+                        };
+                        valid = ajv_service_1.ajv.validate(schema, query);
+                        if (!!valid) return [3 /*break*/, 1];
+                        return [2 /*return*/, res.status(http_status_1.default.BAD_REQUEST).json(ajv_service_1.ajv.errors)];
+                    case 1: return [4 /*yield*/, safe_await_1.default(this.petModel.getAll(query))];
                     case 2:
-                        _a.sent();
-                        _a.label = 3;
-                    case 3:
-                        // Store connection result
-                        canConnect = con.isConnected;
-                        if (!canConnect)
-                            return [2 /*return*/, res.send('Database connection failed')];
-                        else
-                            return [2 /*return*/, res.send('Database connection successfully')];
-                        return [3 /*break*/, 7];
-                    case 4:
-                        error_1 = _a.sent();
-                        return [2 /*return*/, res.send("Database error happened: " + error_1)];
-                    case 5: return [4 /*yield*/, con.close()];
-                    case 6:
-                        _a.sent();
-                        return [7 /*endfinally*/];
-                    case 7: return [2 /*return*/];
+                        _a = _b.sent(), error = _a[0], result = _a[1];
+                        if (error) {
+                            return [2 /*return*/, res
+                                    .status(error.code)
+                                    .json(error.isOperational ? error : error.status)];
+                        }
+                        return [2 /*return*/, res.json(result)];
                 }
             });
         });
     };
     __decorate([
-        routing_controllers_1.Get('/api'),
-        __param(0, routing_controllers_1.Req()),
-        __param(1, routing_controllers_1.Res()),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Object, Object]),
-        __metadata("design:returntype", void 0)
-    ], ConnectionController.prototype, "pingAPI", null);
-    __decorate([
-        routing_controllers_1.Get('/db'),
+        routing_controllers_1.Get('/search'),
         __param(0, routing_controllers_1.Req()),
         __param(1, routing_controllers_1.Res()),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", Promise)
-    ], ConnectionController.prototype, "pingDB", null);
-    ConnectionController = __decorate([
-        routing_controllers_1.Controller('/ping')
-    ], ConnectionController);
-    return ConnectionController;
+    ], PetController.prototype, "getAll", null);
+    PetController = __decorate([
+        routing_controllers_1.Controller('/pet'),
+        __metadata("design:paramtypes", [])
+    ], PetController);
+    return PetController;
 }());
-exports.ConnectionController = ConnectionController;
+exports.PetController = PetController;

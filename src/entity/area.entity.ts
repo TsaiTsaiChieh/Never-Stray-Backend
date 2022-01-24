@@ -5,7 +5,7 @@ export enum Region {
   WEST = 'W',
   SOUTH = 'S',
   NORTH = 'N',
-  MIDDLE = 'M'
+  MIDDLE = 'M',
 }
 
 export enum City {
@@ -30,7 +30,7 @@ export enum City {
   TTT = '20', // 臺東縣
   PEH = '21', // 澎湖縣
   KMN = '22', // 金門縣
-  LNN = '23' // 連江縣
+  LNN = '23', // 連江縣
 }
 
 @Entity({name: 'areas'})

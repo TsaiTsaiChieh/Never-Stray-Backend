@@ -1,13 +1,12 @@
 import chalk from 'chalk'
 
-
 /**
  * Yellow log
  *
  * @param  {any} msg message which could print out
  */
- export function yellowLog(msg: any) {
-   console.log(chalk.yellow(msg))
+export function yellowLog(msg: any) {
+  console.log(chalk.yellow(msg))
 }
 
 /**
@@ -15,8 +14,8 @@ import chalk from 'chalk'
  *
  * @param  {any} msg message which could print out
  */
- export function greenLog(msg: any) {
-   console.log(chalk.green(msg))
+export function greenLog(msg: any) {
+  console.log(chalk.green(msg))
 }
 
 /**
@@ -24,6 +23,6 @@ import chalk from 'chalk'
  *
  * @param  {any} msg message which could print out
  */
- export function redLog(msg: any) {
-   console.log(chalk.red(msg))
+export function redLog(msg: any) {
+  console.log(chalk.red(msg))
 }
