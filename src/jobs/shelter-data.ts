@@ -105,7 +105,6 @@ export class Shelter {
     // Get all animal ids from API
     const ids: number[] = data.map((val) => val.animal_id)
     const left_ids = deepCopy(ids)
-    yellowLog(ids)
     // Get the status of pet data that is open from DB
     const [error, result]: [any, Pet[]] = await safeAwait(
       this.petRepository.find([
