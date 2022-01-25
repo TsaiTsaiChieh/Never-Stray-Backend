@@ -7,7 +7,6 @@ import {Pet, Ref, Status} from '../entity/pet.entity'
 import {PetRepository} from '../repositories/pet.repository'
 import {AppError} from '../utils/app-error'
 import {greenLog, yellowLog} from '../utils/chalk-logger'
-import {deepCopy} from '../utils/helper'
 import {
   ageConvert,
   cityConvert,
@@ -96,15 +95,16 @@ export class Shelter {
    * 更新動物的狀態
    *
    * 搜尋狀態為待認領的動物資料，若未在狀態為待認領的 API 裡，則狀態改為未知，
-   * 反之，更新資料，移除 API 裡該筆動物資料的 ID 後回傳
+   * 反之，更新資料，並回傳應該新增的資料
    *
    * @param  {ShelterData[]} data From API
-   * @return {number[]} left_ids data IDs after filter out
+   * @return {ShelterData[]} data Data which should be saved
    */
-  public async updatePetStatus(data: ShelterData[]): Promise<number[]> {
+  public async updatePetStatus(data: ShelterData[]): Promise<ShelterData[]> {
     // Get all animal ids from API
     const ids: number[] = data.map((val) => val.animal_id)
-    const left_ids = deepCopy(ids)
+    // Record IDs which been updated
+    const updated_ids: number[] = []
     // Get the status of pet data that is open from DB
     const [error, result]: [any, Pet[]] = await safeAwait(
       this.petRepository.find([
@@ -164,25 +164,23 @@ export class Shelter {
             },
           ),
         )
+        updated_ids.push(ele.sub_id)
         if (error) throw new AppError(error)
-        greenLog(`=== Update [${ele.sub_id}, ${ele.accept_num}] data ===`)
-        // Filter out the ID which already been updated
-        left_ids.splice(in_data_index, 1)
       }
     }
-    greenLog(`=== ${left_ids.length} data should be stored ===`)
-    return left_ids
+    // Filter out the ID which already been updated
+    data = data.filter((val) => !updated_ids.includes(val.animal_id))
+    greenLog(`=== ${data.length} data should be stored ===`)
+    return data
   }
 
   /**
    * 儲存寵物的資訊
    *
-   * @param  {ShelterData[]} data From axios
-   * @param  {number[]} ids IDs which already been updated after filter out
+   * @param  {ShelterData[]} data Which should be stored
    */
-  public async saveData(data: ShelterData[], ids: number[]): Promise<void> {
+  public async saveData(data: ShelterData[]): Promise<void> {
     const petData: Pet[] = []
-    data = data.filter((val) => ids.includes(val.animal_id))
 
     data.forEach((ele) =>
       petData.push({
@@ -218,7 +216,7 @@ export class Shelter {
 export async function getShelterData(): Promise<void> {
   const shelter = new Shelter()
   const data: ShelterData[] = await shelter.getData()
-  const ids: number[] = await shelter.updatePetStatus(data)
-  await shelter.saveData(data, ids)
+  const data_should_stored: ShelterData[] = await shelter.updatePetStatus(data)
+  await shelter.saveData(data_should_stored)
   return
 }
