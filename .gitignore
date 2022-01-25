@@ -4,3 +4,4 @@ node_modules
 ormconfig.env
 .vscode
 yarn-error.log
+CHANGELOG.md
