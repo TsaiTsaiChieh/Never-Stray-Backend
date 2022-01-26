@@ -23,8 +23,6 @@ export class PetRepository extends BasicRepository<Pet> {
   }
 
   async findByFilters(query: PetQuery): Promise<Pet[]> {
-    const offset: number = (query.page! - 1) * query.limit!
-
     const queryBuilder: SelectQueryBuilder<Pet> = this.repository
       .createQueryBuilder('pet')
       .leftJoin(Area, 'area', 'area.city = pet.city_id')
@@ -50,7 +48,10 @@ export class PetRepository extends BasicRepository<Pet> {
         `${query.ascend ? 'ASC' : 'DESC'}`,
       )
     }
-    queryBuilder.offset(offset).limit(query.limit)
+    if (query.page) {
+      const offset: number = (query.page - 1) * query.limit!
+      queryBuilder.offset(offset).limit(query.limit)
+    }
 
     const [error, result]: [any, Pet[]] = await safeAwait(
       queryBuilder.getMany(),
