@@ -28,7 +28,9 @@ export class PetRepository extends BasicRepository<Pet> {
     const queryBuilder: SelectQueryBuilder<Pet> = this.repository
       .createQueryBuilder('pet')
       .leftJoin(Area, 'area', 'area.city = pet.city_id')
-    queryBuilder.where(`pet.status = 'Open'`)
+    if (query.status) {
+      queryBuilder.where(`pet.status = :status`, {status: query.status})
+    }
 
     if (query.kind) {
       queryBuilder.andWhere('pet.kind = :kind', {kind: query.kind})
