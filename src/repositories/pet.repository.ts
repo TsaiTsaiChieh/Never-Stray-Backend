@@ -11,6 +11,17 @@ export class PetRepository extends BasicRepository<Pet> {
     super(Pet)
   }
 
+  async findAllByRef(ref: PetRefType): Promise<Pet[]> {
+    const queryBuilder: SelectQueryBuilder<Pet> = this.repository
+      .createQueryBuilder('pet')
+      .where({ref: ref})
+    const [error, result]: [any, Pet[]] = await safeAwait(
+      queryBuilder.getMany(),
+    )
+    if (error) throw error
+    return result
+  }
+
   async findByFilters(query: PetQuery): Promise<Pet[]> {
     const offset: number = (query.page! - 1) * query.limit!
 
