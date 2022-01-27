@@ -84,7 +84,7 @@ class AreaInitData {
       this.areaRepository.saveMany(areaData),
     )
     if (error) throw new AppError(error)
-    if (result) greenLog(`=== Saved ${JSON.stringify(result)} ===`)
+    if (result.length) greenLog(`=== Saved ${JSON.stringify(result)} ===`)
   }
 }
 
