@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import axios, {AxiosResponse} from 'axios'
 import safeAwait from 'safe-await'
 import {UpdateResult} from 'typeorm'
@@ -34,8 +33,8 @@ export class Shelter {
     const [error, result]: [any, Pet[]] = await safeAwait(
       this.petRepository.findByFilters({status: Status.UNKNOWN, ref: Ref.GOV}),
     )
-    let unknown_count = result.length
-    yellowLog(`There are ${unknown_count} data, which status is unknown`)
+    let unknownCount = result.length
+    yellowLog(`There are ${unknownCount} data, which status is unknown`)
 
     if (error) throw new AppError(error)
     for (const ele of result) {
@@ -70,14 +69,14 @@ export class Shelter {
           ),
         )
         if (error) throw new AppError(error)
-        unknown_count -= 1
+        unknownCount -= 1
         yellowLog(
           `=== Update [${ele.sub_id}, ${ele.accept_num}] 
           which status is unknown ===`,
         )
       }
     }
-    yellowLog(`There are still ${unknown_count} unknown status`)
+    yellowLog(`There are still ${unknownCount} unknown status`)
   }
 
   /**
@@ -126,7 +125,7 @@ export class Shelter {
     // Get all animal ids from API
     const ids: number[] = data.map((val) => val.animal_id)
     // Record IDs which been updated
-    const updated_ids: number[] = []
+    const updatedIds: number[] = []
     // Get the pet data from shelter that are open from DB
     const [error, result]: [any, Pet[]] = await safeAwait(
       this.petRepository.findByFilters({status: Status.OPEN, ref: Ref.GOV}),
@@ -134,9 +133,9 @@ export class Shelter {
     if (error) throw new AppError(error)
 
     for (const ele of result) {
-      const in_data_index = ids.indexOf(Number(ele.sub_id))
+      const indexOfData = ids.indexOf(Number(ele.sub_id))
 
-      if (in_data_index < 0) {
+      if (indexOfData < 0) {
         const [error, _]: [any, UpdateResult] = await safeAwait(
           this.petRepository.update(
             {
@@ -156,33 +155,31 @@ export class Shelter {
               accept_num: ele.accept_num,
             },
             {
-              city_id: cityConvert(data[in_data_index].animal_area_pkid),
-              kind: petKindConvert(data[in_data_index].animal_kind),
-              sex: sexConvert(data[in_data_index].animal_sex),
-              color: petColorConvert(data[in_data_index].animal_colour),
-              age: ageConvert(data[in_data_index].animal_age),
-              ligation: ternaryConvert(
-                data[in_data_index].animal_sterilization,
-              ),
-              rabies: ternaryConvert(data[in_data_index].animal_bacterin),
-              title: data[in_data_index].animal_place,
-              status: petStatusConvert(data[in_data_index].animal_status),
-              remark: data[in_data_index].animal_remark,
-              phone: data[in_data_index].shelter_tel,
-              image: [data[in_data_index].album_file],
-              created_at: data[in_data_index].animal_createtime ?
-                new Date(data[in_data_index].animal_createtime) :
+              city_id: cityConvert(data[indexOfData].animal_area_pkid),
+              kind: petKindConvert(data[indexOfData].animal_kind),
+              sex: sexConvert(data[indexOfData].animal_sex),
+              color: petColorConvert(data[indexOfData].animal_colour),
+              age: ageConvert(data[indexOfData].animal_age),
+              ligation: ternaryConvert(data[indexOfData].animal_sterilization),
+              rabies: ternaryConvert(data[indexOfData].animal_bacterin),
+              title: data[indexOfData].animal_place,
+              status: petStatusConvert(data[indexOfData].animal_status),
+              remark: data[indexOfData].animal_remark,
+              phone: data[indexOfData].shelter_tel,
+              image: [data[indexOfData].album_file],
+              created_at: data[indexOfData].animal_createtime ?
+                new Date(data[indexOfData].animal_createtime) :
                 new Date(),
             },
           ),
         )
         if (error) throw new AppError(error)
-        updated_ids.push(ele.sub_id)
+        updatedIds.push(ele.sub_id)
       }
     }
-    greenLog(`=== Update ${updated_ids.length} data`)
+    greenLog(`=== Update ${updatedIds.length} data`)
     // Filter out the ID which already been updated
-    data = data.filter((val) => !updated_ids.includes(val.animal_id))
+    data = data.filter((val) => !updatedIds.includes(val.animal_id))
     greenLog(`=== ${data.length} data should be stored ===`)
     return data
   }
@@ -230,7 +227,7 @@ export async function getShelterData(): Promise<void> {
   const shelter = new Shelter()
   await shelter.updateUnknownStatus()
   const data: ShelterData[] = await shelter.getData()
-  const data_should_stored: ShelterData[] = await shelter.updatePetInfo(data)
-  await shelter.saveData(data_should_stored)
+  const dataShouldBeSaved: ShelterData[] = await shelter.updatePetInfo(data)
+  await shelter.saveData(dataShouldBeSaved)
   return
 }
