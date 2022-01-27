@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import axios, {AxiosResponse} from 'axios'
 import safeAwait from 'safe-await'
-import {IsNull, Not, UpdateResult} from 'typeorm'
+import {UpdateResult} from 'typeorm'
 
 import {Pet, Ref, Status} from '../entity/pet.entity'
 import {PetRepository} from '../repositories/pet.repository'
@@ -56,6 +56,59 @@ export class Shelter {
   constructor() {
     this.petRepository = new PetRepository()
   }
+  /**
+   * 更新屬於政府收容所且狀態未知的寵物資訊
+   *
+   */
+  public async updateUnknownStatus(): Promise<void> {
+    const [error, result]: [any, Pet[]] = await safeAwait(
+      this.petRepository.findByFilters({status: Status.UNKNOWN, ref: Ref.GOV}),
+    )
+    let unknown_count = result.length
+    yellowLog(`There are ${unknown_count} data, which status is unknown`)
+
+    if (error) throw new AppError(error)
+    for (const ele of result) {
+      const [error, response]: [any, AxiosResponse<ShelterData[]>] =
+        await safeAwait(axios.get(`${this.url}&animal_id=${ele.sub_id}`))
+      if (error) throw new AppError(error)
+      const data: ShelterData[] = response.data
+      if (data.length) {
+        const [error, _]: [any, UpdateResult] = await safeAwait(
+          this.petRepository.update(
+            {
+              sub_id: ele.sub_id,
+              accept_num: ele.accept_num,
+            },
+            {
+              city_id: cityConvert(data[0].animal_area_pkid),
+              kind: petKindConvert(data[0].animal_kind),
+              sex: sexConvert(data[0].animal_sex),
+              color: petColorConvert(data[0].animal_colour),
+              age: ageConvert(data[0].animal_age),
+              ligation: ternaryConvert(data[0].animal_sterilization),
+              rabies: ternaryConvert(data[0].animal_bacterin),
+              title: data[0].animal_place,
+              status: petStatusConvert(data[0].animal_status),
+              remark: data[0].animal_remark,
+              phone: data[0].shelter_tel,
+              image: [data[0].album_file],
+              created_at: data[0].animal_createtime ?
+                new Date(data[0].animal_createtime) :
+                new Date(),
+            },
+          ),
+        )
+        if (error) throw new AppError(error)
+        unknown_count -= 1
+        yellowLog(
+          `=== Update [${ele.sub_id}, ${ele.accept_num}] 
+          which status is unknown ===`,
+        )
+      }
+    }
+    yellowLog(`There are still ${unknown_count} unknown status`)
+  }
 
   /**
    * 取得狀態為待認養的動物資料
@@ -66,7 +119,6 @@ export class Shelter {
     const allData: ShelterData[] = []
     let loopFlag: boolean = true
     for (let page = 0; loopFlag; page++) {
-      yellowLog(`--- Page: ${page} ---`)
       const [error, response]: [any, AxiosResponse<ShelterData[]>] =
         await safeAwait(
           axios.get(
@@ -92,31 +144,22 @@ export class Shelter {
   }
 
   /**
-   * 更新動物的狀態
+   * 更新動物的資料
    *
-   * 搜尋狀態為待認領的動物資料，若未在狀態為待認領的 API 裡，則狀態改為未知，
-   * 反之，更新資料，並回傳應該新增的資料
+   * 搜尋屬於政府收容所的寵物資料，若未在狀態為待認領的 API 裡，則狀態改為未知，
+   * 反之，更新資料，並回傳需要新增的資料
    *
    * @param  {ShelterData[]} data From API
    * @return {ShelterData[]} data Data which should be saved
    */
-  public async updatePetStatus(data: ShelterData[]): Promise<ShelterData[]> {
+  public async updatePetInfo(data: ShelterData[]): Promise<ShelterData[]> {
     // Get all animal ids from API
     const ids: number[] = data.map((val) => val.animal_id)
     // Record IDs which been updated
     const updated_ids: number[] = []
-    // Get the status of pet data that is open from DB
+    // Get the pet data from shelter that are open from DB
     const [error, result]: [any, Pet[]] = await safeAwait(
-      this.petRepository.find([
-        {
-          status: Status.OPEN,
-          accept_num: Not(IsNull()),
-        },
-        {
-          status: Status.UNKNOWN,
-          accept_num: Not(IsNull()),
-        },
-      ]),
+      this.petRepository.findByFilters({status: Status.OPEN, ref: Ref.GOV}),
     )
     if (error) throw new AppError(error)
 
@@ -143,7 +186,6 @@ export class Shelter {
               accept_num: ele.accept_num,
             },
             {
-              ref: <Ref>'gov',
               city_id: cityConvert(data[in_data_index].animal_area_pkid),
               kind: petKindConvert(data[in_data_index].animal_kind),
               sex: sexConvert(data[in_data_index].animal_sex),
@@ -164,10 +206,11 @@ export class Shelter {
             },
           ),
         )
-        updated_ids.push(ele.sub_id)
         if (error) throw new AppError(error)
+        updated_ids.push(ele.sub_id)
       }
     }
+    greenLog(`=== Update ${updated_ids.length} data`)
     // Filter out the ID which already been updated
     data = data.filter((val) => !updated_ids.includes(val.animal_id))
     greenLog(`=== ${data.length} data should be stored ===`)
@@ -215,8 +258,9 @@ export class Shelter {
 /** Get shelter data*/
 export async function getShelterData(): Promise<void> {
   const shelter = new Shelter()
+  await shelter.updateUnknownStatus()
   const data: ShelterData[] = await shelter.getData()
-  const data_should_stored: ShelterData[] = await shelter.updatePetStatus(data)
+  const data_should_stored: ShelterData[] = await shelter.updatePetInfo(data)
   await shelter.saveData(data_should_stored)
   return
 }
