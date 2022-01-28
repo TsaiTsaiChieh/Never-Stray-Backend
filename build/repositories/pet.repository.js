@@ -67,15 +67,16 @@ var PetRepository = /** @class */ (function (_super) {
     }
     PetRepository.prototype.findByFilters = function (query) {
         return __awaiter(this, void 0, void 0, function () {
-            var offset, queryBuilder, _a, error, result;
+            var queryBuilder, offset, _a, error, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        offset = (query.page - 1) * query.limit;
                         queryBuilder = this.repository
                             .createQueryBuilder('pet')
                             .leftJoin(area_entity_1.Area, 'area', 'area.city = pet.city_id');
-                        queryBuilder.where("pet.status = 'Open'");
+                        if (query.status) {
+                            queryBuilder.where("pet.status = :status", { status: query.status });
+                        }
                         if (query.kind) {
                             queryBuilder.andWhere('pet.kind = :kind', { kind: query.kind });
                         }
@@ -94,7 +95,10 @@ var PetRepository = /** @class */ (function (_super) {
                         if (query.order) {
                             queryBuilder.orderBy("pet." + query.order, "" + (query.ascend ? 'ASC' : 'DESC'));
                         }
-                        queryBuilder.offset(offset).limit(query.limit);
+                        if (query.page) {
+                            offset = (query.page - 1) * query.limit;
+                            queryBuilder.offset(offset).limit(query.limit);
+                        }
                         return [4 /*yield*/, safe_await_1.default(queryBuilder.getMany())];
                     case 1:
                         _a = _b.sent(), error = _a[0], result = _a[1];

@@ -62,6 +62,7 @@ var ajv_service_1 = require("../utils/ajv-service");
 var schema = {
     type: 'object',
     properties: {
+        status: { type: 'string', enum: Object.values(pet_entity_1.Status), nullable: true },
         kind: { type: 'string', enum: Object.values(pet_entity_1.Kind), nullable: true },
         city: { type: 'string', enum: Object.values(area_entity_1.City), nullable: true },
         ref: { type: 'string', enum: Object.values(pet_entity_1.Ref), nullable: true },
@@ -106,6 +107,7 @@ var PetController = /** @class */ (function () {
                     case 0:
                         reqQuery = req.query;
                         query = {
+                            status: reqQuery.status,
                             kind: reqQuery.kind,
                             city: reqQuery.city,
                             ref: reqQuery.ref,
