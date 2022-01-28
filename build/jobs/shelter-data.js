@@ -40,15 +40,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getShelterData = exports.Shelter = void 0;
-/* eslint-disable camelcase */
 var axios_1 = __importDefault(require("axios"));
 var safe_await_1 = __importDefault(require("safe-await"));
-var typeorm_1 = require("typeorm");
 var pet_entity_1 = require("../entity/pet.entity");
 var pet_repository_1 = require("../repositories/pet.repository");
 var app_error_1 = require("../utils/app-error");
 var chalk_logger_1 = require("../utils/chalk-logger");
-var helper_1 = require("../utils/helper");
 var value_convert_1 = require("../utils/value-convert");
 /** Class representing a pet repository  */
 var Shelter = /** @class */ (function () {
@@ -58,6 +55,71 @@ var Shelter = /** @class */ (function () {
         this.batch = 100;
         this.petRepository = new pet_repository_1.PetRepository();
     }
+    /**
+     * 更新屬於政府收容所且狀態未知的寵物資訊
+     *
+     */
+    Shelter.prototype.updateUnknownStatus = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, error, result, unknownCount, _i, result_1, ele, _b, error_1, response, data, _c, error_2, _1;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0: return [4 /*yield*/, safe_await_1.default(this.petRepository.findByFilters({ status: pet_entity_1.Status.UNKNOWN, ref: pet_entity_1.Ref.GOV }))];
+                    case 1:
+                        _a = _d.sent(), error = _a[0], result = _a[1];
+                        unknownCount = result.length;
+                        chalk_logger_1.yellowLog("There are " + unknownCount + " data, which status is unknown");
+                        if (error)
+                            throw new app_error_1.AppError(error);
+                        _i = 0, result_1 = result;
+                        _d.label = 2;
+                    case 2:
+                        if (!(_i < result_1.length)) return [3 /*break*/, 6];
+                        ele = result_1[_i];
+                        return [4 /*yield*/, safe_await_1.default(axios_1.default.get(this.url + "&animal_id=" + ele.sub_id))];
+                    case 3:
+                        _b = _d.sent(), error_1 = _b[0], response = _b[1];
+                        if (error_1)
+                            throw new app_error_1.AppError(error_1);
+                        data = response.data;
+                        if (!data.length) return [3 /*break*/, 5];
+                        return [4 /*yield*/, safe_await_1.default(this.petRepository.update({
+                                sub_id: ele.sub_id,
+                                accept_num: ele.accept_num,
+                            }, {
+                                city_id: value_convert_1.cityConvert(data[0].animal_area_pkid),
+                                kind: value_convert_1.petKindConvert(data[0].animal_kind),
+                                sex: value_convert_1.sexConvert(data[0].animal_sex),
+                                color: value_convert_1.petColorConvert(data[0].animal_colour),
+                                age: value_convert_1.ageConvert(data[0].animal_age),
+                                ligation: value_convert_1.ternaryConvert(data[0].animal_sterilization),
+                                rabies: value_convert_1.ternaryConvert(data[0].animal_bacterin),
+                                title: data[0].animal_place,
+                                status: value_convert_1.petStatusConvert(data[0].animal_status),
+                                remark: data[0].animal_remark,
+                                phone: data[0].shelter_tel,
+                                image: [data[0].album_file],
+                                created_at: data[0].animal_createtime ?
+                                    new Date(data[0].animal_createtime) :
+                                    new Date(),
+                            }))];
+                    case 4:
+                        _c = _d.sent(), error_2 = _c[0], _1 = _c[1];
+                        if (error_2)
+                            throw new app_error_1.AppError(error_2);
+                        unknownCount -= 1;
+                        chalk_logger_1.yellowLog("=== Update [" + ele.sub_id + ", " + ele.accept_num + "] \n          which status is unknown ===");
+                        _d.label = 5;
+                    case 5:
+                        _i++;
+                        return [3 /*break*/, 2];
+                    case 6:
+                        chalk_logger_1.yellowLog("There are still " + unknownCount + " unknown status");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     /**
      * 取得狀態為待認養的動物資料
      *
@@ -75,7 +137,6 @@ var Shelter = /** @class */ (function () {
                         _b.label = 1;
                     case 1:
                         if (!loopFlag) return [3 /*break*/, 4];
-                        chalk_logger_1.yellowLog("--- Page: " + page + " ---");
                         return [4 /*yield*/, safe_await_1.default(axios_1.default.get(this.url + "&$top=" + this.batch + "&$skip=" + this.batch * page + "&animal_status=OPEN"))];
                     case 2:
                         _a = _b.sent(), error = _a[0], response = _a[1];
@@ -103,89 +164,79 @@ var Shelter = /** @class */ (function () {
         });
     };
     /**
-     * 更新動物的狀態
+     * 更新動物的資料
      *
-     * 搜尋狀態為待認領的動物資料，若未在狀態為待認領的 API 裡，則狀態改為未知，
-     * 反之，更新資料，移除 API 裡該筆動物資料的 ID 後回傳
+     * 搜尋屬於政府收容所的寵物資料，若未在狀態為待認領的 API 裡，則狀態改為未知，
+     * 反之，更新資料，並回傳需要新增的資料
      *
      * @param  {ShelterData[]} data From API
-     * @return {number[]} left_ids data IDs after filter out
+     * @return {ShelterData[]} data Data which should be saved
      */
-    Shelter.prototype.updatePetStatus = function (data) {
+    Shelter.prototype.updatePetInfo = function (data) {
         return __awaiter(this, void 0, void 0, function () {
-            var ids, left_ids, _a, error, result, _i, result_1, ele, in_data_index, _b, error_1, _1, _c, error_2, _2;
+            var ids, updatedIds, _a, error, result, _i, result_2, ele, indexOfData, _b, error_3, _2, _c, error_4, _3;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
                         ids = data.map(function (val) { return val.animal_id; });
-                        left_ids = helper_1.deepCopy(ids);
-                        chalk_logger_1.yellowLog(ids);
-                        return [4 /*yield*/, safe_await_1.default(this.petRepository.find([
-                                {
-                                    status: pet_entity_1.Status.OPEN,
-                                    accept_num: typeorm_1.Not(typeorm_1.IsNull()),
-                                },
-                                {
-                                    status: pet_entity_1.Status.UNKNOWN,
-                                    accept_num: typeorm_1.Not(typeorm_1.IsNull()),
-                                },
-                            ]))];
+                        updatedIds = [];
+                        return [4 /*yield*/, safe_await_1.default(this.petRepository.findByFilters({ status: pet_entity_1.Status.OPEN, ref: pet_entity_1.Ref.GOV }))];
                     case 1:
                         _a = _d.sent(), error = _a[0], result = _a[1];
                         if (error)
                             throw new app_error_1.AppError(error);
-                        _i = 0, result_1 = result;
+                        _i = 0, result_2 = result;
                         _d.label = 2;
                     case 2:
-                        if (!(_i < result_1.length)) return [3 /*break*/, 7];
-                        ele = result_1[_i];
-                        in_data_index = ids.indexOf(Number(ele.sub_id));
-                        if (!(in_data_index < 0)) return [3 /*break*/, 4];
+                        if (!(_i < result_2.length)) return [3 /*break*/, 7];
+                        ele = result_2[_i];
+                        indexOfData = ids.indexOf(Number(ele.sub_id));
+                        if (!(indexOfData < 0)) return [3 /*break*/, 4];
                         return [4 /*yield*/, safe_await_1.default(this.petRepository.update({
                                 id: ele.id,
                             }, {
                                 status: pet_entity_1.Status.UNKNOWN,
                             }))];
                     case 3:
-                        _b = _d.sent(), error_1 = _b[0], _1 = _b[1];
-                        if (error_1)
-                            throw new app_error_1.AppError(error_1);
+                        _b = _d.sent(), error_3 = _b[0], _2 = _b[1];
+                        if (error_3)
+                            throw new app_error_1.AppError(error_3);
                         return [3 /*break*/, 6];
                     case 4: return [4 /*yield*/, safe_await_1.default(this.petRepository.update({
                             sub_id: ele.sub_id,
                             accept_num: ele.accept_num,
                         }, {
-                            ref: 'gov',
-                            city_id: value_convert_1.cityConvert(data[in_data_index].animal_area_pkid),
-                            kind: value_convert_1.petKindConvert(data[in_data_index].animal_kind),
-                            sex: value_convert_1.sexConvert(data[in_data_index].animal_sex),
-                            color: value_convert_1.petColorConvert(data[in_data_index].animal_colour),
-                            age: value_convert_1.ageConvert(data[in_data_index].animal_age),
-                            ligation: value_convert_1.ternaryConvert(data[in_data_index].animal_sterilization),
-                            rabies: value_convert_1.ternaryConvert(data[in_data_index].animal_bacterin),
-                            title: data[in_data_index].animal_place,
-                            status: value_convert_1.petStatusConvert(data[in_data_index].animal_status),
-                            remark: data[in_data_index].animal_remark,
-                            phone: data[in_data_index].shelter_tel,
-                            image: [data[in_data_index].album_file],
-                            created_at: data[in_data_index].animal_createtime ?
-                                new Date(data[in_data_index].animal_createtime) :
+                            city_id: value_convert_1.cityConvert(data[indexOfData].animal_area_pkid),
+                            kind: value_convert_1.petKindConvert(data[indexOfData].animal_kind),
+                            sex: value_convert_1.sexConvert(data[indexOfData].animal_sex),
+                            color: value_convert_1.petColorConvert(data[indexOfData].animal_colour),
+                            age: value_convert_1.ageConvert(data[indexOfData].animal_age),
+                            ligation: value_convert_1.ternaryConvert(data[indexOfData].animal_sterilization),
+                            rabies: value_convert_1.ternaryConvert(data[indexOfData].animal_bacterin),
+                            title: data[indexOfData].animal_place,
+                            status: value_convert_1.petStatusConvert(data[indexOfData].animal_status),
+                            remark: data[indexOfData].animal_remark,
+                            phone: data[indexOfData].shelter_tel,
+                            image: [data[indexOfData].album_file],
+                            created_at: data[indexOfData].animal_createtime ?
+                                new Date(data[indexOfData].animal_createtime) :
                                 new Date(),
                         }))];
                     case 5:
-                        _c = _d.sent(), error_2 = _c[0], _2 = _c[1];
-                        if (error_2)
-                            throw new app_error_1.AppError(error_2);
-                        chalk_logger_1.greenLog("=== Update [" + ele.sub_id + ", " + ele.accept_num + "] data ===");
-                        // Filter out the ID which already been updated
-                        left_ids.splice(in_data_index, 1);
+                        _c = _d.sent(), error_4 = _c[0], _3 = _c[1];
+                        if (error_4)
+                            throw new app_error_1.AppError(error_4);
+                        updatedIds.push(ele.sub_id);
                         _d.label = 6;
                     case 6:
                         _i++;
                         return [3 /*break*/, 2];
                     case 7:
-                        chalk_logger_1.greenLog("=== " + left_ids.length + " data should be stored ===");
-                        return [2 /*return*/, left_ids];
+                        chalk_logger_1.greenLog("=== Update " + updatedIds.length + " data");
+                        // Filter out the ID which already been updated
+                        data = data.filter(function (val) { return !updatedIds.includes(val.animal_id); });
+                        chalk_logger_1.greenLog("=== " + data.length + " data should be stored ===");
+                        return [2 /*return*/, data];
                 }
             });
         });
@@ -193,17 +244,15 @@ var Shelter = /** @class */ (function () {
     /**
      * 儲存寵物的資訊
      *
-     * @param  {ShelterData[]} data From axios
-     * @param  {number[]} ids IDs which already been updated after filter out
+     * @param  {ShelterData[]} data Which should be stored
      */
-    Shelter.prototype.saveData = function (data, ids) {
+    Shelter.prototype.saveData = function (data) {
         return __awaiter(this, void 0, void 0, function () {
             var petData, _a, error, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         petData = [];
-                        data = data.filter(function (val) { return ids.includes(val.animal_id); });
                         data.forEach(function (ele) {
                             return petData.push({
                                 ref: 'gov',
@@ -244,19 +293,22 @@ exports.Shelter = Shelter;
 /** Get shelter data*/
 function getShelterData() {
     return __awaiter(this, void 0, void 0, function () {
-        var shelter, data, ids;
+        var shelter, data, dataShouldBeSaved;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     shelter = new Shelter();
-                    return [4 /*yield*/, shelter.getData()];
+                    return [4 /*yield*/, shelter.updateUnknownStatus()];
                 case 1:
-                    data = _a.sent();
-                    return [4 /*yield*/, shelter.updatePetStatus(data)];
+                    _a.sent();
+                    return [4 /*yield*/, shelter.getData()];
                 case 2:
-                    ids = _a.sent();
-                    return [4 /*yield*/, shelter.saveData(data, ids)];
+                    data = _a.sent();
+                    return [4 /*yield*/, shelter.updatePetInfo(data)];
                 case 3:
+                    dataShouldBeSaved = _a.sent();
+                    return [4 /*yield*/, shelter.saveData(dataShouldBeSaved)];
+                case 4:
                     _a.sent();
                     return [2 /*return*/];
             }

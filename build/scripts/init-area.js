@@ -142,7 +142,7 @@ var AreaInitData = /** @class */ (function () {
                         _b = _c.sent(), error = _b[0], result = _b[1];
                         if (error)
                             throw new app_error_1.AppError(error);
-                        if (result)
+                        if (result.length)
                             chalk_logger_1.greenLog("=== Saved " + JSON.stringify(result) + " ===");
                         return [2 /*return*/];
                 }

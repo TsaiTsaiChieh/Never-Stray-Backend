@@ -2,12 +2,12 @@ name: Auto Changelog
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [main]
     types: [closed]
 
 jobs:
   generate_changelog:
-    name: Generate changelog for main and develop branches
+    name: Generate changelog for main branches
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.merged == true }}
     steps:
