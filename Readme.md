@@ -5,7 +5,7 @@
 ### .env
 
 NODE_ENV=development  
-APP_PORT=3000
+APP_PORT=3500
 
 MYSQL_ROOT_PASSWORD=  
 MYSQL_DATABASE=  
