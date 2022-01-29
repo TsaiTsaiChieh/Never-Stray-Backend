@@ -6,3 +6,5 @@ down:
 	docker-compose down -v
 rmi:
 	docker rmi ns_node-app
+rebuild:
+	docker-compose build
