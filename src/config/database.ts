@@ -1,5 +1,8 @@
 import {Connection, createConnection} from 'typeorm'
 
+import {Area} from '../entity/area.entity'
+import {Pet} from '../entity/pet.entity'
+
 export const connection = async (): Promise<Connection> => {
   return createConnection({
     type: 'mysql',
@@ -8,7 +11,7 @@ export const connection = async (): Promise<Connection> => {
     username: process.env.TYPEORM_USERNAME,
     password: process.env.TYPEORM_PASSWORD,
     database: process.env.TYPEORM_DATABASE,
-    entities: ['**/src/entity/*{.ts,.js}'],
+    entities: [Area, Pet],
     logging: false,
   })
 }
