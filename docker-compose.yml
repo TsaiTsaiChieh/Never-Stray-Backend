@@ -39,6 +39,7 @@ services:
         yarn ts-node src/crawler.ts
     environment:
       - TYPEORM_HOST=db
+      - JOB_PORT=3333
     env_file:
       - .env
     ports:
