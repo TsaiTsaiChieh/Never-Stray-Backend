@@ -33,7 +33,7 @@ export class Shelter {
     const [error, result]: [any, Pet[]] = await safeAwait(
       this.petRepository.findByFilters({status: Status.UNKNOWN, ref: Ref.GOV}),
     )
-    let unknownCount = result.length
+    let unknownCount = result ? result.length : 0
     yellowLog(`There are ${unknownCount} data, which status is unknown`)
 
     if (error) throw new AppError(error)
