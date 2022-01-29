@@ -93,13 +93,13 @@ var PetRepository = /** @class */ (function (_super) {
                             queryBuilder.andWhere('area.region = :region', { region: query.region });
                         }
                         if (query.order) {
-                            queryBuilder.orderBy("pet." + query.order, "" + (query.ascend ? 'ASC' : 'DESC'));
+                            queryBuilder.orderBy("pet.".concat(query.order), "".concat(query.ascend ? 'ASC' : 'DESC'));
                         }
                         if (query.page) {
                             offset = (query.page - 1) * query.limit;
                             queryBuilder.offset(offset).limit(query.limit);
                         }
-                        return [4 /*yield*/, safe_await_1.default(queryBuilder.getMany())];
+                        return [4 /*yield*/, (0, safe_await_1.default)(queryBuilder.getMany())];
                     case 1:
                         _a = _b.sent(), error = _a[0], result = _a[1];
                         if (error)

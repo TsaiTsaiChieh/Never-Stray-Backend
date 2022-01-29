@@ -53,7 +53,7 @@ var PetModel = /** @class */ (function () {
             var _a, error, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, safe_await_1.default(this.petRepository.findByFilters(query))];
+                    case 0: return [4 /*yield*/, (0, safe_await_1.default)(this.petRepository.findByFilters(query))];
                     case 1:
                         _a = _b.sent(), error = _a[0], result = _a[1];
                         if (error)

@@ -32,9 +32,9 @@ var AppError = /** @class */ (function (_super) {
         _this.details = details;
         _this.code = code;
         _this.isOperational = isOperational;
-        _this.status = ("" + code).startsWith('4') ? 'fail' : 'error';
+        _this.status = "".concat(code).startsWith('4') ? 'fail' : 'error';
         Error.captureStackTrace(_this, _this.constructor);
-        chalk_logger_1.redLog(message);
+        (0, chalk_logger_1.redLog)(message);
         return _this;
     }
     return AppError;

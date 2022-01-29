@@ -122,7 +122,7 @@ var PetController = /** @class */ (function () {
                         valid = ajv_service_1.ajv.validate(schema, query);
                         if (!!valid) return [3 /*break*/, 1];
                         return [2 /*return*/, res.status(http_status_1.default.BAD_REQUEST).json(ajv_service_1.ajv.errors)];
-                    case 1: return [4 /*yield*/, safe_await_1.default(this.petModel.getAll(query))];
+                    case 1: return [4 /*yield*/, (0, safe_await_1.default)(this.petModel.getAll(query))];
                     case 2:
                         _a = _b.sent(), error = _a[0], result = _a[1];
                         if (error) {
@@ -136,15 +136,15 @@ var PetController = /** @class */ (function () {
         });
     };
     __decorate([
-        routing_controllers_1.Get('/search'),
-        __param(0, routing_controllers_1.Req()),
-        __param(1, routing_controllers_1.Res()),
+        (0, routing_controllers_1.Get)('/search'),
+        __param(0, (0, routing_controllers_1.Req)()),
+        __param(1, (0, routing_controllers_1.Res)()),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", Promise)
     ], PetController.prototype, "getAll", null);
     PetController = __decorate([
-        routing_controllers_1.Controller('/pet'),
+        (0, routing_controllers_1.Controller)('/pet'),
         __metadata("design:paramtypes", [])
     ], PetController);
     return PetController;

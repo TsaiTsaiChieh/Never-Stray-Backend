@@ -49,25 +49,25 @@ var Area = /** @class */ (function () {
     function Area() {
     }
     __decorate([
-        typeorm_1.PrimaryGeneratedColumn(),
+        (0, typeorm_1.PrimaryGeneratedColumn)(),
         __metadata("design:type", Number)
     ], Area.prototype, "id", void 0);
     __decorate([
-        typeorm_1.Column({ type: 'enum', enum: Region, nullable: false }),
+        (0, typeorm_1.Column)({ type: 'enum', enum: Region, nullable: false }),
         __metadata("design:type", String)
     ], Area.prototype, "region", void 0);
     __decorate([
-        typeorm_1.Column({ type: 'enum', enum: City, nullable: false }),
+        (0, typeorm_1.Column)({ type: 'enum', enum: City, nullable: false }),
         __metadata("design:type", String)
     ], Area.prototype, "city", void 0);
     __decorate([
-        typeorm_1.Column({ length: 4 }),
+        (0, typeorm_1.Column)({ length: 4 }),
         __metadata("design:type", String)
     ], Area.prototype, "name", void 0);
     Area = __decorate([
-        typeorm_1.Entity({ name: 'areas' }),
-        typeorm_1.Index(['city']),
-        typeorm_1.Index(['region', 'city'], { unique: true })
+        (0, typeorm_1.Entity)({ name: 'areas' }),
+        (0, typeorm_1.Index)(['city']),
+        (0, typeorm_1.Index)(['region', 'city'], { unique: true })
         /** Class representing the Area */
     ], Area);
     return Area;

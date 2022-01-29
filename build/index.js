@@ -48,11 +48,11 @@ var APP_PORT = parseInt(process.env.APP_PORT);
     var app;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, initializer_1.initializerApp()];
+            case 0: return [4 /*yield*/, (0, initializer_1.initializerApp)()];
             case 1:
                 app = (_a.sent()).app;
                 app.listen(process.env.APP_PORT, function () {
-                    chalk_logger_1.greenLog("App listening at http://localhost:" + APP_PORT);
+                    (0, chalk_logger_1.greenLog)("App listening at http://localhost:".concat(APP_PORT));
                 });
                 return [2 /*return*/];
         }

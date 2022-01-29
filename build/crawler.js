@@ -50,14 +50,14 @@ var JOB_PORT = parseInt(process.env.JOB_PORT);
     var app;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, initializer_1.initializerApp()];
+            case 0: return [4 /*yield*/, (0, initializer_1.initializerApp)()];
             case 1:
                 app = (_a.sent()).app;
                 app.listen(JOB_PORT, function () {
-                    chalk_logger_1.greenLog("Crawler listening at http://localhost:" + JOB_PORT);
-                    node_schedule_1.scheduleJob('0 */1 * * *', function () {
-                        chalk_logger_1.yellowLog("Get shelter data start at " + new Date());
-                        shelter_data_1.getShelterData();
+                    (0, chalk_logger_1.greenLog)("Crawler listening at http://localhost:".concat(JOB_PORT));
+                    (0, node_schedule_1.scheduleJob)('0 */1 * * *', function () {
+                        (0, chalk_logger_1.yellowLog)("Get shelter data start at ".concat(new Date()));
+                        (0, shelter_data_1.getShelterData)();
                     });
                 });
                 return [2 /*return*/];

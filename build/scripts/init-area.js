@@ -62,7 +62,7 @@ var AreaInitData = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         _a = this;
-                        return [4 /*yield*/, initializer_1.initializerApp()];
+                        return [4 /*yield*/, (0, initializer_1.initializerApp)()];
                     case 1:
                         _a._ = (_b.sent()).db;
                         this.areaRepository = new area_repository_1.AreaRepository();
@@ -96,14 +96,14 @@ var AreaInitData = /** @class */ (function () {
                         _b.label = 1;
                     case 1:
                         if (!(i < this.areas.length)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, safe_await_1.default(this.areaRepository.findOne({ city: value_convert_1.cityConvert(areas_json_1.default[i].city) }))];
+                        return [4 /*yield*/, (0, safe_await_1.default)(this.areaRepository.findOne({ city: (0, value_convert_1.cityConvert)(areas_json_1.default[i].city) }))];
                     case 2:
                         _a = _b.sent(), error = _a[0], result = _a[1];
                         if (error)
                             throw new app_error_1.AppError(error);
                         // Filter out the index which already existed in the DB
                         if (result) {
-                            chalk_logger_1.yellowLog("=== " + result.name + " already in areas table ===");
+                            (0, chalk_logger_1.yellowLog)("=== ".concat(result.name, " already in areas table ==="));
                             areaIdx.splice(areaIdx.indexOf(i), 1);
                         }
                         _b.label = 3;
@@ -132,18 +132,18 @@ var AreaInitData = /** @class */ (function () {
                         for (_i = 0, _a = this.areas; _i < _a.length; _i++) {
                             ele = _a[_i];
                             areaData.push({
-                                region: value_convert_1.regionConvert(ele.region),
-                                city: value_convert_1.cityConvert(ele.city),
+                                region: (0, value_convert_1.regionConvert)(ele.region),
+                                city: (0, value_convert_1.cityConvert)(ele.city),
                                 name: ele.name,
                             });
                         }
-                        return [4 /*yield*/, safe_await_1.default(this.areaRepository.saveMany(areaData))];
+                        return [4 /*yield*/, (0, safe_await_1.default)(this.areaRepository.saveMany(areaData))];
                     case 1:
                         _b = _c.sent(), error = _b[0], result = _b[1];
                         if (error)
                             throw new app_error_1.AppError(error);
                         if (result.length)
-                            chalk_logger_1.greenLog("=== Saved " + JSON.stringify(result) + " ===");
+                            (0, chalk_logger_1.greenLog)("=== Saved ".concat(JSON.stringify(result), " ==="));
                         return [2 /*return*/];
                 }
             });
