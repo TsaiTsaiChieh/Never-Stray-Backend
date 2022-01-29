@@ -54,6 +54,7 @@ var JOB_PORT = parseInt(process.env.JOB_PORT);
             case 1:
                 app = (_a.sent()).app;
                 app.listen(JOB_PORT, function () {
+                    (0, shelter_data_1.getShelterData)();
                     (0, chalk_logger_1.greenLog)("Crawler listening at http://localhost:".concat(JOB_PORT));
                     (0, node_schedule_1.scheduleJob)('0 */1 * * *', function () {
                         (0, chalk_logger_1.yellowLog)("Get shelter data start at ".concat(new Date()));

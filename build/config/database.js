@@ -38,6 +38,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connection = void 0;
 var typeorm_1 = require("typeorm");
+var area_entity_1 = require("../entity/area.entity");
+var pet_entity_1 = require("../entity/pet.entity");
 var connection = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         return [2 /*return*/, (0, typeorm_1.createConnection)({
@@ -47,7 +49,7 @@ var connection = function () { return __awaiter(void 0, void 0, void 0, function
                 username: process.env.TYPEORM_USERNAME,
                 password: process.env.TYPEORM_PASSWORD,
                 database: process.env.TYPEORM_DATABASE,
-                entities: ['**/src/entity/*{.ts,.js}'],
+                entities: [area_entity_1.Area, pet_entity_1.Pet],
                 logging: false,
             })];
     });
